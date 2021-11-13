@@ -34,4 +34,9 @@ header('Access-Control-Allow-Origin: *');
         // JSON result in `data` variable
         console.log(data);
     });
+
+    $.getJSON('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast', function(data) {
+        // JSON result in `data` variable
+        console.log(data);
+    });
 </script>
