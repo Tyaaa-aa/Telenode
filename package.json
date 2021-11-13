@@ -1,0 +1,20 @@
+{
+  "name": "isbvosp",
+  "version": "1.0.0",
+  "description": "Easy and cost-free way to produce interactive videos that would be made available online so that content designers can share learning globally",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tyaaa-aa/ISBVOSP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tyaaa-aa/ISBVOSP/issues"
+  },
+  "homepage": "https://github.com/Tyaaa-aa/ISBVOSP#readme"
+}
