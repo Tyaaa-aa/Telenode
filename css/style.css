@@ -1,0 +1,35 @@
+::-webkit-scrollbar {
+    width: 5px;
+    background: none;
+    border-radius: 5px;
+    height: 90%;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #9c9c9c00;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.left:hover ::-webkit-scrollbar-thumb {
+    background: #9c9c9c;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #808080;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    height: 100%;
+    background-color: #DED9DA;
+    margin: 0;
+    flex-direction: column;
+    justify-content: space-around;
+}
