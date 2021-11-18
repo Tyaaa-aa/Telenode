@@ -13,13 +13,13 @@ $.get("https://yt2htmlcors.herokuapp.com/api/?url=" + url, function (data, statu
         if ("links" in data) {
             // API returned a usable link successfully
             console.log("URL: " + data.links[0]);
+            //Load the player with new source
+            $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
+            $("#heading").append("<span style='color:green'> (SUCCESS)</span>")
         } else {
             // API did not return usable link
             $("#heading").append("<span style='color:red'> (ERROR)</span>")
         }
-        //Load the player with new source
-        $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
-        $("#heading").append("<span style='color:green'> (SUCCESS)</span>")
     } else {
         // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
         console.log("ERROR");
