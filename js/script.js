@@ -55,7 +55,7 @@ $('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', function () {
         if ($('#userPassword_reg').val() == $('#userPasswordCnfm_reg').val()) {
             $('#password_msg').html('Passwords Match').css('color', 'green');
             $("#register_btn").css("pointer-events", "auto");
-            $("#register_btn").css("cursor", "auto");
+            $("#register_btn").css("cursor", "pointer");
         } else {
             $('#password_msg').html('Passwords do not match!').css('color', 'red');
             $("#register_btn").css("pointer-events", "none");

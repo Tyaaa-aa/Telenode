@@ -2,8 +2,10 @@
 <html>
 <!-- HEAD CONTENT -->
 <?php include "head.php";
+
 if (isset($_SESSION["userID"])) {
     header("Location: index.php");
+    echo $_SESSION["userID"], $_SESSION["userName"], $_SESSION["userEmail"];
 }
 
 ?>

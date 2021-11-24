@@ -2,6 +2,11 @@
 header('Access-Control-Allow-Origin: *');
 include "db_connect.php";
 session_start();
+
+if (isset($_SESSION["userID"])) {
+    // header("Location: index.php");
+    echo $_SESSION["userID"], $_SESSION["userName"], $_SESSION["userEmail"];
+}
 ?>
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

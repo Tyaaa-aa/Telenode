@@ -12,7 +12,6 @@ if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_P
     $userPassword_reg = $_POST["userPassword_reg"];
 
     $hashed_password = password_hash($userPassword_reg, PASSWORD_DEFAULT);
-    echo "Inserting $userEmail, $userName, $userPassword_reg";
 } else {
 ?>
     <script type='text/javascript'>
@@ -46,7 +45,7 @@ $row = $stmt->num_rows();
 $stmt->bind_result($id, $s_userName);
 $stmt->fetch();
 $stmt->close();
-echo $id, $s_userName, $userEmail;
+// echo $id, $s_userName, $userEmail;
 if ($row == 0) {
 ?>
     <script type='text/javascript'>
@@ -60,7 +59,7 @@ if ($row == 0) {
     $_SESSION["userID"] = $id;
     $_SESSION["userName"] = $s_userName;
     $_SESSION["userEmail"] = $userEmail;
-    echo "Login Successful.<br> $id <br> $s_userName <br> $userEmail";
+    // echo "Login Successful.<br> $id <br> $s_userName <br> $userEmail";
     header("Location: index.php");
 }
 

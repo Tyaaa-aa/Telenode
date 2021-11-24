@@ -169,7 +169,7 @@ a:hover {
     color: white;
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0);
     /* margin: 10px; */
-    cursor: pointer;
+    cursor: pointer !important;
     margin: 10px;
     outline: none;
     display: flex;
