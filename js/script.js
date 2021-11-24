@@ -4,7 +4,7 @@
 var url = "watch?v=YE7VzlLtp-4";
 
 // GET VIDEO URL FROM API
-$.get("https://yt2htmlcors.herokuapp.com/api/?url=" + url, function (data, status, xhr) {
+$.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + url, function (data, status, xhr) {
     console.log(xhr.status);
     // IF STATUS IS 200 (SUCCESS) 
     if (xhr.status = 200) {
