@@ -6,25 +6,18 @@
 //     echo "FAILUREEEREREE";
 // }
 
-$userEmail_reg = $_POST["userEmail_reg"];
-$userName_reg = $_POST["userName_reg"];
-$userPassword_reg = $_POST["userPassword_reg"];
-
-$hashed_password = password_hash($userPassword_reg, PASSWORD_DEFAULT);
-echo "Inserting $userEmail_reg, $userName_reg, $userPassword_reg";
-
 if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_POST["userPassword_reg"])) {
-    $userEmail_reg = $_POST["userEmail_reg"];
-    $userName_reg = $_POST["userName_reg"];
+    $userEmail = $_POST["userEmail_reg"];
+    $userName = $_POST["userName_reg"];
     $userPassword_reg = $_POST["userPassword_reg"];
 
     $hashed_password = password_hash($userPassword_reg, PASSWORD_DEFAULT);
-    echo "Inserting $userEmail_reg, $userName_reg, $userPassword_reg";
+    echo "Inserting $userEmail, $userName, $userPassword_reg";
 } else {
 ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        // window.location = 'login.php';
+        window.location = 'login.php';
     </script>
     <a href="login.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
@@ -58,7 +51,7 @@ if ($row == 0) {
 ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        // window.location = 'index.php';
+        window.location = 'index.php';
     </script>
     <a href="index.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
@@ -68,7 +61,7 @@ if ($row == 0) {
     $_SESSION["userName"] = $s_userName;
     $_SESSION["userEmail"] = $userEmail;
     echo "Login Successful.<br> $id <br> $s_userName <br> $userEmail";
-    // header("Location: index.php");
+    header("Location: index.php");
 }
 
 ?>

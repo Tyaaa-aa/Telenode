@@ -2,9 +2,10 @@
 <html>
 <!-- HEAD CONTENT -->
 <?php include "head.php";
-if (isset($_SESSION["userid"])) {
+if (isset($_SESSION["userID"])) {
     header("Location: index.php");
 }
+
 ?>
 
 <body>
@@ -19,7 +20,7 @@ if (isset($_SESSION["userid"])) {
             <form class="login-form" method="POST" action="login_backend.php">
                 <div class="field-box">
                     <h1>Login to TeleNode</h1>
-                    <input type="text" placeholder="Username" name="userName" id="userName" class="inputForm" required>
+                    <input type="email" placeholder="E-Mail" name="userEmail" id="userName" class="inputForm" required>
                     <input type="password" placeholder="Password" name="userPassword" id="userPassword" class="inputForm" required>
                     <br>
                     <div>
