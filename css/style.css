@@ -1,30 +1,27 @@
 ::-webkit-scrollbar {
-    width: 5px;
-    background: none;
+    width: 8px;
+    background: #838383;
     border-radius: 5px;
     height: 90%;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #9c9c9c00;
+    background: #525252;
     border-radius: 5px;
-    transition: all 0.3s;
 }
 
-.left:hover ::-webkit-scrollbar-thumb {
-    background: #9c9c9c;
-}
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #808080;
+    background: #363636;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
 }
 
 html {
@@ -34,5 +31,171 @@ html {
 
 body {
     height: 100%;
+    /* min-height: 90vh; */
     margin: 0;
+}
+
+header {
+    height: 80px;
+    background-color: #808080;
+}
+
+footer {
+    height: 80px;
+    background-color: darkslategrey;
+    /* position:absolute; */
+    /* bottom:0; */
+    /* width:100%; */
+    height: 200px;
+}
+
+a {
+    color: #598DC5;
+    transition: all 0.3s;
+}
+
+a:hover {
+    color: #436A94;
+}
+
+#preloader {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999999;
+    width: 300vw;
+    height: 300vh;
+    background-color: white;
+    object-fit:scale-down;
+    animation-name: preloadAnim;
+    animation-duration: 0.8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes preloadAnim {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+#login-container{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    margin: 0 auto;
+}
+
+.login-box,
+.register-box {
+    width: 50%;
+    height: 90%;
+}
+
+.login_splash{
+    width: 50%;
+    height: 90%;
+}
+
+.login_splash_img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    height: 100%;
+}
+
+.login-form .field-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background-color: #424242;
+    border-radius: 20px;
+    color: white;
+    width: 60%;
+    /* transition: all 0.3s; */
+}
+
+#password_msg {
+    /* white-space: pre; */
+    transition: all 0.3s;
+}
+
+/* .login-form h1 {
+    margin-top: 20px;
+    white-space: pre;
+} */
+
+.inputForm {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+    transition: all 0.3s;
+    background-color: #F7F7F7;
+}
+
+.inputForm:active {
+    background-color: #DDD;
+}
+
+#showPassword {
+    margin: 10px;
+}
+
+.btn {
+    background-color: #598DC5;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    text-decoration: none;
+    /*=========== MASTER BUTTON CLASS ===========*/
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0), 0 0px 0px rgba(0, 0, 0, 0);
+    /* margin: 10px; */
+    cursor: pointer;
+    margin: 10px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    transform: scale(0.98);
+    background-color: #436A94;
+}
+
+.login-btn {
+    width: 100%;
+    font-size: 1.3em;
+}
+
+#register_btn{
+    background-color: #FF8F44;
+}
+
+.registerForm-btn{
+    color: #FF8F44;
+}
+
+.registerForm-btn:hover{
+    color: #d3773a;
 }
