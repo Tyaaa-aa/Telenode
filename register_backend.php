@@ -6,13 +6,12 @@
 //     echo "FAILUREEEREREE";
 // }
 
-include "db_connect.php";
-$userEmail = $_POST["userName_reg"];
-// $userName = $_POST["userName_reg"];
-// $userPassword = $_POST["userPassword_reg"];
+$userEmail_reg = $_POST["userEmail_reg"];
+$userName_reg = $_POST["userName_reg"];
+$userPassword_reg = $_POST["userPassword_reg"];
 
-// $hashed_password = password_hash($userPassword_reg, PASSWORD_DEFAULT);
-// echo "Inserting $userEmail_reg, $userName_reg, $userPassword_reg";
+$hashed_password = password_hash($userPassword_reg, PASSWORD_DEFAULT);
+echo "Inserting $userEmail_reg, $userName_reg, $userPassword_reg";
 
 if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_POST["userPassword_reg"])) {
     $userEmail_reg = $_POST["userEmail_reg"];
@@ -32,6 +31,7 @@ if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_P
 }
 
 
+include "db_connect.php";
 $stmt = $conn->prepare("INSERT into tb_users (userEmail, userName, userPassword) values (?,?,?)");
 $stmt->bind_param("sss", $userEmail, $userName, $hashed_password);
 $stmt->execute();

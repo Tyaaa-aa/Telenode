@@ -83,50 +83,50 @@ $(".loginForm-btn").click(function () {
 
 // Register Form Handler
 
-// $('#register_btn').click(function (event) {
-//     event.preventDefault();
+$('#register_btn').click(function (event) {
+    event.preventDefault();
 
-//     var userName_reg = document.getElementById('userName_reg').value;
-//     var userEmail_reg = document.getElementById('userEmail_reg').value;
-//     var userPassword_reg = document.getElementById('userPassword_reg').value;
+    var userName_reg = document.getElementById('userName_reg').value;
+    var userEmail_reg = document.getElementById('userEmail_reg').value;
+    var userPassword_reg = document.getElementById('userPassword_reg').value;
 
-//     var _data = {
-//         'userEmail_reg': userEmail_reg,
-//         'userName_reg': userName_reg,
-//         'userPassword_reg': userPassword_reg
-//     };
+    var _data = {
+        'userEmail_reg': userEmail_reg,
+        'userName_reg': userName_reg,
+        'userPassword_reg': userPassword_reg
+    };
 
-//     console.log(_data);
-//     $.ajax({
-//         type: "POST",
-//         url: "register_backend.php",
-//         dataType: 'json',
-//         data: _data,
-//         success: function (html) {
-//             alert('Data Send');
-//             // $('#msg').html(html);
-//             console.log(html);
-//             // showLogin();
-//         }
-//     }).fail(function (jqXHR, textStatus, errorThrown) {
-//         console.log(jqXHR.responseText);
+    console.log(_data);
+    $.ajax({
+        type: "POST",
+        url: "register_backend.php",
+        dataType: 'json',
+        data: _data,
+        success: function (html) {
+            alert('Data Send');
+            // $('#msg').html(html);
+            console.log(html);
+            // showLogin();
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseText);
         
-//     });
-//     return false;
+    });
+    return false;
 
-//     // using this page stop being refreshing 
+    // using this page stop being refreshing 
 
-//     // $.ajax({
-//     //     type: 'POST',
-//     //     url: 'register_backend.php',
-//     //     data: $('#register_form').serialize(),
-//     //     success: function (html) {
-//     //         alert('form was submitted');
-//     //         console.log(html);
-//     //     }
-//     // });
+    // $.ajax({
+    //     type: 'POST',
+    //     url: 'register_backend.php',
+    //     data: $('#register_form').serialize(),
+    //     success: function (html) {
+    //         alert('form was submitted');
+    //         console.log(html);
+    //     }
+    // });
 
-// });
+});
 
 
 

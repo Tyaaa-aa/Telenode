@@ -44,9 +44,9 @@ if (isset($_SESSION["userid"])) {
                 <div class="field-box">
                     <h1>Create an account</h1>
                     <input type="text" placeholder="Username" name="userName_reg" id="userName_reg" class="inputForm" required>
-                    <!-- <input type="email" placeholder="E-Mail" name="userEmail_reg" id="userEmail_reg" class="inputForm" required>
+                    <input type="email" placeholder="E-Mail" name="userEmail_reg" id="userEmail_reg" class="inputForm" required>
                     <input type="password" placeholder="Password" name="userPassword_reg" id="userPassword_reg" class="inputForm" required>
-                    <input type="password" placeholder="Confirm Password" name="userPassword_reg" id="userPasswordCnfm_reg" class="inputForm" required> -->
+                    <input type="password" placeholder="Confirm Password" name="userPassword_reg" id="userPasswordCnfm_reg" class="inputForm" required>
                     <br>
                     <span id="password_msg">Confirm Password Message</span>
                     <input type="submit" value="Register" class="btn login-btn" id="register_btn">
