@@ -27,7 +27,7 @@ if (isset($_SESSION["userid"])) {
                         <label for="showPassword">Show Password</label>
                     </div>
 
-                    <input type="submit" value="Login" class="btn login-btn">
+                    <input type="submit" value="Login" class="btn login-btn" id="login_btn">
                     <br>
                     <span>
                         Don't have an account?
@@ -40,13 +40,13 @@ if (isset($_SESSION["userid"])) {
         </div>
 
         <div class="register-box">
-            <form class="login-form" method="POST" action="register_backend.php">
+            <form class="login-form" method="POST" enctype="multipart/form-data" action="register_backend.php" id="register_form">
                 <div class="field-box">
                     <h1>Create an account</h1>
-                    <input type="text" placeholder="Username" name="userName-reg" id="userName-reg" class="inputForm" required>
-                    <input type="email" placeholder="E-Mail" name="userEmail-reg" id="userEmail-reg" class="inputForm" required>
-                    <input type="password" placeholder="Password" name="userPassword-reg" id="userPassword-reg" class="inputForm" required>
-                    <input type="password" placeholder="Confirm Password" name="userPassword-reg" id="userPasswordCnfm-reg" class="inputForm" required>
+                    <input type="text" placeholder="Username" name="userName_reg" id="userName_reg" class="inputForm" required>
+                    <!-- <input type="email" placeholder="E-Mail" name="userEmail_reg" id="userEmail_reg" class="inputForm" required>
+                    <input type="password" placeholder="Password" name="userPassword_reg" id="userPassword_reg" class="inputForm" required>
+                    <input type="password" placeholder="Confirm Password" name="userPassword_reg" id="userPasswordCnfm_reg" class="inputForm" required> -->
                     <br>
                     <span id="password_msg">Confirm Password Message</span>
                     <input type="submit" value="Register" class="btn login-btn" id="register_btn">

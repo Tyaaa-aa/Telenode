@@ -8,7 +8,7 @@ $(function () {
     // }, 1000);
 
     // Remove this if video API being used
-    // hidePreloader();
+    hidePreloader();
 
     $(".showPassword").click(function () {
         showpassword();
@@ -50,9 +50,9 @@ function showpassword() {
 }
 
 $('#password_msg').html('Enter a Password').css('color', 'transparent');
-$('#userPassword-reg, #userPasswordCnfm-reg').on('keyup', function () {
-    if ($('#userPassword-reg').val().length >= 8) {
-        if ($('#userPassword-reg').val() == $('#userPasswordCnfm-reg').val()) {
+$('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', function () {
+    if ($('#userPassword_reg').val().length >= 8) {
+        if ($('#userPassword_reg').val() == $('#userPasswordCnfm_reg').val()) {
             $('#password_msg').html('Passwords Match').css('color', 'green');
             $("#register_btn").css("pointer-events", "auto");
             $("#register_btn").css("cursor", "auto");
@@ -69,17 +69,86 @@ $('#userPassword-reg, #userPasswordCnfm-reg').on('keyup', function () {
 });
 
 
-$(".register-box").hide();
-$(".registerForm-btn").click(function(){
-    $(".login-box").hide();
-    $(".register-box").show();
-    console.log("tests");
+// Login/Register toggle
+showRegister();
+
+$(".registerForm-btn").click(function () {
+    showRegister();
 });
-$(".loginForm-btn").click(function(){
-    $(".login-box").show();
-    $(".register-box").hide();
-    console.log("tests");
+
+
+$(".loginForm-btn").click(function () {
+    showLogin();
 });
+
+// Register Form Handler
+
+// $('#register_btn').click(function (event) {
+//     event.preventDefault();
+
+//     var userName_reg = document.getElementById('userName_reg').value;
+//     var userEmail_reg = document.getElementById('userEmail_reg').value;
+//     var userPassword_reg = document.getElementById('userPassword_reg').value;
+
+//     var _data = {
+//         'userEmail_reg': userEmail_reg,
+//         'userName_reg': userName_reg,
+//         'userPassword_reg': userPassword_reg
+//     };
+
+//     console.log(_data);
+//     $.ajax({
+//         type: "POST",
+//         url: "register_backend.php",
+//         dataType: 'json',
+//         data: _data,
+//         success: function (html) {
+//             alert('Data Send');
+//             // $('#msg').html(html);
+//             console.log(html);
+//             // showLogin();
+//         }
+//     }).fail(function (jqXHR, textStatus, errorThrown) {
+//         console.log(jqXHR.responseText);
+        
+//     });
+//     return false;
+
+//     // using this page stop being refreshing 
+
+//     // $.ajax({
+//     //     type: 'POST',
+//     //     url: 'register_backend.php',
+//     //     data: $('#register_form').serialize(),
+//     //     success: function (html) {
+//     //         alert('form was submitted');
+//     //         console.log(html);
+//     //     }
+//     // });
+
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -90,6 +159,17 @@ function hidePreloader() {
     $("#preloader").fadeOut(300);
 }
 
+function showLogin() {
+    $(".login-box").show();
+    $(".register-box").hide();
+    console.log("tests");
+}
+
+function showRegister() {
+    $(".login-box").hide();
+    $(".register-box").show();
+    console.log("tests");
+}
 
 
 
