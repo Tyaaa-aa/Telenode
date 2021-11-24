@@ -7,3 +7,4 @@
     <link rel="stylesheet" href="css/style.css?v=<?= Rand(0, 99999999) ?>">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
 </head>
+test
