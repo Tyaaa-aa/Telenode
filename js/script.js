@@ -26,8 +26,6 @@ $(function () {
 
 
 
-
-
 }); // END OF DOCUMENT READY FUNCTION
 
 
@@ -73,7 +71,7 @@ $(".loginForm-btn").click(function () {
 
 // Show password
 function showpassword() {
-    var x = document.getElementById("userPassword");
+    const x = document.getElementById("userPassword");
     if (x.type === "password") {
         x.type = "text";
     } else {
@@ -103,51 +101,101 @@ function regPasswordVerify() {
     }
 }
 
+function playVideo(vidURL) {
+    // showPreloader();
 
+    // GET VIDEO URL FROM API
+    $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function(data, status, xhr) {
+        // console.log(xhr.status);
+        // IF STATUS IS 200 (SUCCESS) 
+        if (xhr.status = 200) {
+            // JSON result in `data` variable
+            // console.log(data);
+            if ("links" in data) {
+                // API returned a usable link successfully
+                console.log("%c✔ SUCCESS", "color:green;", "\nURL: " + data.links[0]);
+                //Load the player with new source
+                $("#video-player").attr("src", data.links[0]);
+                hidePreloader();
+
+            } else {
+                // API did not return usable link
+                console.log("%c ❌ ERROR", "color:red;");
+                hidePreloader();
+            }
+        } else {
+            // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+            console.log("%c ❌ ERROR", "color:red;");
+            hidePreloader();
+        }
+    }).fail(function() {
+        // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+        console.log("%c ❌ ERROR", "color:red;");
+    });
+}
+
+
+$("#nextVid").click(function() {
+    if (playstate < (jsonData.videos.length - 1)) {
+        playstate++;
+        playVideo(jsonData.videos[playstate])
+        console.log(playstate);
+    }
+})
+
+$("#prevVid").click(function() {
+    if (playstate > 0) {
+        playstate--;
+        playVideo(jsonData.videos[playstate])
+        console.log(playstate);
+    }
+})
 
 
 
 // ======== TEST =========
 
-$('#addVid').click(function () {
-    // $("#ytlink").val();
-    addVideo($("#ytlink").val())
-})
+// $('#addVid').click(function () {
+//     // $("#ytlink").val();
+//     addVideo($("#ytlink").val())
+// })
 
 
-function addVideo(vidURL) {
-    // showPreloader();
+// function addVideo(vidURL) {
+//     // showPreloader();
 
-    // GET VIDEO URL FROM API
-    $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function (data, status, xhr) {
-        console.log(xhr.status);
-        // IF STATUS IS 200 (SUCCESS) 
-        if (xhr.status = 200) {
-            // JSON result in `data` variable
-            console.log(data);
-            if ("links" in data) {
-                // API returned a usable link successfully
-                console.log("URL: " + data.links[0]);
-                //Load the player with new source
-                $('body').append('<video controls><source id="main-video" src="' + data.links[0] + '" type="video/mp4"></video>')
+//     // GET VIDEO URL FROM API
+//     $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function (data, status, xhr) {
+//         console.log(xhr.status);
+//         // IF STATUS IS 200 (SUCCESS) 
+//         if (xhr.status = 200) {
+//             // JSON result in `data` variable
+//             console.log(data);
+//             if ("links" in data) {
+//                 // API returned a usable link successfully
+//                 console.log("URL: " + data.links[0]);
+//                 //Load the player with new source
+//                 $('body').append('<video controls><source id="main-video" src="' + data.links[0] + '" type="video/mp4"></video>')
 
-                $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
-                $("body").append("<span style='color:green'> (SUCCESS)</span>");
-                hidePreloader();
-            } else {
-                // API did not return usable link
-                $("#heading").append("<span style='color:red'> (ERROR)</span>");
-                hidePreloader();
-            }
-        } else {
-            // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
-            console.log("ERROR");
-            $("#heading").append("<span style='color:red'> (ERROR)</span>");
-            hidePreloader();
-        }
-    }).fail(function () {
-        // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
-        console.log("ERROR");
-        $("#heading").append("<span style='color:red'> (ERROR)</span>")
-    });
-}
+//                 $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
+//                 $("body").append("<span style='color:green'> (SUCCESS)</span>");
+//                 console.log("%c✔ SUCCESS", "color:green;", "\nURL: " + data.links[0]);
+//                 hidePreloader();
+//             } else {
+//                 // API did not return usable link
+//                 $("#heading").append("<span style='color:red'> (ERROR)</span>");
+//                 console.log("%c ❌ ERROR", "color:red;");
+//                 hidePreloader();
+//             }
+//         } else {
+//             // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+//             console.log("%c ❌ ERROR", "color:red;");
+//             $("#heading").append("<span style='color:red'> (ERROR)</span>");
+//             hidePreloader();
+//         }
+//     }).fail(function () {
+//         // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+//         console.log("%c ❌ ERROR", "color:red;");
+//         $("#heading").append("<span style='color:red'> (ERROR)</span>")
+//     });
+// }

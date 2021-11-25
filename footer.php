@@ -1,4 +1,9 @@
 <footer>
     FOOTER
-    <script src="js/script.js?v=<?= Rand(0, 99999999) ?>"></script>
+    <script src="js/script.js?v=<?= time() ?>"></script>
 </footer>
+<?php
+if ($hasVid) {
+    echo $getVid_id, $getVid_userID, $getVid_URLS;
+}
+?>

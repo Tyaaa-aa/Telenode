@@ -39,7 +39,6 @@ if (isset($styleTheme) && $getUserTheme == "dark") {
 ?>
 
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <title>TeleNode</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,4 +47,5 @@ if (isset($styleTheme) && $getUserTheme == "dark") {
     <link rel="stylesheet" href="css/<?= $styleTheme ?>.css?v=<?= time() ?>">
 
     <link rel="icon" type="image/png" href="favicon.png?v=5">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
