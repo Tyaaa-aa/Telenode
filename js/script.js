@@ -32,14 +32,46 @@ $(function () {
 
 
 
+// ======== FUNCTIONS ZONE =======
 
 
+function hidePreloader() {
+    $("#preloader").fadeOut(300);
+}
+
+function showPreloader() {
+    $("#preloader").show();
+}
+
+function showLogin() {
+    $(".login-box").show();
+    $(".register-box").hide();
+    // console.log("tests");
+}
+
+function showRegister() {
+    $(".login-box").hide();
+    $(".register-box").show();
+    // console.log("tests");
+}
 
 
+// Login/Register toggle
+showLogin();
+
+$(".registerForm-btn").click(function () {
+    showRegister();
+});
+
+
+$(".loginForm-btn").click(function () {
+    showLogin();
+});
 
 
 // Login and register form code
 
+// Show password
 function showpassword() {
     var x = document.getElementById("userPassword");
     if (x.type === "password") {
@@ -49,8 +81,11 @@ function showpassword() {
     }
 }
 
+// Check if password is at least 8 Characters and matches confirm password field
 $('#password_msg').html('Enter a Password').css('color', 'transparent');
-$('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', function () {
+$('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', regPasswordVerify);
+
+function regPasswordVerify() {
     if ($('#userPassword_reg').val().length >= 8) {
         if ($('#userPassword_reg').val() == $('#userPasswordCnfm_reg').val()) {
             $('#password_msg').html('Passwords Match').css('color', 'green');
@@ -66,156 +101,53 @@ $('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', function () {
         $("#register_btn").css("pointer-events", "none");
         $("#register_btn").css("cursor", "not-allowed");
     }
-});
-
-
-// Login/Register toggle
-showLogin();
-
-$(".registerForm-btn").click(function () {
-    showRegister();
-});
-
-
-$(".loginForm-btn").click(function () {
-    showLogin();
-});
-
-// Register Form Handler
-
-// $('#register_btn').click(function (event) {
-//     event.preventDefault();
-
-//     var userName_reg = document.getElementById('userName_reg').value;
-//     var userEmail_reg = document.getElementById('userEmail_reg').value;
-//     var userPassword_reg = document.getElementById('userPassword_reg').value;
-
-//     var _data = {
-//         'userEmail_reg': userEmail_reg,
-//         'userName_reg': userName_reg,
-//         'userPassword_reg': userPassword_reg
-//     };
-
-//     console.log(_data);
-//     $.ajax({
-//         type: "POST",
-//         url: "register_backend.php",
-//         dataType: 'json',
-//         data: _data,
-//         success: function (response) {
-//             if (response.d == true) {
-//                 alert("You will now be redirected.");
-//                 window.location = "index.php";
-//             }
-//             console.log("TESTSTSTST");
-//         },
-//         failure: function (response) {
-//             alert(response.d);
-//             console.log(response.responseText);
-//             alert('Something went wrong, please try again');
-//             window.location = 'login.php';
-//         }
-//     })
-
-//     // .fail(function (jqXHR, textStatus, errorThrown) {
-//     //     console.log(jqXHR.responseText);
-//     //     alert('Something went wrong, please try again');
-//     //     window.location = 'login.php';
-//     // });
-//     return false;
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ======== FUNCTIONS ZONE =======
-
-
-function hidePreloader() {
-    $("#preloader").fadeOut(300);
-}
-
-function showLogin() {
-    $(".login-box").show();
-    $(".register-box").hide();
-    console.log("tests");
-}
-
-function showRegister() {
-    $(".login-box").hide();
-    $(".register-box").show();
-    console.log("tests");
 }
 
 
 
 
 
+// ======== TEST =========
+
+$('#addVid').click(function () {
+    // $("#ytlink").val();
+    addVideo($("#ytlink").val())
+})
 
 
+function addVideo(vidURL) {
+    // showPreloader();
 
+    // GET VIDEO URL FROM API
+    $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function (data, status, xhr) {
+        console.log(xhr.status);
+        // IF STATUS IS 200 (SUCCESS) 
+        if (xhr.status = 200) {
+            // JSON result in `data` variable
+            console.log(data);
+            if ("links" in data) {
+                // API returned a usable link successfully
+                console.log("URL: " + data.links[0]);
+                //Load the player with new source
+                $('body').append('<video controls><source id="main-video" src="' + data.links[0] + '" type="video/mp4"></video>')
 
-
-
-
-
-
-
-
-
-
-
-// YOUTUBE URL
-var url = "watch?v=YE7VzlLtp-4"; // DEFAULT TEST VIDEO (Big Buck Bunny)
-
-// GET VIDEO URL FROM API
-$.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + url, function (data, status, xhr) {
-    console.log(xhr.status);
-    // IF STATUS IS 200 (SUCCESS) 
-    if (xhr.status = 200) {
-        // JSON result in `data` variable
-        console.log(data);
-        if ("links" in data) {
-            // API returned a usable link successfully
-            console.log("URL: " + data.links[0]);
-            //Load the player with new source
-            $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
-            $("#heading").append("<span style='color:green'> (SUCCESS)</span>");
-            hidePreloader();
+                $("#video-player").append('<source id="main-video" src="' + data.links[0] + '" type="video/mp4">');
+                $("body").append("<span style='color:green'> (SUCCESS)</span>");
+                hidePreloader();
+            } else {
+                // API did not return usable link
+                $("#heading").append("<span style='color:red'> (ERROR)</span>");
+                hidePreloader();
+            }
         } else {
-            // API did not return usable link
+            // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+            console.log("ERROR");
             $("#heading").append("<span style='color:red'> (ERROR)</span>");
             hidePreloader();
         }
-    } else {
+    }).fail(function () {
         // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
         console.log("ERROR");
-        $("#heading").append("<span style='color:red'> (ERROR)</span>");
-        hidePreloader();
-    }
-}).fail(function () {
-    // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
-    console.log("ERROR");
-    $("#heading").append("<span style='color:red'> (ERROR)</span>")
-});
+        $("#heading").append("<span style='color:red'> (ERROR)</span>")
+    });
+}

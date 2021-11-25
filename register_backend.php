@@ -22,10 +22,12 @@ if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_P
 <?php
 }
 
+// Random Avatar url
+$avatar = "https://telenode-avatar-api.herokuapp.com/api/jdenticon/telenode".time().".svg?background=%232a2a2a";
 
 include "db_connect.php";
-$stmt = $conn->prepare("INSERT into tb_users (userEmail, userName, userPassword) values (?,?,?)");
-$stmt->bind_param("sss", $userEmail, $userName, $hashed_password);
+$stmt = $conn->prepare("INSERT into tb_users (userEmail, userName, userPassword, profileImg) values (?,?,?,?)");
+$stmt->bind_param("ssss", $userEmail, $userName, $hashed_password, $avatar);
 $stmt->execute();
 $stmt->close();
 $conn->close();
