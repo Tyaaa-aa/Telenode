@@ -4,7 +4,7 @@
 <?php include "head.php";
 
 if (isset($_SESSION["userID"])) {
-    header("Location: index.php");
+    header("Location: home.php");
     echo $_SESSION["userID"], $_SESSION["userName"], $_SESSION["userEmail"];
 }
 
@@ -34,7 +34,7 @@ if (isset($_SESSION["userID"])) {
                     <br>
                     <span>
                         Don't have an account?
-                        <a href="#" class="registerForm-btn">
+                        <a href="#signup" class="registerForm-btn">
                             <b>Sign up</b>
                         </a>
                     </span>
@@ -62,5 +62,13 @@ if (isset($_SESSION["userID"])) {
     <!-- FOOTER CONTENT -->
     <?php include "footer.php" ?>
 </body>
+<script>
+    console.log(window.location.hash);
+    if (window.location.hash == "#signup") {
+        showRegister();
+    }
+
+    $("#sidebar").css("display","none");
+</script>
 
 </html>

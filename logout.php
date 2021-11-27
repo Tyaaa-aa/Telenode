@@ -10,6 +10,6 @@ unset($_SESSION["userEmail"]);
 session_unset();
 session_destroy();
 echo "You Have Logged Out<br>";
-header("Location: index.php");
+header("Location: home.php");
 ?>
-<a href="index.php">Click here if you are not automatically redirected</a>
+<a href="home.php">Click here if you are not automatically redirected</a>

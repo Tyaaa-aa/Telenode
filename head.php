@@ -5,7 +5,7 @@ session_start();
 
 if (isset($_SESSION["userID"])) {
     // If Logged In
-    // header("Location: index.php");
+    // header("Location: home.php");
     // echo $_SESSION["userID"], $_SESSION["userName"], $_SESSION["userEmail"];
 
     $userid = $_SESSION["userID"];
@@ -26,6 +26,12 @@ if (isset($_SESSION["userID"])) {
 <?php
         }
     }
+}else{
+    $getUserID = false;
+    $getUserEmail = false;
+    $getUserName = false;
+    $getProfileImg = false;
+    $getUserTheme = false;
 }
 
 ?>
@@ -45,7 +51,7 @@ if (isset($styleTheme) && $getUserTheme == "dark") {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="css/<?= $styleTheme ?>.css?v=<?= time() ?>">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>

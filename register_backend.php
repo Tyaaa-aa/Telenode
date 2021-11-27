@@ -23,7 +23,7 @@ if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_P
 }
 
 // Random Avatar url
-$avatar = "https://telenode-avatar-api.herokuapp.com/api/jdenticon/telenode".time().".svg?background=%232a2a2a";
+$avatar = "https://telenode-avatar-api.herokuapp.com/api/jdenticon/telenode-".$userName.time().".svg?background=%232a2a2a";
 
 include "db_connect.php";
 $stmt = $conn->prepare("INSERT into tb_users (userEmail, userName, userPassword, profileImg) values (?,?,?,?)");
@@ -52,9 +52,9 @@ if ($row == 0) {
 ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        window.location = 'index.php';
+        window.location = 'home.php';
     </script>
-    <a href="index.php">Click here if you are not redirected automatically within 3 seconds</a>
+    <a href="home.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
 } else {
     session_start();
@@ -62,7 +62,7 @@ if ($row == 0) {
     $_SESSION["userName"] = $s_userName;
     $_SESSION["userEmail"] = $userEmail;
     // echo "Login Successful.<br> $id <br> $s_userName <br> $userEmail";
-    header("Location: index.php");
+    header("Location: home.php");
 }
 
 ?>
