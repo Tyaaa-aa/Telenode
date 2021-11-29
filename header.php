@@ -3,7 +3,7 @@
     <nav>
         <?php
         if (isset($_SESSION["userID"])) {
-            // If Logged In
+            // ================= If Logged In ==================
             $userid = $_SESSION["userID"];
 
             $result = $conn->query("SELECT * from tb_videos where vid_userID = $userid");
@@ -19,11 +19,8 @@
             } else {
                 $hasVid = false;
             }
-
         ?>
             <!-- IF USER IS LOGGED IN -->
-
-
             <form action="search.php" method="GET" id="search-form">
                 <input type="text" placeholder="Search" name="q" class="search_input input_field">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
@@ -59,7 +56,7 @@
                 <a href="home.php" class="header_logo">
                     <img src="img/logo.png" alt="Header Logo">
                 </a>
-                <i class='material-icons close_siderbar'>close</i>
+                <i class='material-icons close_siderbar'>menu_open</i>
                 <ul class="sidebar_menu">
                     <a href="home.php#dashboard" class="sidebar_items" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>dashboard</i>
@@ -77,11 +74,14 @@
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
                     </a>
+                    <!-- <div class="login_box">
+                        <a href="create.php" class="signup_btn btn">Start Creating</a>
+                    </div> -->
                 </ul>
             </section>
         <?php
         } else {
-            // If not logged in
+            // ============== If not logged in =================
             $hasVid = false;
         ?>
             <!-- IF USER IS NOT LOGGED IN -->
@@ -104,7 +104,7 @@
                 <a href="home.php" class="header_logo">
                     <img src="img/logo.png" alt="Header Logo">
                 </a>
-                <i class='material-icons close_siderbar'>close</i>
+                <i class='material-icons close_siderbar'>menu_open</i>
                 <ul class="sidebar_menu">
                     <a href="home.php#dashboard" class="sidebar_items" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>dashboard</i>
@@ -118,6 +118,9 @@
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
                     </a>
+                    <div class="login_box">
+                        <a href="login.php#signup" class="signup_btn btn">Start Creating</a>
+                    </div>
                 </ul>
             </section>
         <?php

@@ -63,12 +63,45 @@ if (isset($_SESSION["userID"])) {
     <?php include "footer.php" ?>
 </body>
 <script>
+    let hash = document.location.hash;
+    // renderPage(hash);
+
+    // $(window).on('hashchange', function(e) {
+    //     // hash = document.location.hash;
+    //     // renderPage(hash);
+
+    // });
+
+    // login_btn
+    // signup_btn
+    $('.login_btn, .signup_btn').click(function(e) {
+        e.preventDefault(); // prevent default anchor behavior
+        let goTo = this.getAttribute("href"); // store anchor href
+
+        goTo = goTo.replace(".php", ""); // store anchor href
+
+
+        let hash = goTo.substring(goTo.indexOf("#") + 1);
+        document.location.hash = hash;
+
+        if (hash == "login") {
+            showLogin();
+        } else {
+            showRegister();
+        }
+    });
+
+
+
+
+
+
     console.log(window.location.hash);
     if (window.location.hash == "#signup") {
         showRegister();
     }
 
-    $("#sidebar").css("display","none");
+    $("#sidebar").css("display", "none");
 </script>
 
 </html>

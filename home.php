@@ -9,7 +9,6 @@
     <!-- BODY CONTENT BELOW -->
     <section class="main_body">
         <div class="main_content">
-            default text
         </div>
         <?php include "footer.php" ?>
     </section>

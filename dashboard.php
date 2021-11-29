@@ -45,4 +45,3 @@
         console.log("Title: " + videoOne.title);
         console.log("Thumbnail: " + videoOne.thumbnail);
     }
-    

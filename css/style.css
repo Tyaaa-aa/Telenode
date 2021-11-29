@@ -94,7 +94,7 @@ a:hover {
     animation-duration: 0.8s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    display: none;
+    /* display: none; */
 }
 
 @keyframes preloadAnim {
@@ -111,11 +111,13 @@ a:hover {
     /* height: 50px; */
     position: absolute;
     left: 100px;
+    transition: all 0.3s;
     /* align-self: flex-start; */
 }
 
 .header_logo img {
     height: 50px;
+    transition: all 0.3s;
 }
 
 #login-container {
@@ -218,7 +220,7 @@ a:hover {
 }
 
 .login-btn {
-    
+
     font-size: 1.3em;
 }
 
@@ -431,20 +433,25 @@ a:hover {
     padding-left: 50px;
     padding-top: 100px;
     user-select: none;
+    overflow: hidden;
+    transition: all 0.3s;
 }
 
 #sidebar .header_logo {
-    left: 50px;
+    left: 75px;
     top: 20px;
 }
 
 .close_siderbar {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     cursor: pointer;
     color: #436A94;
-    transform: scale(1.3);
+    padding: 3px;
+    border-radius: 50px;
+    transition: all 0.3s;
+    transform: scale(1.3) rotate(0deg);
 }
 
 .sidebar_menu {
@@ -476,7 +483,41 @@ a:hover {
     border-right: 5px solid #598DC5;
 }
 
+.sidebar_items span {
+    white-space: nowrap;
+    width: 100%;
+    transition: all 0.3s;
+}
 
+/* COLLAPSED SIDEBAR  */
+.sidebar_collapsed {
+    padding-left: 10px !important;
+    width: 70px !important;
+}
+
+.sidebar_collapsed .sidebar_items {
+    padding-left: 15px;
+}
+
+.sidebar_collapsed span {
+    width: 0%;
+    overflow: hidden;
+}
+
+.sidebar_collapsed .header_logo {
+    left: 10px !important;
+    top: 55px !important;
+    transform: scale(0.8);
+}
+
+.sidebar_collapsed .close_siderbar {
+    transform: scale(1.3) rotate(-180deg);
+
+}
+
+.close_siderbar:hover {
+    background-color: #DEEEFF;
+}
 
 
 
@@ -492,11 +533,12 @@ a:hover {
     /* padding: 30px; */
     position: relative;
     padding-top: 80px;
+    transition: all 0.3s;
 }
 
-.main_content{
+.main_content {
     padding: 30px;
-    min-height:80vh;
+    min-height: 80vh;
     position: relative;
 }
 
@@ -508,4 +550,84 @@ a:hover {
     width: 0%;
     background-color: #FF8F44;
     transition: all 0.5s;
+}
+
+
+/* =========== CREATE SECTION ========== */
+
+.steps_bar {
+    text-align: center;
+}
+
+.steps_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width:350px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* .steps_container *{
+    transition: all 0.3s;
+} */
+
+.steps_number {
+    background-color: #C0C0C0;
+    border-radius: 50px;
+    /* padding: 15px; */
+    width: 45px;
+    height: 45px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.steps_number_active .steps_number{
+    background-color: #598DC5;
+}
+
+.steps_number::before {
+    content: "";
+    width: 110px;
+    height: 3px;
+    background-color: #C0C0C0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -10%);
+    z-index: -1;
+    transition: all 0.3s;
+}
+
+.steps_number:last-child:before{
+    display: none;
+    background-color: #000;
+}
+
+.steps_number_active .steps_number::before{
+    background-color: #598DC5;
+}
+
+.upload_container{
+    display: flex;
+    width:70%;
+    margin: 0 auto;
+}
+
+.upload_container > div{
+    width:50%;
+}
+
+
+.upload_field_box{
+    padding: 50px;
+}
+
+.upload_input_field{
+    background-color: white;
 }

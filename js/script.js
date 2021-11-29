@@ -17,6 +17,14 @@ $(function () {
 
 
 
+    $("#zoomer").click(function (evt) {
+        $(this).zoomTo({
+            targetsize: 0.75,
+            duration: 600
+        });
+
+        evt.stopPropagation();
+    });
 
 
 
@@ -161,12 +169,84 @@ $('.sidebar_items').click(function (e) {
     }
 });
 
+// function collapseSidebar() {
+//     // Expand body content
+//     $(".main_body").css({
+//         "width": "100%",
+//         "margin-left": "0%"
+//     })
+//     // Collapse Sidebar
+//     $("#sidebar").css({
+//         "width": "70px",
+//         "padding-left": "10px"
+//     })
+//     $(".sidebar_items").css({
+//         "padding-left": "10px"
+//     })
+//     // $(".sidebar_items_selected").css({
+//     //     "border-radius": "50px",
+//     //     "border": "0px"
+//     // })
+//     $(".sidebar_items span").fadeOut(300);
+
+//     // Icon Animation
+// }
+
+// function expandSidebar() {
+//     // Collapse body content
+//     $(".main_body").css({
+//         "width": "80%",
+//         "margin-left": "20%"
+//     })
+//     // Expand Sidebar
+
+//     // Icon Animation
+// }
+
+let collapsedSidebarWidth = 70;
+
+function collapseSidebar() {
+    // Expand body content
+    $(".main_body").css({
+        "width": "calc(100% - " + collapsedSidebarWidth + "px)",
+        "margin-left": "calc(0% + " + collapsedSidebarWidth + "px)"
+    });
+    // Collapse Sidebar
+    $("#sidebar").addClass("sidebar_collapsed");
+
+    // Icon Animation
+    // $(".close_siderbar").text("menu_open");
+    // $(".close_siderbar").css("transform", "scale(1.3) rotate(-360deg)");
+
+    // $(".header_logo img").fadeOut(100);
+    $(".header_logo img").attr("src", "img/logo_small.png");
 
 
+}
+
+function expandSidebar() {
+    // Collapse body content
+    $(".main_body").css({
+        "width": "80%",
+        "margin-left": "20%"
+    })
+    // Expand Sidebar
+    $("#sidebar").removeClass("sidebar_collapsed");
+
+    // Icon Animation
+    // $(".close_siderbar").text("unfold_less");
+    // $(".close_siderbar").css("transform", "scale(1.3) rotate(-180deg)");
+    $(".header_logo img").attr("src", "img/logo.png");
+}
 
 
-
-
+$(".close_siderbar").click(function () {
+    if ($("#sidebar").hasClass("sidebar_collapsed")) {
+        expandSidebar();
+    } else {
+        collapseSidebar()
+    }
+})
 
 
 
