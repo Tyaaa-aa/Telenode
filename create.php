@@ -44,10 +44,11 @@
                         <strong>Step 4:</strong> Paste the links and click next to start creating your project
                     </p>
                 </div>
-                <div class="upload_field_box">
-                    <input type="text" placeholder="Add video" name="video1" class="input_field upload_input_field">
-
-                </div>
+                <form class="upload_field_box" action="start_create_backend.php" method="POST">
+                    <input type="submit" class="btn submit_btn" value="Next">
+                    <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
+                    <input type="hidden" value="0" id="videoLength" name="videoLength">
+                </form>
             </div>
         </div>
         <?php include "footer.php" ?>
@@ -60,18 +61,26 @@
 
 <!-- Testing Script -->
 <script>
-
     // THIS DOESNT WORK SO PLEASE FIX IT OK THANKS BYE 
-    $(".upload_input_field").on("keyup", function() {
-        console.log("ASDASD");
-
-        if ($(".upload_input_field:last-child").val() != "") {
-            console.log("ERRR");
-            $(".upload_field_box").append(`<input type="text" placeholder="Add video" name="video1" class="input_field upload_input_field">`)
+    $(document).on("keyup", ".upload_input_field", function() {
+        // console.log("ASDASD");
+        if ($(".upload_input_field").last().val() != "") {
+            // Add Fields
+            console.log("Adding field");
+            let vidNum = $(".upload_input_field").length;
+            $("#videoLength").val(vidNum)
+            $(".upload_field_box").append('<input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_'+ vidNum +'">');
+            $(".submit_btn").fadeIn();
+        } else if ($(".upload_input_field").last().prev().val() == "") {
+            // Delete empty field
+            console.log("Deleting field");
+            $(".upload_input_field").last().fadeOut(300, function() {
+                $(".upload_input_field").last().remove()
+            });
         }
-    })
+        console.log(($(".upload_input_field").length));
+    });
 
-    console.log(($(".upload_input_field").length));
     // setTimeout(() => {
     //     $(".steps_two").addClass("steps_number_active")
     // }, 1000);

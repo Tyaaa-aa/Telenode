@@ -619,15 +619,34 @@ a:hover {
     margin: 0 auto;
 }
 
-.upload_container > div{
+.upload_container > *{
     width:50%;
 }
 
 
 .upload_field_box{
     padding: 50px;
+    position: relative;
 }
 
 .upload_input_field{
     background-color: white;
+    margin-top: 20px;
+}
+
+.upload_input_field:last-child{
+    margin-bottom: 50px;
+}
+
+.submit_btn{
+    background-color: #FF8F44;
+    position: absolute;
+    bottom: 0;
+
+    /* display: none; */
+}
+
+.submit_btn:hover{
+    background-color: #d3773a;
+    color: white;
 }
