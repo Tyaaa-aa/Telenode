@@ -46,8 +46,9 @@
                 </div>
                 <form class="upload_field_box" action="start_create_backend.php" method="POST">
                     <input type="submit" class="btn submit_btn" value="Next">
-                    <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
+                    <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">
+                    <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
                 </form>
             </div>
         </div>
@@ -69,7 +70,7 @@
             console.log("Adding field");
             let vidNum = $(".upload_input_field").length;
             $("#videoLength").val(vidNum)
-            $(".upload_field_box").append('<input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_'+ vidNum +'">');
+            $(".upload_field_box").append('<input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_' + vidNum + '">');
             $(".submit_btn").fadeIn();
         } else if ($(".upload_input_field").last().prev().val() == "") {
             // Delete empty field
@@ -81,30 +82,12 @@
         console.log(($(".upload_input_field").length));
     });
 
-    // setTimeout(() => {
-    //     $(".steps_two").addClass("steps_number_active")
-    // }, 1000);
+    $(".upload_field_box").submit(function(e) {
+        let thisVidID = extractVidId($(".upload_input_field").first().val())
+        $("#videoThumbnail").val("https://i.ytimg.com/vi/" + thisVidID + "/hqdefault.jpg");
+        $(".upload_input_field").last().removeAttr("name");
+    });
 
-    // =========================================
-    // LOCAL JSON FOR TESTING PURPOSES
-    // fetch("./js/sample.json")
-    //     .then(response => {
-    //         return response.json();
-    //     })
-    //     .then(data => console.log(data));
-    // =========================================
-
-    // Get JSON from database
-    const jsonData = <?php
-                        if (isset($_SESSION["userID"]) && $hasVid) {
-                            echo $getVid_URLS;
-                        } else {
-                            echo "{videos:['YE7VzlLtp-4']}";
-                        }
-                        ?>;
-    // console.log(jsonData);
-    // console.log(jsonData.videos[0]);
-    // console.log(jsonData.videos.length);
 
     // videoOne()
     function videoOne() {

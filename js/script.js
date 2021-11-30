@@ -9,6 +9,7 @@ $(function () {
 
     // Remove this if video API being used
     hidePreloader();
+    loadingBarAnimation()
 
     $(".showPassword").click(function () {
         showpassword();
@@ -25,6 +26,25 @@ $(function () {
 
         evt.stopPropagation();
     });
+
+
+
+
+
+    // ======== PROJECTS PAGE CONTENT RENDER ON PROJECTS.PHP =========
+
+    // if ($(".projects_box").data("getvid_urls") != undefined) {
+    //     let videoData = $(".projects_box").data("getvid_urls")
+    //     let videoDataArray = Object.keys(videoData);
+    //     console.log(videoData);
+    //     console.log(videoDataArray[0]);
+    // }
+
+
+
+
+
+
 
 
 
@@ -164,11 +184,11 @@ $('.sidebar_items').click(function (e) {
     if (window.location.href.indexOf("home") > -1) {
         let hash = goTo.substring(goTo.indexOf("#") + 1);
         document.location.hash = hash;
+        loadingBarAnimation()
     } else {
         window.location.href = goTo;
     }
 });
-
 // function collapseSidebar() {
 //     // Expand body content
 //     $(".main_body").css({
@@ -248,7 +268,22 @@ $(".close_siderbar").click(function () {
     }
 })
 
+//REALLY JANKY FAKE LOADING ANIMATION SO IT DOESNT LOOK LIKE THE BROWSER HANGED LOL
+function loadingBarAnimation() {
+    setTimeout(() => {
+        $(".loading_bar").css("width", "<?= Rand(40, 60) ?>%")
+    }, 10);
 
+    setTimeout(() => {
+        // videos()
+        $(".loading_bar").css("width", "100%")
+    }, 100);
+
+    setTimeout(() => {
+        $(".loading_bar").css("margin-top", "-5px")
+        $(".loading_bar").css("opacity", "0%")
+    }, 200);
+}
 
 
 
@@ -343,6 +378,31 @@ function getVidData(videoID) {
     return videoData;
 }
 
+// Get Video Info Without MP4 URL
+function getVidInfo(videoID) {
+    // Convert any valid youtube url to its video id
+    videoID = extractVidId(videoID)
+    let videoData = null;
+    let scriptUrlData = "https://www.youtube.com/oembed?url=youtube.com/watch?v=" + videoID + "&format=json";
+    $.ajax({
+        url: scriptUrlData,
+        type: 'get',
+        dataType: 'text',
+        async: false,
+        success: function (data) {
+            const videoData_parsed = JSON.parse(data);
+            // videoData = [videoData_parsed.title,videoData_parsed.thumbnail_url]
+
+            videoData = {
+                "title": videoData_parsed.title,
+                "thumbnail": videoData_parsed.thumbnail_url
+            }
+        }
+    });
+    hidePreloader()
+    return videoData;
+}
+
 function extractVidId(url) {
     let re = /(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
     if (url.length > 11) {
@@ -353,6 +413,58 @@ function extractVidId(url) {
     }
 }
 
+// List Populating functions
+function listYTVideos(container) {
+
+    if (container.data("getvid_urls") != undefined) {
+        let videoData = container.data("getvid_urls")
+        let videoDataArray = Object.keys(videoData);
+        console.log(videoData);
+        console.log(videoDataArray[0]);
+        for (const [key, value] of Object.entries(videoData)) {
+            // console.log(`${key}: ${value}`);
+            let videoNum = key;
+            let videoID = extractVidId(value);
+            let videoInfo = getVidInfo(videoID)
+            let thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
+            let title = videoInfo.title;
+            console.log(title, thumbnail);
+
+            container.append(`
+        <div class="video_cards video_cards_${videoNum}" onclick="window.location.href = 'https://youtu.be/${videoID}'" >
+            <div class="thumbnail-box">
+                <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
+            </div>
+            <h4>
+                ${title}
+            </h4>
+        </div>`)
+        }
+    } else {
+        alert("An Error Occured. Project has been removed or the link is invalid.")
+        window.location.href = "home.php";
+    }
+}
+
+
+
+
+
 // HOME PAGE RENDERING ============
 
 // ======== HOME PAGE CONTENT RENDER ON HOME.PHP =========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PROJECTS PAGE RENDERING ============

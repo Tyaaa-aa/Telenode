@@ -9,13 +9,13 @@
             $result = $conn->query("SELECT * from tb_videos where vid_userID = $userid");
             if ($result->num_rows > 0) {
                 // output data of each row
-                while ($row = $result->fetch_assoc()) {
-                    // Assign all user table content to variables for use later
-                    $hasVid = true;
-                    $getVid_id = $row['vid_id'];
-                    $getVid_userID = $row['vid_userID'];
-                    $getVid_URLS = $row['vid_URLS'];
-                }
+                // while ($row = $result->fetch_assoc()) {
+                //     // Assign all user table content to variables for use later
+                //     $hasVid = true;
+                //     $getVid_id = $row['vid_id'];
+                //     $getVid_userID = $row['vid_userID'];
+                //     $getVid_URLS = $row['vid_URLS'];
+                // }
             } else {
                 $hasVid = false;
             }

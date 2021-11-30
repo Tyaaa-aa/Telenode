@@ -8,6 +8,7 @@
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
     <section class="main_body">
+            <!-- ===== TeleNode Content Dynamically Updated ===== -->
         <div class="main_content">
         </div>
         <?php include "footer.php" ?>
@@ -34,13 +35,11 @@
                     }
                 })
             }
-
-            // $('.sidebar_items').addClass("sidebar_items_selected");
-            // console.log(hash);
             if (hash == '#projects') {
                 // ===== IF PROJECTS TAB =====
                 // console.log('projects');
-                $(".main_content").html(`<?php include "projects.php" ?>`)
+                $(".main_content").html(`<?php include "projects.php"; ?>`)
+
             } else
             if (hash == '#community') {
                 // ===== IF COMMUNITY TAB =====
@@ -58,66 +57,10 @@
             }
         }
     </script>
-
-    <!-- <h2 id="heading">API TEST DEMO</h2>
-    <video autoplay muted controls id="video-player" height="300px">
-        <source id="main-video" src="" type="video/mp4">
-    </video> -->
-
-    <!-- <input type="text" id="ytlink">
-    <button id="addVid">Add Vid</button> -->
-
-    <!-- <button class="btn" id="prevVid">Prev Vid</button>
-    <button class="btn" id="nextVid">Next Vid</button> -->
-
-
-    <!-- FOOTER CONTENT -->
-
-
 </body>
 
 </html>
 
 <!-- Testing Script -->
 <script>
-    // =========================================
-    // LOCAL JSON FOR TESTING PURPOSES
-    // fetch("./js/sample.json")
-    //     .then(response => {
-    //         return response.json();
-    //     })
-    //     .then(data => console.log(data));
-    // =========================================
-
-    // Get JSON from database
-    const jsonData = <?php
-                        if (isset($_SESSION["userID"]) && $hasVid) {
-                            echo $getVid_URLS;
-                        } else {
-                            echo "{videos:['huVVKz8P3vU']}";
-                        }
-                        ?>;
-    // console.log(jsonData);
-    // console.log(jsonData.videos[0]);
-    // console.log(jsonData.videos.length);
-
-    let playstate = 0;
-
-    // const sample = ;
-    // getVidData(jsonData.videos[playstate])
-
-
-    // defaultTest();
-    // function defaultTest() {
-    //     // YOUTUBE URL
-    //     const url = "www.youtu.be/huVVKz8P3vU"; // DEFAULT TEST VIDEO (Big Buck Bunny)
-
-    //     let videoOne = getVidData(url);
-
-    //     console.log("Video Url: " + videoOne.video);
-    //     console.log("Title: " + videoOne.title);
-    //     console.log("Thumbnail: " + videoOne.thumbnail);
-
-    //     $("#video-player").attr("src", videoOne.video)
-    // }
 </script>

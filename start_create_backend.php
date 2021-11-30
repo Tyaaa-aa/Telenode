@@ -6,26 +6,46 @@
 //     echo "FAILUREEEREREE";
 // }
 $videoLength = $_POST["videoLength"];
+$videoThumbnail = $_POST["videoThumbnail"];
 
-
-// for ($i = 0; $i <= $videoLength; $i++) {
-//     echo "The number is: $i <br>";
+// for ($i = 0; $i <= ($videoLength - 1); $i++) {
+//     // echo $i . "<br>";
+//     // echo $_POST["video_".$i] . "<br>";
+//     ${"video_$i"} = $_POST["video_" . $i];
+//     // echo ${"video_$i"} . "<br>";
+//     // $video_.$i = $_POST["video_".$i];
+//     // echo $video_.$i;
 // }
-$qty = $_POST['qty'];
-if (is_array($qty)) {
-    for ($i = 0; $i < size($qty); $i++) {
-        print($qty[$i]);
-    }
-}
-// include "db_connect.php";
-// $stmt = $conn->prepare("INSERT into tb_users (userEmail, userName, userPassword, profileImg) values (?,?,?,?)");
-// $stmt->bind_param("ssss", $userEmail, $userName, $hashed_password, $avatar);
-// $stmt->execute();
-// $stmt->close();
-// $conn->close();
-// 
+
+// ====== JSON ========
+
+// Raw JSON from POST data
+$rawJSON = json_encode($_POST);
+var_dump($_POST);
+// Processed and removed videoLength data (only store video URL data)
+$decodedJSON = json_decode($rawJSON, true);
+unset($decodedJSON["videoLength"], $decodedJSON["videoThumbnail"]);
+$processedJSON = json_encode($decodedJSON);
+// echo $processedJSON;
+
+// $uuid = uniqid("tn_");
+// Generate unique video id (E.g. tn_5116190861a62c20d189b)
+$uuid = uniqid("tn_" . rand());
+
+
+session_start();
+$_SESSION["userID"];
+
+include "db_connect.php";
+$stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail) values (?,?,?,?)");
+$stmt->bind_param("ssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail);
+$stmt->execute();
+$stmt->close();
+$conn->close();
+
+header("Location: edit.php?id=$uuid");
 ?>
-<!-- <a href="login.php">Click here if you are not automatically redirected to the forums page</a> -->
+<a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically redirected to the forums page</a>
 
 
 <?php
