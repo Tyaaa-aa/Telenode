@@ -83,8 +83,8 @@
             let firstVidURL = getVidData(videolinks);
             console.log(firstVidURL.video);
             $('.vid_preview').attr('src', firstVidURL.video);
-            $('.vid_preview').load();
-            $('.vid_preview').play();
+            // $('.vid_preview').load();
+            // $('.vid_preview').play();
         }
 
         // getVidData(videoID)

@@ -20,26 +20,30 @@ if ($result->num_rows > 0) {
         $getVidData = [$getVid_id, $getVid_UID, $getVid_userID, $getVid_URLS, $getVid_Name, $getVid_Description, $getVid_Thumbnail, $getVid_Visibility, $getVid_Status, $getVid_UploadTime];
 
 ?>
-        <div onclick="window.location.href = 'view.php?id=<?= $getVid_UID ?>'" class="video_cards">
-            <div class="thumbnail-box">
-                <img class="thumbnail" src="<?= $getVid_Thumbnail ?>" alt="Thumbnail">
-            </div>
-            <h4>
-                <?= $getVid_Name ?>
-            </h4>
+        <div class="video_cards">
+            <a href="view.php?id=<?= $getVid_UID ?>">
+                <div class="thumbnail-box">
+                    <img class="thumbnail" src="<?= $getVid_Thumbnail ?>" alt="Thumbnail">
+                </div>
+                <h4>
+                    <?= $getVid_Name ?>
+                </h4>
+
+            </a>
+            
             <?php
-            if (isset($_SESSION["userID"])) {
-                if ($getVid_userID == $_SESSION["userID"]) {
-            ?>
-                    <a class="edit_btn" href="edit?id=<?= $getVid_UID ?>">
-                        <span class="material-icons">
-                            edit
-                        </span>
-                    </a>
-            <?php
+                if (isset($_SESSION["userID"])) {
+                    if ($getVid_userID == $_SESSION["userID"]) {
+                ?>
+                        <a href="edit.php?id=<?= $getVid_UID ?>" class="edit_btn" data-vid="<?= $getVid_UID ?>">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
+                <?php
+                    }
                 }
-            }
-            ?>
+                ?>
         </div>
     <?php
     }

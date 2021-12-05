@@ -28,8 +28,10 @@
                 </button>
             </form>
 
+            <div style="display:flex;">
             <a href="create.php" class="create_btn btn">
                 <i class='material-icons'>video_call</i>
+                Create
             </a>
 
             <div class="profile_container">
@@ -50,6 +52,7 @@
                     <h3 class="profile_name"><?= $getUserName ?></h3>
                     <i class='material-icons down_arrow'>keyboard_arrow_down</i>
                 </div>
+            </div>
             </div>
 
             <section id="sidebar">

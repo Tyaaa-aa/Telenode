@@ -1,5 +1,8 @@
 // https://yt2htmlcors.herokuapp.com/video_info.php?url=https://www.youtube.com/watch?v=LXb3EKWsInQ
-
+window.addEventListener('load', function () {
+    // Everything has loaded!
+    hidePreloader();
+});
 
 
 $(function () {
@@ -8,7 +11,6 @@ $(function () {
     // }, 1000);
 
     // Remove this if video API being used
-    hidePreloader();
     loadingBarAnimation()
 
     $(".showPassword").click(function () {
@@ -28,6 +30,20 @@ $(function () {
     });
 
 
+    // $(".video_cards").on("click", function (e) {
+    //     // e.stopImmediatePropagation();
+    //     // e.stopPropagation();
+    // })
+
+    // $(".edit_btn").on("click", function (e) {
+    //     // e.stopImmediatePropagation();
+    //     // console.log($(this).data("vid"));
+    //     console.log("SCREAM");
+    //     let url = $(this).data("vid");
+    //     window.location.href = `edit.php?id=${url}`;
+    //     e.stopPropagation();
+        
+    // })
 
 
 
@@ -445,9 +461,6 @@ function listYTVideos(container) {
         window.location.href = "home.php";
     }
 }
-
-
-
 
 
 // HOME PAGE RENDERING ============
