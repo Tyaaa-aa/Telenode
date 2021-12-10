@@ -48,7 +48,10 @@
                     <input type="submit" class="btn submit_btn" value="Next">
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
                     <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">
-                    <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
+                    <div class="field_text">
+                        <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
+                        <img src="" class="thumbnailPreview" alt="">
+                    </div>
                 </form>
             </div>
         </div>
@@ -62,21 +65,32 @@
 
 <!-- Testing Script -->
 <script>
+    // 6WQphW7wS7E
+    // https://i.ytimg.com/vi/${thumbnail}/hqdefault.jpg
     // THIS DOESNT WORK SO PLEASE FIX IT OK THANKS BYE 
     $(document).on("keyup", ".upload_input_field", function() {
         // console.log("ASDASD");
-        if ($(".upload_input_field").last().val() != "") {
+        let lastInput = $(".upload_input_field").last();
+        let thumbnail = extractVidId($(this).val());
+        $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
+        if (lastInput.val() != "") {
             // Add Fields
             console.log("Adding field");
             let vidNum = $(".upload_input_field").length;
             $("#videoLength").val(vidNum)
-            $(".upload_field_box").append('<input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_' + vidNum + '">');
+            $(".upload_field_box").append(`
+            <div class="field_text">
+                <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
+                <div class="thumbnailPreview-box">
+                    <img src="" class="thumbnailPreview" alt="">
+                </div>
+            </div>`);
             $(".submit_btn").fadeIn();
-        } else if ($(".upload_input_field").last().prev().val() == "") {
+        } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
             // Delete empty field
             console.log("Deleting field");
-            $(".upload_input_field").last().fadeOut(300, function() {
-                $(".upload_input_field").last().remove()
+            $(".field_text").last().fadeOut(300, function() {
+                $(".field_text").last().remove()
             });
         }
         console.log(($(".upload_input_field").length));
@@ -89,19 +103,6 @@
     });
 
 
-    // videoOne()
-    function videoOne() {
-        let videoOne = getVidData("https://www.youtube.com/watch?v=dNCWe_6HAM8");
-
-        $("#thumbnail").attr("src", videoOne.thumbnail)
-        // console.log(videoOne);
-        console.log("Video Url: " + videoOne.video);
-        console.log("Title: " + videoOne.title);
-        console.log("Thumbnail: " + videoOne.thumbnail);
-
-        document.write("<br><br><br>Video Url: <br>" + videoOne.video)
-        document.write("<br><br>Title: <br>" + videoOne.title);
-        document.write("<br><br>Thumbnail: <br>" + videoOne.thumbnail);
-    }
+    // Collapse sidebar onload for cleaner User Experience
     collapseSidebar()
 </script>

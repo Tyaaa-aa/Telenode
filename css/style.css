@@ -642,12 +642,28 @@ a:hover {
 
 .upload_input_field {
     background-color: white;
-    margin-top: 20px;
+    margin-right: 20px;
 }
 
 .upload_input_field:last-child {
     margin-bottom: 50px;
 }
+
+.field_text {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.thumbnailPreview {
+    display: inline-block;
+    height: 90px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+
+
 
 .submit_btn {
     background-color: #FF8F44;
@@ -789,4 +805,9 @@ a:hover {
 .publish_form {
     display: flex;
     flex-direction: column;
+    width: 300px;
+}
+
+.publish_form .upload_input_field{
+    margin-bottom: 10px;
 }

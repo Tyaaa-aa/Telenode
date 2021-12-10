@@ -54,40 +54,42 @@
         let container = $(".projects_box");
         let videoData = container.data("getvid_urls")
         let videoDataArray = Object.keys(videoData);
-        console.log(videoData);
-        console.log(videoDataArray[0]);
+        // console.log(videoData);
+        // console.log(videoDataArray[0]);
         for (const [key, value] of Object.entries(videoData)) {
             // console.log(`${key}: ${value}`);
             let videoNum = key;
             let videoID = extractVidId(value);
             let videoInfo = getVidInfo(videoID)
             let thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
-            let title = videoInfo.title;
-            console.log(videoID, title, thumbnail);
-
-            container.append(`
-        <div class="video_cards video_cards_${videoNum}" onclick="playThisVid('${videoID}')" >
-            <div class="thumbnail-box">
-                <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-            </div>
-            <h4>
-                ${title}
-            </h4>
-        </div>`)
+            // await async function
+            videoInfo.then(function(result) {
+                // console.log(JSON.parse(result));
+                let title = JSON.parse(result).title;
+                container.append(`
+                <div class="video_cards video_cards_${videoNum}" onclick="playThisVid('${videoID}')" >
+                    <div class="thumbnail-box">
+                        <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
+                    </div>
+                    <h4>
+                        ${title}
+                    </h4>
+                </div>`)
+            })
         }
         let firstVid = Object.values(videoData)[0];
-        console.log(firstVid);
-
         playThisVid(firstVid);
+        // console.log(firstVid);
+
         function playThisVid(videolinks) {
             let firstVidURL = getVidData(videolinks);
-            console.log(firstVidURL.video);
-            $('.vid_preview').attr('src', firstVidURL.video);
-            // $('.vid_preview').load();
-            // $('.vid_preview').play();
+            // await async function
+            firstVidURL.then(function(result) {
+                console.log("Found Video: \n"+JSON.parse(result).links);
+                let vidLink = JSON.parse(result).links
+                $('.vid_preview').attr('src', vidLink);
+            })
         }
-
-        // getVidData(videoID)
     </script>
     <style>
         .main_content {

@@ -42,7 +42,7 @@ $(function () {
     //     let url = $(this).data("vid");
     //     window.location.href = `edit.php?id=${url}`;
     //     e.stopPropagation();
-        
+
     // })
 
 
@@ -355,68 +355,69 @@ $("#prevVid").click(function () {
     }
 })
 
-function getVidData(videoID) {
-    // Convert any valid youtube url to its video id
-    videoID = extractVidId(videoID)
-    // Get the video URL
-    let videoURL = null;
-    let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
-    $.ajax({
+
+
+function ajaxVidData(scriptUrl) {
+    showPreloader()
+    return $.ajax({
         url: scriptUrl,
         type: 'get',
         dataType: 'text',
-        async: false,
         success: function (data) {
             const videoURL_parsed = JSON.parse(data);
             videoURL = videoURL_parsed.links[0]
+            videoData = {
+                "video": videoURL,
+            }
         }
     });
+};
 
-    let videoData = null;
-    let scriptUrlData = "https://www.youtube.com/oembed?url=youtube.com/watch?v=" + videoID + "&format=json";
-    $.ajax({
+async function getVidData(videoID) {
+    // Convert any valid youtube url to its video id
+    videoID = extractVidId(videoID)
+    // Get the video URL
+    let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
+    let result = await ajaxVidData(scriptUrl)
+    // console.log(x)
+    hidePreloader();
+    return result;
+}
+
+// getVidData("https://www.youtube.com/watch?v=T936lqHuKVg")
+
+
+
+
+
+
+function ajaxVidInfo(scriptUrlData) {
+    return $.ajax({
         url: scriptUrlData,
         type: 'get',
         dataType: 'text',
-        async: false,
         success: function (data) {
             const videoData_parsed = JSON.parse(data);
-            // videoData = [videoData_parsed.title,videoData_parsed.thumbnail_url]
-
             videoData = {
-                "video": videoURL,
                 "title": videoData_parsed.title,
                 "thumbnail": videoData_parsed.thumbnail_url
             }
         }
     });
-    hidePreloader()
-    return videoData;
 }
 
+
 // Get Video Info Without MP4 URL
-function getVidInfo(videoID) {
+async function getVidInfo(videoID) {
     // Convert any valid youtube url to its video id
     videoID = extractVidId(videoID)
     let videoData = null;
     let scriptUrlData = "https://www.youtube.com/oembed?url=youtube.com/watch?v=" + videoID + "&format=json";
-    $.ajax({
-        url: scriptUrlData,
-        type: 'get',
-        dataType: 'text',
-        async: false,
-        success: function (data) {
-            const videoData_parsed = JSON.parse(data);
-            // videoData = [videoData_parsed.title,videoData_parsed.thumbnail_url]
 
-            videoData = {
-                "title": videoData_parsed.title,
-                "thumbnail": videoData_parsed.thumbnail_url
-            }
-        }
-    });
-    hidePreloader()
-    return videoData;
+    let result = await ajaxVidInfo(scriptUrlData)
+    // console.log(x)
+    hidePreloader();
+    return result;
 }
 
 function extractVidId(url) {
@@ -435,33 +436,35 @@ function listYTVideos(container) {
     if (container.data("getvid_urls") != undefined) {
         let videoData = container.data("getvid_urls")
         let videoDataArray = Object.keys(videoData);
-        console.log(videoData);
-        console.log(videoDataArray[0]);
+        // console.log(videoData);
+        // console.log(videoDataArray[0]);
         for (const [key, value] of Object.entries(videoData)) {
             // console.log(`${key}: ${value}`);
             let videoNum = key;
             let videoID = extractVidId(value);
-            let videoInfo = getVidInfo(videoID)
+            let videoInfo = getVidInfo(videoID);
             let thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
-            let title = videoInfo.title;
-            console.log(title, thumbnail);
-
-            container.append(`
-        <div class="video_cards video_cards_${videoNum}" onclick="window.location.href = 'https://youtu.be/${videoID}'" >
-            <div class="thumbnail-box">
-                <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-            </div>
-            <h4>
-                ${title}
-            </h4>
-        </div>`)
+            videoInfo.then(function(result){
+                let title = JSON.parse(result).title;
+                // console.log(title, thumbnail);
+    
+                container.append(`
+            <div class="video_cards video_cards_${videoNum}" onclick="window.location.href = 'https://youtu.be/${videoID}'" >
+                <div class="thumbnail-box">
+                    <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
+                </div>
+                <h4>
+                    ${title}
+                </h4>
+            </div>`)
+            })
+            
         }
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
     }
 }
-
 
 // HOME PAGE RENDERING ============
 

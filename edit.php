@@ -57,7 +57,7 @@
 
                     <div class="edit_container">
                         <div class="projects_box" data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
-                            <h3>Your Videos</h3>
+                            <h3>Video Repository</h3>
                         </div>
                         <div class="edit_projects">
                             <div class="project_blocks project_blocks_starter">
@@ -101,7 +101,10 @@
 
             <input type="hidden" value="<?= $getVid_id ?>" name="videoUUID">
             <input type="submit" value="Submit" class="btn">
-        </form>`)
+            </form>`)
+
+            $(".steps_three").addClass("steps_number_active");
+            $(".publish_btn").remove();
         })
     </script>
 </body>
