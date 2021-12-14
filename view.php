@@ -78,18 +78,44 @@
             })
         }
         let firstVid = Object.values(videoData)[0];
-        playThisVid(firstVid);
+        // playThisVid(firstVid);
         // console.log(firstVid);
 
         function playThisVid(videolinks) {
             let firstVidURL = getVidData(videolinks);
             // await async function
             firstVidURL.then(function(result) {
-                console.log("Found Video: \n"+JSON.parse(result).links);
+                console.log("Found Video: \n" + JSON.parse(result).links);
                 let vidLink = JSON.parse(result).links
                 $('.vid_preview').attr('src', vidLink);
+                $('.vid_preview').focus();
             })
         }
+
+
+
+
+
+        
+        // collapseSidebar();
+        // let container = $(".projects_box");
+        // let videoData = container.data("getvid_urls")
+        // listYTVideos(container); // List available videos
+
+        // let firstVid = Object.values(videoData)[0];
+        // playThisVid(firstVid);
+        // // console.log(firstVid);
+
+        // function playThisVid(videolinks) {
+        //     let firstVidURL = getVidData(videolinks);
+        //     // await async function
+        //     firstVidURL.then(function(result) {
+        //         console.log("Found Video: \n" + JSON.parse(result).links);
+        //         let vidLink = JSON.parse(result).links
+        //         $('.vid_preview').attr('src', vidLink);
+        //         $('.vid_preview').focus();
+        //     })
+        // }
     </script>
     <style>
         .main_content {

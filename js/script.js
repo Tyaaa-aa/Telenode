@@ -51,9 +51,9 @@ $(function () {
 
     // if ($(".projects_box").data("getvid_urls") != undefined) {
     //     let videoData = $(".projects_box").data("getvid_urls")
-    //     let videoDataArray = Object.keys(videoData);
+    //     let videoData = Object.keys(videoData);
     //     console.log(videoData);
-    //     console.log(videoDataArray[0]);
+    //     console.log(videoData[0]);
     // }
 
 
@@ -417,7 +417,7 @@ async function getVidInfo(videoID) {
     let result = await ajaxVidInfo(scriptUrlData)
     // console.log(x)
     hidePreloader();
-    return result;
+    return await result;
 }
 
 function extractVidId(url) {
@@ -429,41 +429,46 @@ function extractVidId(url) {
         return url;
     }
 }
+hidePreloader();
 
 // List Populating functions
-function listYTVideos(container) {
+async function listYTVideos(container) {
 
     if (container.data("getvid_urls") != undefined) {
-        let videoData = container.data("getvid_urls")
-        let videoDataArray = Object.keys(videoData);
+        // Get video list from data "data-getVid_URLS"
+        const videoData = Object.values(container.data("getvid_urls"));
         // console.log(videoData);
-        // console.log(videoDataArray[0]);
-        for (const [key, value] of Object.entries(videoData)) {
-            // console.log(`${key}: ${value}`);
-            let videoNum = key;
-            let videoID = extractVidId(value);
-            let videoInfo = getVidInfo(videoID);
-            let thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
-            videoInfo.then(function(result){
-                let title = JSON.parse(result).title;
-                // console.log(title, thumbnail);
-    
-                container.append(`
-            <div class="video_cards video_cards_${videoNum}" onclick="window.location.href = 'https://youtu.be/${videoID}'" >
+        
+        for (let i = 0; i < videoData.length; i++) {
+            const videoID = extractVidId(videoData[i]); // Strip videoID from rawArray
+            // let videoID = VideoDataArray[i];
+            let result = await getVidInfo(videoID); // call function to get returned Promise (calls async function sequentially)
+
+            const thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
+            const title = JSON.parse(result).title;
+            console.log(JSON.parse(result).title);
+            const listHTML = `
+            <a href="https://youtu.be/${videoID}" class="video_cards" target="_blank">
                 <div class="thumbnail-box">
                     <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
                 </div>
-                <h4>
-                    ${title}
-                </h4>
-            </div>`)
-            })
+                <h4>${title}</h4>
+            </a>`;
+
             
+            $(listHTML).appendTo(container);
         }
+        
+
+
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
     }
+}
+
+function openInNewTab(url) {
+    window.open(url, '_blank');
 }
 
 // HOME PAGE RENDERING ============

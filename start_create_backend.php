@@ -30,7 +30,7 @@ $processedJSON = json_encode($decodedJSON);
 
 // $uuid = uniqid("tn_");
 // Generate unique video id (E.g. tn_5116190861a62c20d189b)
-$uuid = uniqid("tn_" . rand());
+$uuid = substr(base64_encode(md5( mt_rand() )), 0, 11);
 
 
 session_start();

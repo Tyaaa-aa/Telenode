@@ -1,4 +1,4 @@
-<img src="img/loader.png" id="preloader">
+<img src="img/loader.png" id="preloader" alt="preloader">
 <header>
     <nav>
         <?php

@@ -61,14 +61,15 @@
                         </div>
                         <div class="edit_projects">
                             <div class="project_blocks project_blocks_starter">
-                                <!-- <div class="" -->
+                                <!-- <div class=""><?= $getVid_URLS ?></div> -->
+                                <input type="text" placeholder="Question" class="input_field">
                             </div>
                         </div>
                     </div>
                 <?php
                 }
                 ?>
-                <img src="img/create_placeholder.png" alt="Placeholder" style=" position: absolute;top: 15%;left: 30%;width: 50%;">
+                <!-- <img src="img/create_placeholder.png" alt="Placeholder" style=" position: absolute;top: 15%;left: 30%;width: 50%;"> -->
             </div>
         </div>
         <?php include "footer.php" ?>
@@ -81,6 +82,8 @@
         // ============================================================
         // Find a way to make the data only on parent div and not repeat on listed items
         listYTVideos($(".projects_box"))
+
+        // console.log($(".projects_box").data("getvid_urls"));
 
         // for(){
         //     getVidInfo(videoID)
