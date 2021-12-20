@@ -39,7 +39,7 @@
             <?php
             }
             ?>
-            <video autoplay muted controls class="vid_preview">
+            <video autoplay muted controls class="vid_preview" onerror="alert('Error playing video')">
 
             </video>
         </div>
@@ -50,36 +50,16 @@
 
     <script>
         collapseSidebar();
+        
+// container = container to be populated with data provided
+// isYT = is this a youtube link or local project link, true = youtube & false = local
+        listYTVideos($(".projects_box"), false)
 
         let container = $(".projects_box");
         let videoData = container.data("getvid_urls")
-        let videoDataArray = Object.keys(videoData);
-        // console.log(videoData);
-        // console.log(videoDataArray[0]);
-        for (const [key, value] of Object.entries(videoData)) {
-            // console.log(`${key}: ${value}`);
-            let videoNum = key;
-            let videoID = extractVidId(value);
-            let videoInfo = getVidInfo(videoID)
-            let thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
-            // await async function
-            videoInfo.then(function(result) {
-                // console.log(JSON.parse(result));
-                let title = JSON.parse(result).title;
-                container.append(`
-                <div class="video_cards video_cards_${videoNum}" onclick="playThisVid('${videoID}')" >
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-                    </div>
-                    <h4>
-                        ${title}
-                    </h4>
-                </div>`)
-            })
-        }
         let firstVid = Object.values(videoData)[0];
-        // playThisVid(firstVid);
-        // console.log(firstVid);
+        playThisVid(firstVid);
+        console.log(firstVid);
 
         function playThisVid(videolinks) {
             let firstVidURL = getVidData(videolinks);
@@ -91,31 +71,6 @@
                 $('.vid_preview').focus();
             })
         }
-
-
-
-
-
-        
-        // collapseSidebar();
-        // let container = $(".projects_box");
-        // let videoData = container.data("getvid_urls")
-        // listYTVideos(container); // List available videos
-
-        // let firstVid = Object.values(videoData)[0];
-        // playThisVid(firstVid);
-        // // console.log(firstVid);
-
-        // function playThisVid(videolinks) {
-        //     let firstVidURL = getVidData(videolinks);
-        //     // await async function
-        //     firstVidURL.then(function(result) {
-        //         console.log("Found Video: \n" + JSON.parse(result).links);
-        //         let vidLink = JSON.parse(result).links
-        //         $('.vid_preview').attr('src', vidLink);
-        //         $('.vid_preview').focus();
-        //     })
-        // }
     </script>
     <style>
         .main_content {

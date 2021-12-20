@@ -31,6 +31,7 @@
                     </span>
                     <span>Publish</span>
                 </button>
+                <button class="jsondebug btn" style="position:fixed;bottom:5%;right:2%;z-index:99999;">(Download Current Data)</button>
             </div>
             <div class="create_container">
                 <?php
@@ -61,8 +62,111 @@
                         </div>
                         <div class="edit_projects">
                             <div class="project_blocks project_blocks_starter">
-                                <!-- <div class=""><?= $getVid_URLS ?></div> -->
-                                <input type="text" placeholder="Question" class="input_field">
+                                <span class="parent_indicator">
+                                    <div class="pi_dot starter_dot">
+                                        <span class="material-icons">
+                                            play_arrow
+                                        </span>
+                                        <p>Starting question</p>
+                                    </div>
+                                </span>
+
+                                <div class="block_video block_box">
+                                    <div class="video_cards_container">
+                                        <div class="">
+                                            <div class="">
+                                                <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                                <div class="video_cards">
+                                                    <div class="thumbnail-box">
+                                                        <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                                    </div>
+                                                    <h4 class="video_title"> </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input_container">
+                                        <input type="text" placeholder="Question/Prompt" class="input_field question_title">
+                                        <div class="dropbtn_container">
+                                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="">
+                                            <span class="material-icons">
+                                                expand_more
+                                            </span>
+                                            <div class="dropdown_content">
+                                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="block_questions_container">
+                                    <div class="block_questions block_box">
+                                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                                        <div class="dropbtn_container">
+                                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                            <span class="material-icons">
+                                                expand_more
+                                            </span>
+                                            <div class="dropdown_content">
+                                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="video_cards_container">
+                                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                            <div class="video_cards">
+                                                <div class="thumbnail-box">
+                                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                                </div>
+                                                <h4 class="video_title"> </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block_questions block_box">
+                                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                                        <div class="dropbtn_container">
+                                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                            <span class="material-icons">
+                                                expand_more
+                                            </span>
+                                            <div class="dropdown_content">
+                                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="video_cards_container">
+                                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                            <div class="video_cards">
+                                                <div class="thumbnail-box">
+                                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                                </div>
+                                                <h4 class="video_title"> </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block_questions block_box">
+                                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                                        <div class="dropbtn_container">
+                                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                            <span class="material-icons">
+                                                expand_more
+                                            </span>
+                                            <div class="dropdown_content">
+                                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="video_cards_container">
+                                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                            <div class="video_cards">
+                                                <div class="thumbnail-box">
+                                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                                </div>
+                                                <h4 class="video_title"> </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -81,13 +185,9 @@
         // Can we change this to pure php later? There is really no point in using javascript to populate this list at all. The data in the parent div can stay but the populating should remain in pure PHP.....
         // ============================================================
         // Find a way to make the data only on parent div and not repeat on listed items
-        listYTVideos($(".projects_box"))
+        listYTVideos($(".projects_box"), true)
 
-        // console.log($(".projects_box").data("getvid_urls"));
 
-        // for(){
-        //     getVidInfo(videoID)
-        // }
 
         $(".publish_btn").click(function() {
             $(".create_container").html(`<form action="publish.php" method="POST" class="publish_form">
