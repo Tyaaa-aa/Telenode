@@ -47,3 +47,14 @@ if (isset($_SESSION["userID"])) {
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
+
+<?php
+// Determine user theme from database (default should be light)
+if ($getUserTheme == "dark") {
+    // DARK MODE
+    include "styles_dark.php";
+} else {
+    // LIGHT MODE
+    include "styles_default.php";
+}
+?>

@@ -1,5 +1,5 @@
 /* Light mode */
-:root {
+/* :root {
     --globalRadius: 5px;
     --mainBackground: #ededed;
     --mainColor: #FFF;
@@ -8,10 +8,10 @@
     --inputField: #F5F5F5;
     --secondTextColor: #C0C0C0;
     --sidebar: #DEEEFF;
-}
+} */
 
 /* Dark mode */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         --globalRadius: 5px;
         --mainBackground: #1e1e1e;
@@ -22,7 +22,7 @@
         --secondTextColor: #444444;
         --sidebar: #1c1f20;
     }
-}
+} */
 
 
 ::-webkit-scrollbar {

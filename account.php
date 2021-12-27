@@ -76,7 +76,31 @@ if (!isset($_SESSION["userID"])) {
 <script>
     // Collapse sidebar onload for cleaner User Experience
     // collapseSidebar()
-    
+
+
+    function updateTheme(theme) {
+        jQuery.ajax({
+            type: "POST",
+            data: 'theme=' + theme, // <-- put on top
+            url: "updateTheme_backend.php",
+            cache: false,
+            success: function(response) {
+                let theme = JSON.parse(response).theme
+                // console.log(theme)
+                let style;
+                if (theme == "dark") {
+                    style = `<?php include "styles_dark.php" ?>`
+                } else {
+                    style = `<?php include "styles_default.php" ?>`
+                }
+
+                $("head").find("#theme").remove()
+                $("head").append(style)
+
+                // alert("Record successfully updated")
+            }
+        })
+    }
 
     function readURL(input) {
         if (input.files && input.files[0]) {

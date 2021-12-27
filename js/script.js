@@ -148,6 +148,17 @@ $(".edit_account_btn").click(function () {
     }
 })
 
+$("#toggleAll").click(function () {
+    if ($("#toggleAll").is(":checked")) {
+        // console.log("dark");
+        updateTheme("dark")
+    } else {
+        // console.log("light");
+        updateTheme("light")
+    }
+})
+
+
 
 
 
