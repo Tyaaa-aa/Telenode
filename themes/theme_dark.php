@@ -1,4 +1,5 @@
 <style id="theme">
+    /* ===== DARK THEME ===== */
     :root {
         --globalRadius: 5px;
         --mainBackground: #1e1e1e;

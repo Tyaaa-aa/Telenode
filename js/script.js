@@ -134,7 +134,7 @@ function regPasswordVerify() {
 
 $(".edit_account_btn").click(function () {
     if ($(this).attr("type") == "submit") {
-        $(".account_form").submit()
+        // $(".account_form").submit()
     } else {
         $(".account_form .input_field").attr("readonly", false)
         $(".account_form .input_field").removeClass("readonly_field")
@@ -142,9 +142,10 @@ $(".edit_account_btn").click(function () {
             "max-height": "100px",
             "opacity": "1"
         })
-
-        $(this).attr("type", "submit")
-        $(this).text("Save")
+        setTimeout(() => {
+            $(this).attr("type", "submit")
+            $(this).text("Save")
+        }, 10);
     }
 })
 

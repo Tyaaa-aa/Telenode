@@ -1,13 +1,13 @@
 <?php
-if (isset($_POST["userEmail"]) && isset($_POST["userPassword"])) {
-    $userEmail = $_POST["userEmail"];
+if (isset($_POST["username"]) && isset($_POST["userPassword"])) {
+    $username = $_POST["username"];
     $userPassword = $_POST["userPassword"];
 
     include "db_connect.php";
 
 
-    $stmt = $conn->prepare("SELECT userPassword from tb_users where userEmail=?");
-    $stmt->bind_param("s", $userEmail);
+    $stmt = $conn->prepare("SELECT userPassword from tb_users where username=?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
 
     $stmt->store_result();
@@ -21,8 +21,8 @@ if (isset($_POST["userEmail"]) && isset($_POST["userPassword"])) {
     if (password_verify($userPassword, $hashed_password)) {
         $id = "NULL";
         include "db_connect.php";
-        $stmt = $conn->prepare("SELECT userID, userName from tb_users where userEmail=?");
-        $stmt->bind_param("s", $userEmail);
+        $stmt = $conn->prepare("SELECT userID, userName from tb_users where username=?");
+        $stmt->bind_param("s", $username);
         $stmt->execute();
 
         $stmt->store_result();
@@ -43,8 +43,8 @@ if (isset($_POST["userEmail"]) && isset($_POST["userPassword"])) {
             session_start();
             $_SESSION["userID"] = $id;
             $_SESSION["userName"] = $userName;
-            $_SESSION["userEmail"] = $userEmail;
-            echo "Login Successful.<br><br> $userName<br>$userEmail";
+            $_SESSION["username"] = $username;
+            echo "Login Successful.<br><br> $userName<br>$username";
 
             header("Location: home.php");
         ?>

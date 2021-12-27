@@ -49,12 +49,11 @@ if (isset($_SESSION["userID"])) {
 </head>
 
 <?php
-// Determine user theme from database (default should be light)
 if ($getUserTheme == "dark") {
-    // DARK MODE
-    include "styles_dark.php";
+    // DARK THEME
+    include "themes/theme_dark.php";
 } else {
-    // LIGHT MODE
-    include "styles_default.php";
+    // DEFAULT THEME
+    include "themes/theme_default.php";
 }
 ?>

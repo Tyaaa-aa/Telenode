@@ -33,7 +33,7 @@ if (!isset($_SESSION["userID"])) {
                     </i>
 
                 </form>
-                <form class="account_form" action="account_backend.php" method="POST">
+                <form class="account_form" action="update_account_backend.php" method="POST">
                     <label for="username">Username</label>
                     <input type="text" placeholder="Username" class="input_field readonly_field" name="username" id="username" value="<?= $getUserName ?>" minlength="3" required readonly>
 
@@ -42,11 +42,10 @@ if (!isset($_SESSION["userID"])) {
 
                     <div class="account_password">
                         <label for="password">Password</label>
-                        <input type="password" placeholder="********" class="input_field readonly_field" name="password" id="password" required readonly>
+                        <input type="password" placeholder="********" class="input_field readonly_field" name="password" id="password" required readonly minlength="8">
                     </div>
 
-                </form>
-                <div class="dark_mode_label">
+                    <div class="dark_mode_label">
                     <span>Dark Mode: </span>
                     <div class="switch">
                         <input type="checkbox" id="toggleAll" name="theme" <?php
@@ -58,6 +57,7 @@ if (!isset($_SESSION["userID"])) {
                     </div>
                 </div>
                 <button type="button" class="edit_account_btn btn">Edit</button>
+                </form>
 
             </div>
             <?php include "footer.php" ?>
@@ -81,23 +81,19 @@ if (!isset($_SESSION["userID"])) {
     function updateTheme(theme) {
         jQuery.ajax({
             type: "POST",
-            data: 'theme=' + theme, // <-- put on top
+            data: 'theme=' + theme,
             url: "updateTheme_backend.php",
             cache: false,
             success: function(response) {
                 let theme = JSON.parse(response).theme
-                // console.log(theme)
                 let style;
                 if (theme == "dark") {
-                    style = `<?php include "styles_dark.php" ?>`
+                    style = `<?php include "themes/theme_dark.php" ?>`
                 } else {
-                    style = `<?php include "styles_default.php" ?>`
+                    style = `<?php include "themes/theme_default.php" ?>`
                 }
-
                 $("head").find("#theme").remove()
                 $("head").append(style)
-
-                // alert("Record successfully updated")
             }
         })
     }

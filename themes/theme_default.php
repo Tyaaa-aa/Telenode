@@ -1,4 +1,5 @@
 <style id="theme">
+    /* ===== DEFAULT THEME ===== */
     :root {
         --globalRadius: 5px;
         --mainBackground: #ededed;

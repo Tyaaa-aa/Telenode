@@ -1,8 +1,6 @@
 <?php
 $theme = $_POST['theme'];
 
-// echo $theme;
-
 session_start();
 $userid = $_SESSION["userID"];
 
@@ -14,4 +12,4 @@ $stmt->execute();
 $stmt->close();
 $conn->close();
 
-echo json_encode(array("theme"=>$theme));
+echo json_encode(array("theme" => $theme));
