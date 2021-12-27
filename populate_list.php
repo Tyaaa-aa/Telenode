@@ -52,7 +52,7 @@ if ($result->num_rows > 0) {
     <div>
         <br>
         You have no projects :(
-        <a href="login.php#signup" class="signup_btn btn">Start Creating</a>
+        <a href="create.php" class="signup_btn btn">Start Creating</a>
     </div>
 <?php
 }

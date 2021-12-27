@@ -60,7 +60,7 @@
                     <img src="img/logo.png" alt="Header Logo">
                 </a>
                 <i class='material-icons close_siderbar'>menu_open</i>
-                <ul class="sidebar_menu">
+                <div class="sidebar_menu">
                     <a href="home.php#dashboard" class="sidebar_items" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>dashboard</i>
                         <span>Dashboard</span>
@@ -80,7 +80,7 @@
                     <!-- <div class="login_box">
                         <a href="create.php" class="signup_btn btn">Start Creating</a>
                     </div> -->
-                </ul>
+                </div>
             </section>
         <?php
         } else {

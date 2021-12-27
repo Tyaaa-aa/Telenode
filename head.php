@@ -26,7 +26,7 @@ if (isset($_SESSION["userID"])) {
 <?php
         }
     }
-}else{
+} else {
     $getUserID = false;
     $getUserEmail = false;
     $getUserName = false;
@@ -35,14 +35,6 @@ if (isset($_SESSION["userID"])) {
 }
 
 ?>
-<?php
-// Determine user theme from database (default should be light)
-if (isset($styleTheme) && $getUserTheme == "dark") {
-    $styleTheme = "style_dark";
-} else {
-    $styleTheme = "style";
-}
-?>
 
 <head>
     <title>TeleNode</title>
@@ -50,7 +42,7 @@ if (isset($styleTheme) && $getUserTheme == "dark") {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="css/<?= $styleTheme ?>.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/style.css?v=<?= time() ?>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

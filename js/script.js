@@ -130,6 +130,31 @@ function regPasswordVerify() {
     }
 }
 
+// ======== ACCOUNT PAGE ========
+
+$(".edit_account_btn").click(function () {
+    if ($(this).attr("type") == "submit") {
+        $(".account_form").submit()
+    } else {
+        $(".account_form .input_field").attr("readonly", false)
+        $(".account_form .input_field").removeClass("readonly_field")
+        $(".account_form .account_password").css({
+            "max-height": "100px",
+            "opacity": "1"
+        })
+
+        $(this).attr("type", "submit")
+        $(this).text("Save")
+    }
+})
+
+
+
+
+
+
+
+
 // HEADER CODE==========
 $(".profile_box").click(function () {
     if ($(".profile_popup").hasClass("profile_popup_hidden")) {
@@ -268,21 +293,21 @@ function playVideo(vidURL) {
     })
 }
 
-$("#nextVid").click(function () {
-    if (playstate < (jsonData.videos.length - 1)) {
-        playstate++;
-        playVideo(jsonData.videos[playstate])
-        console.log(playstate)
-    }
-})
+// $("#nextVid").click(function () {
+//     if (playstate < (jsonData.videos.length - 1)) {
+//         playstate++;
+//         playVideo(jsonData.videos[playstate])
+//         console.log(playstate)
+//     }
+// })
 
-$("#prevVid").click(function () {
-    if (playstate > 0) {
-        playstate--;
-        playVideo(jsonData.videos[playstate])
-        console.log(playstate)
-    }
-})
+// $("#prevVid").click(function () {
+//     if (playstate > 0) {
+//         playstate--;
+//         playVideo(jsonData.videos[playstate])
+//         console.log(playstate)
+//     }
+// })
 
 function ajaxVidData(scriptUrl) {
     showPreloader()
@@ -418,6 +443,7 @@ hidePreloader()
 $(".edit_projects").on("input click", ".question_field", async function (e) {
     // $(this).val(extractVidId($(this).val()))
     $(this).blur()
+    console.log("BLURRING");
     // console.log(e.handleObj.type)
     const videoID = extractVidId($(this).val())
     if (videoID.length == 11) {
@@ -428,7 +454,7 @@ $(".edit_projects").on("input click", ".question_field", async function (e) {
         // Change THumbnail
         $(this).closest(".block_box").find(".thumbnail").attr("src", "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg")
         const result = await getVidInfo(videoID)
-        const title = JSON.parse(result).title;
+        const title = JSON.parse(result).title
         // Change Titles
         $(this).closest(".block_box").find(".video_title").text(title)
         $(this).closest(".block_box").find(".dropbtn").val(title)
@@ -436,6 +462,7 @@ $(".edit_projects").on("input click", ".question_field", async function (e) {
     } else {
         $(this).val("")
     }
+    arrangeBlocks()
 })
 
 // Dropdown menu dismiss on click anywhere
@@ -483,148 +510,183 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
 
 // ========= BLOCKS FUNCTIONALITY ===========
 
-let elOptions = $(".block_questions").find(".options_field")
-for (let i = 0; i < elOptions.length; i++) {
-    elOptions.eq(i).attr(`placeholder`, `Option ${i+1}`)
-    // console.log(elOptions.length);
-}
-
-
-
-
-
-// $(".edit_projects").on("input click", ".input_field", function (e) {
-let newBlock = /* html */ `
-    <div class="project_blocks">
-    <span class="parent_indicator">
-        <div class="pi_dot starter_dot">
-            <span class="material-icons">
-                play_arrow
-            </span>
-            <p>Starting question</p>
-        </div>
-    </span>
-    <span class="parent_indicator">
-        <div class="pi_dot starter_dot">
-            <span class="material-icons">
-                play_arrow
-            </span>
-            <p>Starting question</p>
-        </div>
-    </span>
-
-    <div class="block_video">
-        <div class="video_cards_container">
-            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
-            <div class="video_cards">
-                <div class="thumbnail-box">
-                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
-                </div>
-                <h4 class="video_title"> </h4>
-            </div>
-        </div>
-        <div class="input_container">
-            <input type="text" placeholder="Question/Prompt" class="input_field">
-            <div class="dropbtn_container">
-                <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
-                <span class="material-icons">
-                    expand_more
-                </span>
-                <div class="dropdown_content">
-                    <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="block_questions_container">
-        <div class="block_questions">
-            <input type="text" placeholder="Option 1" class="input_field options_field">
-            <div class="dropbtn_container">
-                <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
-                <span class="material-icons">
-                    expand_more
-                </span>
-                <div class="dropdown_content">
-                    <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
-                </div>
-            </div>
-
-            <div class="video_cards_container">
-                <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
-                <div class="video_cards">
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
-                    </div>
-                    <h4 class="video_title"> </h4>
-                </div>
-            </div>
-        </div>
-        <div class="block_questions">
-            <input type="text" placeholder="Option 1" class="input_field options_field">
-            <div class="dropbtn_container">
-                <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
-                <span class="material-icons">
-                    expand_more
-                </span>
-                <div class="dropdown_content">
-                    <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
-                </div>
-            </div>
-
-            <div class="video_cards_container">
-                <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
-                <div class="video_cards">
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
-                    </div>
-                    <h4 class="video_title"> </h4>
-                </div>
-            </div>
-        </div>
-        <div class="block_questions">
-            <input type="text" placeholder="Option 1" class="input_field options_field">
-            <div class="dropbtn_container">
-                <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
-                <span class="material-icons">
-                    expand_more
-                </span>
-                <div class="dropdown_content">
-                    <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
-                </div>
-            </div>
-
-            <div class="video_cards_container">
-                <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
-                <div class="video_cards">
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
-                    </div>
-                    <h4 class="video_title"> </h4>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-`
-// console.log(newBlock);
-// console.log($(this).attr("class") + $(this).val());
-
-// $(".edit_projects").append(newBlock)
-//     $(this).val()
-//     generateData($(this), this)
-// })
-
 $(".edit_projects").on("input click", ".input_field", function () {
     // generateData()
-    // updateBlocks()
+    updateBlocks()
 })
 
 $(".jsondebug").click(generateData)
-
+updateBlocks()
 // Updates and creates/deletes blocks based on user provided data
-function updateBlocks() {
+async function updateBlocks() {
+    console.log("\nUpdating Blocks:")
 
+
+
+
+    // newBlock.appendTo(".edit_projects")
+    // $(".edit_projects").append(newBlock)
+    // console.log("Appending newBlock")
+
+    let elOptions = $(".block_questions").find(".options_field")
+    for (let i = 0; i < elOptions.length; i++) {
+        let thisBlock = $(".project_blocks .block_questions").eq(i)
+        let optionTitle = thisBlock.find(".options_field").val()
+        let optionVideoid = thisBlock.find(".dropbtn").attr("data-videoid")
+        // Update option placeholder numbering
+        elOptions.eq(i).attr(`placeholder`, `Option ${i+1}`)
+
+
+        if (optionTitle || optionVideoid) {
+            // console.log(optionTitle, optionVideoid)
+            let videoData
+            let videoDataTitle = "Video Not Selected"
+            if (optionVideoid) {
+                videoData = await getVidInfo(optionVideoid)
+                videoDataTitle = JSON.parse(videoData).title
+            } else {
+                videoDataTitle = "Video not selected"
+            }
+            // console.log(videoDataTitle)
+
+            // ===== CREATE NEW BLOCK =====
+            let newBlock = /* HTML */ `
+            <div class="project_blocks project_blocks_${i}" id="${i}">
+                <span class="parent_indicator">
+                    <div class="pi_dot ">
+                        <p>${optionTitle}</p>
+                    </div>
+                </span>
+    
+                <div class="block_video block_box">
+                    <div class="video_cards_container">
+                        <!-- <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field"> -->
+                        <div class="video_cards">
+                            <div class="thumbnail-box">
+                                <img class="thumbnail" src="https://i.ytimg.com/vi/${optionVideoid}/hqdefault.jpg" alt="Thumbnail">
+                            </div>
+                            <h4 class="video_title">${videoDataTitle}</h4>
+                        </div>
+                    </div>
+                    <div class="input_container">
+                        <input type="text" placeholder="Question/Prompt" class="input_field question_title">
+                        <div class="dropbtn_container">
+                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${optionVideoid}" style="display:none">
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="block_questions_container">
+                    <div class="block_questions block_box">
+                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                        <div class="dropbtn_container">
+                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <span class="material-icons">
+                                expand_more
+                            </span>
+                            <div class="dropdown_content">
+                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                            </div>
+                        </div>
+    
+                        <div class="video_cards_container">
+                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <div class="video_cards">
+                                <div class="thumbnail-box">
+                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                </div>
+                                <h4 class="video_title"> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block_questions block_box">
+                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                        <div class="dropbtn_container">
+                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <span class="material-icons">
+                                expand_more
+                            </span>
+                            <div class="dropdown_content">
+                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                            </div>
+                        </div>
+    
+                        <div class="video_cards_container">
+                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <div class="video_cards">
+                                <div class="thumbnail-box">
+                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                </div>
+                                <h4 class="video_title"> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block_questions block_box">
+                        <input type="text" placeholder="Option 1" class="input_field options_field">
+                        <div class="dropbtn_container">
+                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <span class="material-icons">
+                                expand_more
+                            </span>
+                            <div class="dropdown_content">
+                                <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                            </div>
+                        </div>
+    
+                        <div class="video_cards_container">
+                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <div class="video_cards">
+                                <div class="thumbnail-box">
+                                    <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                </div>
+                                <h4 class="video_title"> </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+            if ($(`.edit_projects .project_blocks`).hasClass(`project_blocks_${i}`)) {
+                // Update blocks' values if they already exist
+                console.log(`Found project_blocks_${i}`);
+                $(`.project_blocks_${i}`).find("p").text(`${optionTitle}`)
+                $(`.project_blocks_${i}`).find(".video_title").text(`${videoDataTitle}`)
+                let thisThumbnail = $(`.project_blocks_${i} .block_video `).find(".thumbnail");
+                if (optionVideoid != undefined) {
+                    thisThumbnail.attr("src", `https://i.ytimg.com/vi/${optionVideoid}/hqdefault.jpg`)
+                    console.log("updating thumbnail");
+                }
+                // $(`project_blocks_${i}`).css("transform","scale(0.5)")
+            } else {
+                // Create blocks with values if they dont exist yet
+                console.log(`\nCreated instance of project_blocks_${i}`);
+                $(".edit_projects").append(newBlock)
+            }
+            // console.log($.parseHTML(newBlock)[1].id);
+            // $('.edit_projects .project_blocks').slice(1).remove();
+            // $(".edit_projects").append(newBlock)
+
+        }
+
+    }
+
+
+}
+
+$(".edit_projects").on("focusout", ".input_field", function () {
+    // setTimeout(() => {
+    arrangeBlocks()
+    // }, 50);
+})
+
+function arrangeBlocks() {
+    console.log("Arranging Blocks");
+    $(".edit_projects .project_blocks").sort(function (a, b) {
+        return parseInt(a.id) - parseInt(b.id);
+    }).each(function () {
+        var elem = $(this);
+        elem.remove();
+        $(elem).appendTo(".edit_projects");
+    });
 }
 
 // Creates JSON save based on user provided data
@@ -673,13 +735,14 @@ function generateData() {
 
 
     // Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
-    var fileName = 'tn_savefile.json';
-    saveJson(fileName, projectDataArray);
+    // saveJson('tn_savefile.json', projectDataArray);
 }
 
-
+// Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
 const saveJson = (filename, dataObjToWrite) => {
-    const blob = new Blob([JSON.stringify(dataObjToWrite)], { type: "text/json" });
+    const blob = new Blob([JSON.stringify(dataObjToWrite)], {
+        type: "text/json"
+    });
     const link = document.createElement("a");
 
     link.download = filename;

@@ -68,7 +68,7 @@
     // 6WQphW7wS7E
     // https://i.ytimg.com/vi/${thumbnail}/hqdefault.jpg
     // THIS DOESNT WORK SO PLEASE FIX IT OK THANKS BYE 
-    $(document).on("keyup", ".upload_input_field", function() {
+    $(document).on("keyup input change", ".upload_input_field", function() {
         // console.log("ASDASD");
         let lastInput = $(".upload_input_field").last();
         let thumbnail = extractVidId($(this).val());

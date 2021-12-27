@@ -1,21 +1,14 @@
 <?php
-// if(isset($_POST["userEmail_reg"])){
-//     $userEmail_reg = $_POST["userEmail_reg"];
-//     echo $userEmail_reg;
-// }else{
-//     echo "FAILUREEEREREE";
+include "head.php";
+// $conn = new mysqli("localhost", "root", "", "thebigtest");
+
+// if ($conn->connect_error) {
+// 	die("Failed to connect to MySQL:.$conn > connect_error");
+// 	exit();
 // }
+
 $videoLength = $_POST["videoLength"];
 $videoThumbnail = $_POST["videoThumbnail"];
-
-// for ($i = 0; $i <= ($videoLength - 1); $i++) {
-//     // echo $i . "<br>";
-//     // echo $_POST["video_".$i] . "<br>";
-//     ${"video_$i"} = $_POST["video_" . $i];
-//     // echo ${"video_$i"} . "<br>";
-//     // $video_.$i = $_POST["video_".$i];
-//     // echo $video_.$i;
-// }
 
 // ====== JSON ========
 
@@ -26,38 +19,22 @@ var_dump($_POST);
 $decodedJSON = json_decode($rawJSON, true);
 unset($decodedJSON["videoLength"], $decodedJSON["videoThumbnail"]);
 $processedJSON = json_encode($decodedJSON);
-// echo $processedJSON;
 
-// $uuid = uniqid("tn_");
-// Generate unique video id (E.g. tn_5116190861a62c20d189b)
-$uuid = substr(base64_encode(md5( mt_rand() )), 0, 11);
+// Generate unique video id (E.g. ODU2NTVkN2Q)
+$uuid = substr(base64_encode(md5(mt_rand())), 0, 11);
 
 
-session_start();
-$_SESSION["userID"];
+$id = $_SESSION["userID"];
+echo $_SESSION["userID"] . "<br><br><br>" .  $uuid . "<br><br><br>" .  $processedJSON . "<br><br><br>" .  $videoThumbnail . "<br><br><br>";
 
-include "db_connect.php";
 $stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail) values (?,?,?,?)");
 $stmt->bind_param("ssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail);
 $stmt->execute();
 $stmt->close();
 $conn->close();
 
+
+
 header("Location: edit.php?id=$uuid");
 ?>
 <a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically redirected to the forums page</a>
-
-
-<?php
-// include "db_connect.php";
-
-// $stmt = $conn->prepare("SELECT userID, userName from tb_users where userEmail=?");
-// $stmt->bind_param("s", $userEmail);
-// $stmt->execute();
-
-// $stmt->store_result();
-// $row = $stmt->num_rows();
-// $stmt->bind_result($id, $s_userName);
-// $stmt->fetch();
-// $stmt->close();
-// // echo $id, $s_userName, $userEmail;

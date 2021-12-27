@@ -1,6 +1,6 @@
 <div class="loading_bar"></div>
 
-<h2>My Projects</h2>
+<!-- <h2>My Projects</h2> -->
 <div id="projects-container">
     <?php
     if (isset($userid)) {

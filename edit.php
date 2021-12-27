@@ -54,6 +54,12 @@
                         $getVid_Status = $row['vid_status'];
                         $getVid_UploadTime = $row['vid_uploadTime'];
                     }
+
+                    if (!isset($_SESSION["userID"])) {
+                        $URL = "home.php#dashboard";
+                        echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+                        echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
+                    }
                 ?>
 
                     <div class="edit_container">
@@ -73,16 +79,12 @@
 
                                 <div class="block_video block_box">
                                     <div class="video_cards_container">
-                                        <div class="">
-                                            <div class="">
-                                                <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
-                                                <div class="video_cards">
-                                                    <div class="thumbnail-box">
-                                                        <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
-                                                    </div>
-                                                    <h4 class="video_title"> </h4>
-                                                </div>
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <div class="video_cards">
+                                            <div class="thumbnail-box">
+                                                <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
                                             </div>
+                                            <h4 class="video_title"> </h4>
                                         </div>
                                     </div>
                                     <div class="input_container">
