@@ -349,8 +349,8 @@ a:hover {
 }
 
 .create_btn:hover {
-    background-color: #FF8F44;
-    color: var(--mainColor);
+    background-color: #d3773a;
+    color: #FFF;
     /* transform: scale(1);
     box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.2);
@@ -847,7 +847,8 @@ a:hover {
     opacity: 1;
 }
 
-.publish_btn {
+.publish_btn,
+.save_btn {
     display: flex;
     position: absolute;
     right: 20px;
@@ -856,11 +857,30 @@ a:hover {
     background-color: #FF8F44;
     border: none;
     outline: none;
-
 }
 
-.publish_btn:hover {
+.save_btn {
+    right: 150px;
+}
+
+.publish_btn:hover,
+.save_btn:hover {
     background-color: #d3773a;
+}
+
+.save_msg {
+    position: absolute;
+    white-space: nowrap;
+    right: 270px;
+    width: 100px;
+    overflow: hidden;
+    top: 25px;
+    /* border: 2px solid red; */
+    transition: all 0.3s;
+}
+
+.save_msg_closed {
+    width: 0px;
 }
 
 .publish_form {
@@ -1128,6 +1148,8 @@ a:hover {
 .edit_projects .input_field {
     width: 90%;
     margin: 10px 0px;
+    text-overflow: ellipsis;
+    padding-right: 35px;
 }
 
 .question_field {

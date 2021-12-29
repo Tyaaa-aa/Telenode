@@ -31,7 +31,14 @@
                     </span>
                     <span>Publish</span>
                 </button>
-                <button class="jsondebug btn" style="position:fixed;bottom:5%;right:2%;z-index:99999;">(Download Current Data)</button>
+                <button class="save_btn btn">
+                    <span class="material-icons">
+                        save
+                    </span>
+                    <span>Save</span>
+                </button>
+                <span class="save_msg save_msg_closed">Project saved!</span>
+                <!-- <button class="jsondebug btn" style="position:fixed;bottom:5%;right:2%;z-index:99999;">(Download Current Data)</button> -->
             </div>
             <div class="create_container">
                 <?php
@@ -47,6 +54,7 @@
                         $getVid_id = $row['vid_id'];
                         $getVid_userID = $row['vid_userID'];
                         $getVid_URLS = $row['vid_URLS'];
+                        $getVid_ProjectData = $row['vid_projectData'];
                         $getVid_Name = $row['vid_name'];
                         $getVid_Description = $row['vid_description'];
                         $getVid_Thumbnail = $row['vid_thumbnail'];
@@ -55,16 +63,20 @@
                         $getVid_UploadTime = $row['vid_uploadTime'];
                     }
 
+                    $URL = "home.php#dashboard";
                     if (!isset($_SESSION["userID"])) {
-                        $URL = "home.php#dashboard";
+                        echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+                        echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
+                    } else if ($_SESSION["userID"] != $getVid_userID) {
                         echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
                         echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
                     }
+
                 ?>
 
                     <div class="edit_container">
-                        <div class="projects_box" data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
-                            <h3>Video Repository</h3>
+                        <div class="projects_box" data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
+                            <h3 id="projects_box_title">Video Repository</h3>
                         </div>
                         <div class="edit_projects">
                             <div class="project_blocks project_blocks_starter">
@@ -188,8 +200,7 @@
         // ============================================================
         // Find a way to make the data only on parent div and not repeat on listed items
         listYTVideos($(".projects_box"), true)
-
-
+        populateProjectData($(".projects_box"))
 
         $(".publish_btn").click(function() {
             $(".create_container").html(`<form action="publish.php" method="POST" class="publish_form">
@@ -211,6 +222,27 @@
             $(".steps_three").addClass("steps_number_active");
             $(".publish_btn").remove();
         })
+
+
+        // UPDATE THUMBNAIL IMAGE FOR PUBLISHING (NOT DONE YET)
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var filepath = e.target.result
+                    //Change Target Image
+                    $(".account_pic").css("background", "url(" + filepath + ")")
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        // Image Trigger
+        $("#upload-img").change(function() {
+            readURL(this);
+        });
     </script>
 </body>
 

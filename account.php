@@ -97,25 +97,6 @@ if (!isset($_SESSION["userID"])) {
             }
         })
     }
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var filepath = e.target.result
-                // $('#blah').attr('src', e.target.result);
-                $(".account_pic").css("background", "url(" + filepath + ")")
-            }
-
-            reader.readAsDataURL(input.files[0]); // convert to base64 string
-        }
-    }
-
-    $("#upload-img").change(function() {
-        // readURL(this);
-        $(".account_pic").submit()
-    });
 </script>
 
 

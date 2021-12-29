@@ -160,6 +160,10 @@ $("#toggleAll").click(function () {
 })
 
 
+$("#upload-img").change(function () {
+    $(".account_pic").submit()
+});
+
 
 
 
@@ -387,6 +391,8 @@ function extractVidId(url) {
     }
 }
 
+// let vids = `<?= $getVid_URLS ?>`
+// console.log(Object.keys(JSON.parse(vids)).length);
 // List Populating function 
 // container = container to be populated with data provided
 // isYT = is this a youtube link or local project link, true = youtube & false = local
@@ -416,6 +422,7 @@ async function listYTVideos(container, isYT) {
                 listMenu = `
                 <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
                 $(listMenu).appendTo(".dropdown_content")
+                $(container).find("#projects_box_title").text("Video Repository (" + videoData.length + " Videos)")
             } else {
                 // Local project video card
                 listHTML = `
@@ -452,7 +459,7 @@ hidePreloader()
 // Get user inputs
 // MAKE MORE ROBUST AND PREVENT MANUAL USER INPUT FROM KEYBOARD
 // ===================
-$(".edit_projects").on("input click", ".question_field", async function (e) {
+$(".edit_projects").on("input click ", ".question_field", async function (e) {
     // $(this).val(extractVidId($(this).val()))
     $(this).blur()
     console.log("BLURRING");
@@ -460,7 +467,7 @@ $(".edit_projects").on("input click", ".question_field", async function (e) {
     const videoID = extractVidId($(this).val())
     if (videoID.length == 11) {
         $(this).val(videoID)
-        // Pass video id to data generator generateData()
+        // Pass video id to data generator saveProjectData()
         $(this).closest(".block_box").find(".dropbtn").attr("data-videoid", videoID)
         // console.log(videoID)
         // Change THumbnail
@@ -471,10 +478,10 @@ $(".edit_projects").on("input click", ".question_field", async function (e) {
         $(this).closest(".block_box").find(".video_title").text(title)
         $(this).closest(".block_box").find(".dropbtn").val(title)
         // console.log(title)
+        updateBlocks()
     } else {
         $(this).val("")
     }
-    arrangeBlocks()
 })
 
 // Dropdown menu dismiss on click anywhere
@@ -521,24 +528,43 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
 
 
 // ========= BLOCKS FUNCTIONALITY ===========
+let timer;
+// $(".edit_projects").on("input click change", ".dropbtn, .question_field", function () {
+//     // clearTimeout(timer)
+//     updateBlocks()
+//     // arrangeBlocks()
+//     setTimeout(() => {
+//         arrangeBlocks()
+//     }, 100);
+// })
+$(".edit_projects").on("input click change", ".input_field, .question_field, .dropbtn, .dropdown_option", function () {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+        arrangeBlocks()
+        updateBlocks()
+    }, 400);
+})
 
-$(".edit_projects").on("input click", ".input_field", function () {
-    // generateData()
+// $(document).on("click", function (event) {
+//     // arrangeBlocks()
+//     if (!$(event.target).is('.input_field')) {
+//         // hide menu
+//         clearTimeout(timer)
+//         // arrangeBlocks()
+//         timer = setTimeout(() => {
+//             // updateBlocks()
+//         }, 1000);
+//     }
+// })
+
+$(".edit_projects").on("change input", ".thumbnail", function () {
     updateBlocks()
 })
 
-$(".jsondebug").click(generateData)
 updateBlocks()
 // Updates and creates/deletes blocks based on user provided data
 async function updateBlocks() {
     console.log("\nUpdating Blocks:")
-
-
-
-
-    // newBlock.appendTo(".edit_projects")
-    // $(".edit_projects").append(newBlock)
-    // console.log("Appending newBlock")
 
     let elOptions = $(".block_questions").find(".options_field")
     for (let i = 0; i < elOptions.length; i++) {
@@ -547,7 +573,6 @@ async function updateBlocks() {
         let optionVideoid = thisBlock.find(".dropbtn").attr("data-videoid")
         // Update option placeholder numbering
         elOptions.eq(i).attr(`placeholder`, `Option ${i+1}`)
-
 
         if (optionTitle || optionVideoid) {
             // console.log(optionTitle, optionVideoid)
@@ -659,39 +684,33 @@ async function updateBlocks() {
             </div>`
             if ($(`.edit_projects .project_blocks`).hasClass(`project_blocks_${i}`)) {
                 // Update blocks' values if they already exist
-                console.log(`Found project_blocks_${i}`);
+                // console.log(`Found project_blocks_${i}`)
                 $(`.project_blocks_${i}`).find("p").text(`${optionTitle}`)
-                $(`.project_blocks_${i}`).find(".video_title").text(`${videoDataTitle}`)
-                let thisThumbnail = $(`.project_blocks_${i} .block_video `).find(".thumbnail");
+                $(`.project_blocks_${i} .block_video`).find(".video_title").text(`${videoDataTitle}`)
+                let thisThumbnail = $(`.project_blocks_${i} .block_video`).find(".thumbnail")
                 if (optionVideoid != undefined) {
                     thisThumbnail.attr("src", `https://i.ytimg.com/vi/${optionVideoid}/hqdefault.jpg`)
-                    console.log("updating thumbnail");
+                    $(`.project_blocks_${i} .block_video`).find(".dropbtn").attr("data-videoid", optionVideoid)
+                    // console.log("updating thumbnail")
                 }
                 // $(`project_blocks_${i}`).css("transform","scale(0.5)")
             } else {
                 // Create blocks with values if they dont exist yet
-                console.log(`\nCreated instance of project_blocks_${i}`);
+                // console.log(`\nCreated instance of project_blocks_${i}`)
                 $(".edit_projects").append(newBlock)
             }
-            // console.log($.parseHTML(newBlock)[1].id);
-            // $('.edit_projects .project_blocks').slice(1).remove();
-            // $(".edit_projects").append(newBlock)
-
         }
 
     }
 
-
+    // Autosave after action feature
+    // saveProjectData()
 }
 
-$(".edit_projects").on("focusout", ".input_field", function () {
-    // setTimeout(() => {
-    arrangeBlocks()
-    // }, 50);
-})
 
 function arrangeBlocks() {
     console.log("Arranging Blocks");
+    let currentFocused = $(document.activeElement)
     $(".edit_projects .project_blocks").sort(function (a, b) {
         return parseInt(a.id) - parseInt(b.id);
     }).each(function () {
@@ -699,25 +718,29 @@ function arrangeBlocks() {
         elem.remove();
         $(elem).appendTo(".edit_projects");
     });
+    currentFocused.focus()
 }
 
+$(".save_btn").click(saveProjectData)
+
 // Creates JSON save based on user provided data
-function generateData() {
+function saveProjectData() {
+    console.log("\nSaving Data...");
+    savingData()
     // Create main container array to store all project data
     let projectDataArray = []
     for (let i = 0; i < $(".project_blocks").length; i++) {
         // Create objects for each project block and store in main array
         let projectData = new Object()
         let projectBlock = $(".project_blocks").eq(i)
-
         // Get block question title and video ID
+        let thisBlockID = projectBlock.find("p").text()
         let thisQuestionTitle = projectBlock.find(".question_title").val()
         let thisQuestionVideoid = projectBlock.find(".dropbtn").attr("data-videoid")
-
         // Store values into data object
+        projectData.blockID = thisBlockID
         projectData.questionTitle = thisQuestionTitle
         projectData.videoID = thisQuestionVideoid
-
         // Create array to store options objects 
         let projectOptionsArray = []
         let projectOptions = $(".project_blocks").eq(i).find(".block_questions")
@@ -725,9 +748,6 @@ function generateData() {
             // Get options title and video ID
             let thisOptionsVideoid = projectOptions.eq(i).find(".dropbtn").attr("data-videoid")
             let thisOptionsTitle = projectOptions.eq(i).find(".options_field").val()
-
-            // console.log(thisOptionsVideoid,thisOptionsTitle);
-
             // Create objects for each option within project block
             let thisProjectOptionsData = new Object()
             // Store values into data object
@@ -736,8 +756,6 @@ function generateData() {
             // Store values into data object
             projectOptionsArray.push(thisProjectOptionsData)
         }
-
-        // 
         projectData.options = projectOptionsArray
         projectDataArray.push(projectData)
     }
@@ -745,9 +763,50 @@ function generateData() {
     console.log(projectDataArray)
     // console.log(projectDataArray[0].options)
 
+    let projectID = getUrlParameter('id');
+    let processedData = JSON.stringify(projectDataArray)
+    $.ajax({
+        type: "POST",
+        data: {
+            'projectData': processedData,
+            'projectID': projectID
+        },
+        url: "updateProjectData_backend.php",
+        cache: false,
+        success: function (response) {
+            console.log("Data Saved!");
+            console.log("Returned DATA:");
+            console.log(JSON.parse(response));
+            dataSaved()
+        }
+    })
+
+    // console.log(projectDataArray[0].options)
+
 
     // Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
-    // saveJson('tn_savefile.json', projectDataArray);
+    // saveJson('tn_' + projectID + '.json', projectDataArray);
+}
+
+// Animation for saving data
+function savingData() {
+    $(".save_msg").text("Saving...")
+    $(".save_msg").removeClass("save_msg_closed")
+}
+
+// Animation for successful data saved
+function dataSaved() {
+    $(".save_msg").text("Project saved!")
+    setTimeout(() => {
+        $(".save_msg").addClass("save_msg_closed")
+    }, 2000);
+}
+
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.href);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, '    '));
 }
 
 // Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
@@ -769,9 +828,188 @@ const saveJson = (filename, dataObjToWrite) => {
 
     link.dispatchEvent(evt);
     link.remove()
-};
+}
+
+// Populate data on load 
+async function populateProjectData(container) {
+    if (!container.attr("data-getVid_ProjectData")) return
+    console.log("Loading Data...");
+    let projectData = JSON.parse(container.attr("data-getVid_ProjectData"))
+    console.log(projectData);
+    // Update starter block
+    let starterBlockData = projectData[0]
+    let starterTitle = starterBlockData.questionTitle
+    let starterVideo = starterBlockData.videoID
+
+    if (starterVideo && starterVideo.length !== 0) {
+        // Populate Starter Block Data
+        videoData = await getVidInfo(starterVideo)
+        videoDataTitle = JSON.parse(videoData).title
+        // console.log(starterTitle);
+        let startBlockEL = $(".project_blocks_starter .block_video")
+        startBlockEL.find(".question_title").val(starterTitle)
+        startBlockEL.find(".dropbtn").val(videoDataTitle)
+        startBlockEL.find(".dropbtn").attr("data-videoid", starterVideo)
+        startBlockEL.find(".video_title").text(videoDataTitle)
+        startBlockEL.find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${starterVideo}/hqdefault.jpg`)
+
+        for (let i = 0; i < 3; i++) {
+            starterBlockData = projectData[0].options[i]
+            starterTitle = starterBlockData.title
+            starterVideo = starterBlockData.videoID
+
+            if (starterVideo && starterVideo.length !== 0) {
+                videoData = await getVidInfo(starterVideo)
+                videoDataTitle = JSON.parse(videoData).title
+
+                startBlockEL = $(".project_blocks_starter .block_questions").eq(i)
+
+                startBlockEL.find(".options_field").val(starterTitle)
+                startBlockEL.find(".dropbtn").val(videoDataTitle)
+                startBlockEL.find(".dropbtn").attr("data-videoid", starterVideo)
+                startBlockEL.find(".video_title").text(videoDataTitle)
+                startBlockEL.find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${starterVideo}/hqdefault.jpg`)
+            }
+
+        }
+        // Populate other data
+
+        for (let i = 1; i < projectData.length; i++) {
+            console.log(projectData[i]);
+            let thisBlockData = projectData[i]
+            let thisTitle = thisBlockData.questionTitle
+            let thisBlockID = thisBlockData.blockID
+            let thisVideo = thisBlockData.videoID
+            videoData = await getVidInfo(thisVideo)
+            videoDataTitle = JSON.parse(videoData).title
+
+            // ===== CREATE NEW BLOCK =====
+            let newBlock = /* HTML */ `
+                        <div class="project_blocks project_blocks_${i-1}" id="${i-1}">
+                            <span class="parent_indicator">
+                                <div class="pi_dot ">
+                                    <p>${thisBlockID}</p>
+                                </div>
+                            </span>
+
+                            <div class="block_video block_box">
+                                <div class="video_cards_container">
+                                    <!-- <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field"> -->
+                                    <div class="video_cards">
+                                        <div class="thumbnail-box">
+                                            <img class="thumbnail" src="https://i.ytimg.com/vi/${thisVideo}/hqdefault.jpg" alt="Thumbnail">
+                                        </div>
+                                        <h4 class="video_title">${videoDataTitle}</h4>
+                                    </div>
+                                </div>
+                                <div class="input_container">
+                                    <input type="text" placeholder="Question/Prompt" class="input_field question_title" value="${thisTitle}">
+                                    <div class="dropbtn_container">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${thisVideo}" style="display:none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="block_questions_container">
+                                <div class="block_questions block_box">
+                                    <input type="text" placeholder="Option 1" class="input_field options_field">
+                                    <div class="dropbtn_container">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <span class="material-icons">
+                                            expand_more
+                                        </span>
+                                        <div class="dropdown_content">
+                                            <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="video_cards_container">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <div class="video_cards">
+                                            <div class="thumbnail-box">
+                                                <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                            </div>
+                                            <h4 class="video_title"> </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="block_questions block_box">
+                                    <input type="text" placeholder="Option 1" class="input_field options_field">
+                                    <div class="dropbtn_container">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <span class="material-icons">
+                                            expand_more
+                                        </span>
+                                        <div class="dropdown_content">
+                                            <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="video_cards_container">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <div class="video_cards">
+                                            <div class="thumbnail-box">
+                                                <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                            </div>
+                                            <h4 class="video_title"> </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="block_questions block_box">
+                                    <input type="text" placeholder="Option 1" class="input_field options_field">
+                                    <div class="dropbtn_container">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <span class="material-icons">
+                                            expand_more
+                                        </span>
+                                        <div class="dropdown_content">
+                                            <!-- <div class="dropdown_option" data-title="" data-videoid="">-- Select an option --</div> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="video_cards_container">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <div class="video_cards">
+                                            <div class="thumbnail-box">
+                                                <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
+                                            </div>
+                                            <h4 class="video_title"> </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+            $(".edit_projects").append(newBlock)
+            for (let x = 0; x < 3; x++) {
+                blockData = projectData[i].options[x]
+                optionTitle = blockData.title
+                optionVideo = blockData.videoID
+
+                if (optionVideo && optionVideo.length !== 0) {
+                    videoData = await getVidInfo(optionVideo)
+                    videoDataTitle = JSON.parse(videoData).title
+                    blockEL = $(`.project_blocks_${i-1} .block_questions`).eq(x)
+                    // console.log(blockEL.find("p").text());
+                    blockEL.find(".options_field").val(optionTitle)
+                    blockEL.find(".dropbtn").val(videoDataTitle)
+                    blockEL.find(".dropbtn").attr("data-videoid", optionVideo)
+                    blockEL.find(".video_title").text(videoDataTitle)
+                    blockEL.find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${optionVideo}/hqdefault.jpg`)
+                }
+
+            }
+        }
+        updateBlocks()
+    }
 
 
+
+
+    // Append additional blocks
+    for (let i = 1; i < projectData.length; i++) {
+        // console.log(projectData[i].questionTitle);
+    }
+}
 
 
 
