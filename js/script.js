@@ -398,6 +398,7 @@ function extractVidId(url) {
 // isYT = is this a youtube link or local project link, true = youtube & false = local
 async function listYTVideos(container, isYT) {
     if (container.data("getvid_urls") != undefined) {
+        loadingText()
         // Get video list from data "data-getVid_URLS"
         const videoData = Object.values(container.data("getvid_urls"))
         // console.log(videoData)
@@ -437,6 +438,7 @@ async function listYTVideos(container, isYT) {
             }
             $(listHTML).appendTo(container)
         }
+        loadedText()
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
@@ -529,14 +531,6 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
 
 // ========= BLOCKS FUNCTIONALITY ===========
 let timer;
-// $(".edit_projects").on("input click change", ".dropbtn, .question_field", function () {
-//     // clearTimeout(timer)
-//     updateBlocks()
-//     // arrangeBlocks()
-//     setTimeout(() => {
-//         arrangeBlocks()
-//     }, 100);
-// })
 $(".edit_projects").on("input click change", ".input_field, .question_field, .dropbtn, .dropdown_option", function () {
     clearTimeout(timer)
     timer = setTimeout(() => {
@@ -545,17 +539,6 @@ $(".edit_projects").on("input click change", ".input_field, .question_field, .dr
     }, 400);
 })
 
-// $(document).on("click", function (event) {
-//     // arrangeBlocks()
-//     if (!$(event.target).is('.input_field')) {
-//         // hide menu
-//         clearTimeout(timer)
-//         // arrangeBlocks()
-//         timer = setTimeout(() => {
-//             // updateBlocks()
-//         }, 1000);
-//     }
-// })
 
 $(".edit_projects").on("change input", ".thumbnail", function () {
     updateBlocks()
@@ -791,15 +774,34 @@ function saveProjectData() {
 // Animation for saving data
 function savingData() {
     $(".save_msg").text("Saving...")
+    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
     $(".save_msg").removeClass("save_msg_closed")
 }
 
 // Animation for successful data saved
 function dataSaved() {
     $(".save_msg").text("Project saved!")
+    $(".save_msg .project_loader").fadeOut()
     setTimeout(() => {
         $(".save_msg").addClass("save_msg_closed")
     }, 2000);
+}
+// Animation for loading data
+loadingText()
+
+function loadingText() {
+    $(".save_msg").text("Loading...")
+    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
+    $(".save_msg").removeClass("save_msg_closed")
+}
+
+// Animation for successful data loaded
+function loadedText() {
+    $(".save_msg").text("Done!")
+    $(".save_msg .project_loader").fadeOut()
+    setTimeout(() => {
+        $(".save_msg").addClass("save_msg_closed")
+    }, 1000);
 }
 
 function getUrlParameter(name) {
@@ -834,8 +836,9 @@ const saveJson = (filename, dataObjToWrite) => {
 async function populateProjectData(container) {
     if (!container.attr("data-getVid_ProjectData")) return
     console.log("Loading Data...");
+    loadingText()
     let projectData = JSON.parse(container.attr("data-getVid_ProjectData"))
-    console.log(projectData);
+    // console.log(projectData);
     // Update starter block
     let starterBlockData = projectData[0]
     let starterTitle = starterBlockData.questionTitle
@@ -875,7 +878,7 @@ async function populateProjectData(container) {
         // Populate other data
 
         for (let i = 1; i < projectData.length; i++) {
-            console.log(projectData[i]);
+            // console.log(projectData[i]);
             let thisBlockData = projectData[i]
             let thisTitle = thisBlockData.questionTitle
             let thisBlockID = thisBlockData.blockID
@@ -1000,6 +1003,8 @@ async function populateProjectData(container) {
             }
         }
         updateBlocks()
+        loadedText()
+        console.log("Done Loading!");
     }
 
 
