@@ -398,7 +398,7 @@ function extractVidId(url) {
 // isYT = is this a youtube link or local project link, true = youtube & false = local
 async function listYTVideos(container, isYT) {
     if (container.data("getvid_urls") != undefined) {
-        loadingText()
+        // loadingText()
         // Get video list from data "data-getVid_URLS"
         const videoData = Object.values(container.data("getvid_urls"))
         // console.log(videoData)
@@ -438,7 +438,6 @@ async function listYTVideos(container, isYT) {
             }
             $(listHTML).appendTo(container)
         }
-        loadedText()
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
@@ -834,7 +833,10 @@ const saveJson = (filename, dataObjToWrite) => {
 
 // Populate data on load 
 async function populateProjectData(container) {
-    if (!container.attr("data-getVid_ProjectData")) return
+    if (!container.attr("data-getVid_ProjectData")) {
+        loadedText()
+        return
+    }
     console.log("Loading Data...");
     loadingText()
     let projectData = JSON.parse(container.attr("data-getVid_ProjectData"))
