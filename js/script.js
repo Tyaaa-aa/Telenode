@@ -423,7 +423,7 @@ async function listYTVideos(container, isYT) {
                 listMenu = `
                 <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
                 $(listMenu).appendTo(".dropdown_content")
-                $(container).find("#projects_box_title").text("Video Repository (" + videoData.length + " Videos)")
+                $(container).find(".vid_counter").text(" (" + videoData.length + " Videos)")
             } else {
                 // Local project video card
                 listHTML = `
@@ -445,7 +445,7 @@ async function listYTVideos(container, isYT) {
 }
 
 function openInNewTab() {
-    if (window.confirm("Do you really want to leave?")) {
+    if (window.confirm("Opening in a new tab")) {
         return true;
     } else {
         event.stopPropagation()
@@ -524,30 +524,117 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
     question_field.val(videoid).trigger('input')
 })
 
+$(".list_view_btn").click(function () {
+    $(".toolbar_btns").removeClass("toolbar_btns_active")
+    $(this).addClass("toolbar_btns_active")
+    $(".projects_box").addClass("list_style")
+})
 
+$(".card_view_btn").click(function () {
+    $(".toolbar_btns").removeClass("toolbar_btns_active")
+    $(this).addClass("toolbar_btns_active")
+    $(".projects_box").removeClass("list_style")
+})
 
 
 
 // ========= BLOCKS FUNCTIONALITY ===========
+let autoSave = 60000; // Autosave every 60 seconds by default
+loadingText() // Show loading text on load
+// updateBlocks() // Update blocks on load
+
 let timer;
+// Update and arrange blocks after user finish typing or clicking on input fields
 $(".edit_projects").on("input click change", ".input_field, .question_field, .dropbtn, .dropdown_option", function () {
     clearTimeout(timer)
     timer = setTimeout(() => {
         arrangeBlocks()
         updateBlocks()
-    }, 400);
+    }, 500);
 })
 
+// $(".edit_projects").on("change input", ".thumbnail", function () {
+//     updateBlocks()
+// })
 
-$(".edit_projects").on("change input", ".thumbnail", function () {
+
+// Event for while saving data
+function savingData() {
+    $(".save_msg").text("Saving...")
+    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
+    $(".save_msg").removeClass("save_msg_closed")
+}
+
+// Event for successful data saved
+function dataSaved() {
+    $(".save_msg").text("Project saved!")
+    $(".save_msg .project_loader").fadeOut()
+    setTimeout(() => {
+        $(".save_msg").addClass("save_msg_closed")
+    }, 2000);
+}
+
+// Event for loading data
+function loadingText() {
+    $(".save_msg").text("Loading...")
+    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
+    $(".save_msg").removeClass("save_msg_closed")
+}
+
+// Event for successful data loaded
+function loadedText() {
+    console.log("Done Loading!✅");
     updateBlocks()
+    $(".save_msg").text("Done!")
+    $(".save_msg .project_loader").fadeOut()
+    setTimeout(() => {
+        $(".save_msg").addClass("save_msg_closed")
+    }, 1000);
+
+    // Set after loading data so doesnt save over existing data before data fully loaded
+    // AutoSave every 1 minute 
+    setInterval(() => {
+        console.log("Auto saving...");
+        saveProjectData()
+    }, autoSave);
+
+    // Ctrl + S to save data
+    $(document).bind("keydown", function (e) {
+        if (e.ctrlKey && e.which == 83) {
+            e.preventDefault()
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                saveProjectData()
+            }, 100);
+        }
+    })
+    // Click save button to save data
+    $(".save_btn").click(saveProjectData)
+
+    // setTimeout(() => {
+    //     $(".edit_page .steps_bar").addClass("collapse_bar")
+    // }, 2000);
+}
+$(document).bind("keydown", function (e) {
+    if (e.ctrlKey && e.which == 83) {
+        e.preventDefault()
+    }
 })
 
-updateBlocks()
+$(window).scroll(function () {
+    let scrollPos = $(window).scrollTop()
+    console.log(scrollPos);
+    if (scrollPos == 0) {
+        $(".edit_page .steps_bar").removeClass("collapse_bar")
+    } else {
+        $(".edit_page .steps_bar").addClass("collapse_bar")
+    }
+})
+// if($(window).scrollTop() == 0){
+
+// }
 // Updates and creates/deletes blocks based on user provided data
 async function updateBlocks() {
-    console.log("\nUpdating Blocks:")
-
     let elOptions = $(".block_questions").find(".options_field")
     for (let i = 0; i < elOptions.length; i++) {
         let thisBlock = $(".project_blocks .block_questions").eq(i)
@@ -684,7 +771,7 @@ async function updateBlocks() {
         }
 
     }
-
+    console.log("Updating blocks")
     // Autosave after action feature
     // saveProjectData()
 }
@@ -703,11 +790,9 @@ function arrangeBlocks() {
     currentFocused.focus()
 }
 
-$(".save_btn").click(saveProjectData)
-
 // Creates JSON save based on user provided data
 function saveProjectData() {
-    console.log("\nSaving Data...");
+    console.log("Saving Data...");
     savingData()
     // Create main container array to store all project data
     let projectDataArray = []
@@ -742,7 +827,8 @@ function saveProjectData() {
         projectDataArray.push(projectData)
     }
 
-    console.log(projectDataArray)
+    // console.table(projectDataArray)
+    // console.log(projectDataArray)
     // console.log(projectDataArray[0].options)
 
     let projectID = getUrlParameter('id');
@@ -756,9 +842,9 @@ function saveProjectData() {
         url: "updateProjectData_backend.php",
         cache: false,
         success: function (response) {
-            console.log("Data Saved!");
-            console.log("Returned DATA:");
-            console.log(JSON.parse(response));
+            console.log("Data Saved! ✅");
+            // console.log("Returned DATA:");
+            // console.log(JSON.parse(response));
             dataSaved()
         }
     })
@@ -770,65 +856,12 @@ function saveProjectData() {
     // saveJson('tn_' + projectID + '.json', projectDataArray);
 }
 
-// Animation for saving data
-function savingData() {
-    $(".save_msg").text("Saving...")
-    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
-    $(".save_msg").removeClass("save_msg_closed")
-}
-
-// Animation for successful data saved
-function dataSaved() {
-    $(".save_msg").text("Project saved!")
-    $(".save_msg .project_loader").fadeOut()
-    setTimeout(() => {
-        $(".save_msg").addClass("save_msg_closed")
-    }, 2000);
-}
-// Animation for loading data
-loadingText()
-
-function loadingText() {
-    $(".save_msg").text("Loading...")
-    $(".save_msg").append(`<img class="project_loader" src="img/loader.png" alt="loading">`)
-    $(".save_msg").removeClass("save_msg_closed")
-}
-
-// Animation for successful data loaded
-function loadedText() {
-    $(".save_msg").text("Done!")
-    $(".save_msg .project_loader").fadeOut()
-    setTimeout(() => {
-        $(".save_msg").addClass("save_msg_closed")
-    }, 1000);
-}
 
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     var results = regex.exec(location.href);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, '    '));
-}
-
-// Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
-const saveJson = (filename, dataObjToWrite) => {
-    const blob = new Blob([JSON.stringify(dataObjToWrite)], {
-        type: "text/json"
-    });
-    const link = document.createElement("a");
-
-    link.download = filename;
-    link.href = window.URL.createObjectURL(blob);
-    link.dataset.downloadurl = ["text/json", link.download, link.href].join(":");
-
-    const evt = new MouseEvent("click", {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-    });
-
-    link.dispatchEvent(evt);
-    link.remove()
 }
 
 // Populate data on load 
@@ -838,7 +871,7 @@ async function populateProjectData(container) {
         return
     }
     console.log("Loading Data...");
-    loadingText()
+    // loadingText()
     let projectData = JSON.parse(container.attr("data-getVid_ProjectData"))
     // console.log(projectData);
     // Update starter block
@@ -1004,25 +1037,29 @@ async function populateProjectData(container) {
 
             }
         }
-        updateBlocks()
-        loadedText()
-        console.log("Done Loading!");
     }
-
-
-
-
-    // Append additional blocks
-    for (let i = 1; i < projectData.length; i++) {
-        // console.log(projectData[i].questionTitle);
-    }
+    loadedText()
 }
 
+// Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
+const saveJson = (filename, dataObjToWrite) => {
+    const blob = new Blob([JSON.stringify(dataObjToWrite)], {
+        type: "text/json"
+    });
+    const link = document.createElement("a");
 
+    link.download = filename;
+    link.href = window.URL.createObjectURL(blob);
+    link.dataset.downloadurl = ["text/json", link.download, link.href].join(":");
 
-// DEBUG GENERATE EXTRA BLOCKS FOR TESTING
+    const evt = new MouseEvent("click", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+    });
 
-for (let i = 1; i < 3; i++) {
-    // $(".project_blocks_starter").eq(0).clone().appendTo(".edit_projects")
+    link.dispatchEvent(evt);
+    link.remove()
 }
+
 // PROJECTS PAGE RENDERING ============

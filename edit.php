@@ -7,7 +7,7 @@
     <!-- HEADER CONTENT -->
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
-    <section class="main_body">
+    <section class="main_body edit_page">
         <div class="main_content">
             <div class="steps_bar">
                 <!-- <h2>Create New Project</h2> -->
@@ -75,9 +75,23 @@
                 ?>
 
                     <div class="edit_container">
-                        <div class="projects_box" data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
-                            <h3 id="projects_box_title">Video Repository</h3>
-                        </div>
+                        <!-- <div class="projects_box_container"> -->
+                            <div class="projects_box " data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
+                                <h3 id="projects_box_title"><?= $getVid_Name ?><span class="vid_counter"></span></h3>
+                                <div class="projects_box_toolbar">
+                                    <span class="material-icons list_view_btn toolbar_btns" title="List View">
+                                        list
+                                    </span>
+                                    <span class="material-icons card_view_btn toolbar_btns toolbar_btns_active" title="Card View">
+                                        view_agenda
+                                    </span>
+                                    <span class="material-icons edit_videos_btn toolbar_btns" title="Edit Videos">
+                                        edit
+                                    </span>
+                                </div>
+                            </div>
+
+                        <!-- </div> -->
                         <div class="edit_projects">
                             <div class="project_blocks project_blocks_starter">
                                 <span class="parent_indicator">

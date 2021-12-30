@@ -885,7 +885,7 @@ a:hover {
     width: 0px;
 }
 
-.project_loader{
+.project_loader {
     position: absolute;
     top: 50%;
     right: 60px;
@@ -931,6 +931,8 @@ a:hover {
     width: 350px;
     margin: 0 auto;
     overflow: hidden;
+    max-height: 100px;
+    transition: all 0.3s;
 }
 
 /* .steps_container *{
@@ -1028,6 +1030,65 @@ a:hover {
     color: var(--mainColor);
 }
 
+.edit_page .main_content{
+    padding-top: 0;
+}
+
+.edit_page .steps_bar {
+    text-align: center;
+    position: relative;
+    /* height: 0; */
+    width: 93.5%;
+    overflow: hidden;
+    margin: 0 auto;
+    max-height: 100px;
+    min-height: 100px;
+    transition: all 0.3s;
+}
+
+.edit_page .steps_container{
+    padding-top: 20px;
+    position: fixed;
+    left:50%;
+    transform: translateX(-50%);
+}
+
+.collapse_bar {
+    /* max-height: 0px !important; */
+    position: fixed !important;
+    z-index: 9999;
+    padding: 15px;
+    background-color: var(--mainColor);
+    top: 77px;
+    width: 100% !important;
+    max-height: 70px !important;
+    min-height: 70px !important;
+    left: 0;
+    right: 0;
+    box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+}
+
+/* .collapse_bar .publish_btn {
+    right: 110px;
+}
+
+.collapse_bar .save_btn {
+    right: 240px;
+}
+
+.collapse_bar .save_msg {
+    right: 360px;
+} */
+
+.collapse_bar .steps_container{
+    margin-top: -120px;
+    /* opacity: 0; */
+    /* max-height: 0px;
+    padding-top: 0px; */
+}
+
 .edit_container {
     display: flex;
     width: 90%;
@@ -1040,19 +1101,67 @@ a:hover {
 
 .projects_box {
     background-color: var(--mainColor);
-    width: 17%;
+    width: 22%;
     display: flex;
     /* justify-content: center; */
     flex-direction: column;
     align-items: center;
     border-radius: var(--globalRadius);
     padding: 20px;
+    padding-top: 20px;
     margin-right: 50px;
-    max-height: 85vh;
+    max-height: 80vh;
     overflow: auto;
-    position: fixed;
+    overflow-x: hidden;
+    position: sticky;
     left: 10%;
-    top: 12%;
+    top: 17%;
+}
+
+.projects_box_toolbar {
+    background-color: var(--mainColor);
+    width: calc(100% + 50px);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    margin-top: 20px;
+    position: sticky;
+    z-index: 1;
+    top: -20px;
+    border-radius: var(--globalRadius);
+    box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
+    -webkit-box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
+    -moz-box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
+}
+
+.toolbar_btns {
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.toolbar_btns:hover {
+    cursor: pointer;
+    color: #598dc5;
+}
+
+.toolbar_btns_active{
+    color: #598dc5;
+}
+
+.list_style .video_cards {
+    display: flex;
+    align-items: center;
+}
+
+.list_style .thumbnail-box {
+    min-width: 60px;
+    max-width: 60px;
+    margin-right: 10px;
+}
+
+.list_style .thumbnail {
+    /* width: 60px; */
 }
 
 .edit_projects {
