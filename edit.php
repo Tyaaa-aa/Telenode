@@ -25,13 +25,13 @@
                         <span>Publish</span>
                     </div>
                 </div>
-                <button class="publish_btn btn">
+                <button class="publish_btn btn" title="Publish Project">
                     <span class="material-icons">
                         publish
                     </span>
                     <span>Publish</span>
                 </button>
-                <button class="save_btn btn">
+                <button class="save_btn btn" title="Save Project">
                     <span class="material-icons">
                         save
                     </span>

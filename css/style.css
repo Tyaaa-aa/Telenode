@@ -1093,7 +1093,7 @@ a:hover {
     display: flex;
     width: 90%;
     margin: 0 auto;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     justify-content: flex-end;
     position: relative;
     /* height: 2000px; */
@@ -1114,7 +1114,7 @@ a:hover {
     overflow: auto;
     overflow-x: hidden;
     position: sticky;
-    left: 10%;
+    left: 0%;
     top: 17%;
 }
 
