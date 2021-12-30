@@ -1094,7 +1094,7 @@ a:hover {
     width: 90%;
     margin: 0 auto;
     justify-content: space-between;
-    justify-content: flex-end;
+    justify-content: center;
     position: relative;
     /* height: 2000px; */
 }
@@ -1116,6 +1116,16 @@ a:hover {
     position: sticky;
     left: 0%;
     top: 17%;
+    transition: all 0.3s;
+}
+
+.projects_box_expanded {
+    width: 50%;
+}
+
+.vid_counter {
+    font-size: 0.7em;
+    margin-left: 10px;
 }
 
 .projects_box_toolbar {
@@ -1137,6 +1147,7 @@ a:hover {
 .toolbar_btns_container {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     margin-bottom: 10px;
     width: 100%;
 }
@@ -1149,17 +1160,46 @@ a:hover {
 
 .toolbar_btns:hover {
     cursor: pointer;
-    color: #598dc5;
+    color: #598dc5 !important;
 }
 
 .toolbar_btns_active {
     color: #598dc5;
 }
 
-.list_style .video_cards {
+.add_videos_btn {
+    position: relative;
     display: flex;
     align-items: center;
-    margin: 5px;
+}
+
+.add_video_icon{
+    transition: all 0.3s;
+}
+
+.add_videos_btn_hidden {
+    display: none !important;
+}
+
+.add_video_container {
+    display: flex;
+    overflow: hidden;
+    max-width: 0px;
+    transition: all 0.3s;
+}
+
+.add_video_container_expanded .add_video_container {
+    max-width: 360px;
+}
+
+.add_video_container_expanded .add_video_icon{
+    transform: rotate(45deg);
+}
+
+
+.list_style a {
+    display: flex;
+    align-items: center;
 }
 
 .list_style .thumbnail-box {
@@ -1182,6 +1222,27 @@ a:hover {
     min-width: 100%;
 }
 
+.delete_vid {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.delete_vid:hover {
+    cursor: pointer;
+    color: #598dc5;
+}
+
+.delete_vid_hidden {
+    display: none !important;
+}
+
+
+
+
 
 
 
@@ -1193,12 +1254,22 @@ a:hover {
     border-radius: var(--globalRadius);
     padding: 20px;
     padding-top: 0px;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.edit_projects_collapsed {
+    padding: 0px;
+    width: 0%;
 }
 
 .edit_container .projects_box .video_cards {
     cursor: grab;
     transition: none;
     min-width: 100%;
+    max-width: 100%;
+    /* overflow: hidden; */
+    position: relative;
 }
 
 .edit_container .projects_box .video_cards:hover {
@@ -1208,6 +1279,11 @@ a:hover {
 .edit_container .projects_box .video_cards:active {
     cursor: grabbing;
 }
+
+/* .edit_container .projects_box .video_cards h4{
+    text-overflow: ellipsis;
+    word-break: break-all;
+} */
 
 .block_video .video_cards {
     cursor: auto;

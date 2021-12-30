@@ -412,21 +412,25 @@ async function listYTVideos(container, isYT) {
             let listHTML;
             if (isYT) {
                 // Youtube video card
-                listHTML = `
-                <a href="https://youtu.be/${videoID}" class="video_cards grabbing" target="_blank" onclick="openInNewTab()">
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-                    </div>
-                    <h4>${title}</h4>
-                </a>`;
-
-                listMenu = `
-                <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
-                $(listMenu).appendTo(".dropdown_content")
-                $(container).find(".vid_counter").text(" (" + videoData.length + " Videos)")
+                listHTML = /* HTML */ `
+                <div class="video_cards">
+                    <a href="https://youtu.be/${videoID}" class="grabbing" target="_blank" onclick="openInNewTab()" data-videoid="${videoID}">
+                        <div class="thumbnail-box">
+                            <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
+                        </div>
+                        <h4>${title}</h4>
+                    </a>
+                    <span class="material-icons delete_vid delete_vid_hidden">
+                        clear
+                    </span>
+                </div>`;
+                // listMenu = /* HTML */ `
+                // <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
+                // $(listMenu).appendTo(".dropdown_content")
+                // $(container).find(".vid_counter").text(" (" + videoData.length + " Videos)")
             } else {
                 // Local project video card
-                listHTML = `
+                listHTML = /* HTML */ `
                 <div class="video_cards" onclick="playThisVid('${videoID}')">
                     <div class="thumbnail-box">
                         <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
@@ -438,13 +442,17 @@ async function listYTVideos(container, isYT) {
             }
             $(listHTML).appendTo(container)
         }
+        if (isYT) {
+            updateListMenu(container.data("getvid_urls"))
+        }
+
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
     }
 }
 
-function openInNewTab() {
+function openInNewTab(e) {
     if (window.confirm("Opening in a new tab")) {
         return true;
     } else {
@@ -524,18 +532,21 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
     question_field.val(videoid).trigger('input')
 })
 
+// Change video repository view to list view
 $(".list_view_btn").click(function () {
-    $(".toolbar_btns").removeClass("toolbar_btns_active")
+    $(".card_view_btn").removeClass("toolbar_btns_active")
     $(this).addClass("toolbar_btns_active")
     $(".projects_box").addClass("list_style")
 })
 
+// Change video repository view to card view
 $(".card_view_btn").click(function () {
-    $(".toolbar_btns").removeClass("toolbar_btns_active")
+    $(".list_view_btn").removeClass("toolbar_btns_active")
     $(this).addClass("toolbar_btns_active")
     $(".projects_box").removeClass("list_style")
 })
 
+// Search projects video repository function
 $(".edit_container .search_input").keyup(function () {
     let input = $(this).val().toUpperCase()
     let vids = $(".projects_box .video_cards")
@@ -551,6 +562,156 @@ $(".edit_container .search_input").keyup(function () {
     }
 })
 
+// Edit video repository function
+$(".edit_videos_btn").click(function (e) {
+    // $(".toolbar_btns").removeClass("toolbar_btns_active")
+    if ($(this).hasClass("edit_mode")) {
+        // HIDE EDIT MODE
+        $(this).removeClass("edit_mode")
+        $(this).css("color", "var(--secondaryColor)")
+        $(".edit_projects").removeClass("edit_projects_collapsed")
+        $(".projects_box").removeClass("projects_box_expanded")
+        $(".delete_vid").addClass("delete_vid_hidden")
+        $(".add_videos_btn").addClass("add_videos_btn_hidden")
+    } else {
+        // SHOW EDIT MODE
+        $(this).css("color", "#d3773a")
+        $(this).addClass("edit_mode")
+        $(".edit_projects").addClass("edit_projects_collapsed")
+        $(".projects_box").addClass("projects_box_expanded")
+        $(".delete_vid").removeClass("delete_vid_hidden")
+        $(".add_videos_btn").removeClass("add_videos_btn_hidden")
+    }
+})
+
+// Delete video from project repository
+let vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+$(".projects_box").on("click", ".delete_vid", function () {
+    if (window.confirm("Delete Video?")) {
+
+        console.log("Delete Video");
+        // console.log(vidArray);
+        // console.log($(this).parent().index()-2);
+        let thisVid = $(this).parent()
+        let selectedIndex = thisVid.index() - 2
+        // console.log(selectedIndex);
+        delete vidArray[Object.keys(vidArray)[selectedIndex]]
+        $(thisVid).remove()
+
+        let projectID = getUrlParameter('id')
+        vidArray = JSON.stringify(vidArray)
+        // console.log(vidArray);
+        $.ajax({
+            type: "POST",
+            data: {
+                'videos': vidArray,
+                'projectID': projectID
+            },
+            url: "updateProjectVideos_backend.php",
+            cache: false,
+            success: function (response) {
+                console.log("Video Deleted! ✅")
+                vidArray = JSON.parse(response)
+                // console.log(vidArray)
+                updateListMenu(vidArray)
+            }
+        })
+    }
+})
+
+// Add video button
+$(".add_videos_btn").click(function () {
+    if ($(".add_videos_btn").hasClass("add_video_container_expanded")) {
+        // Hide add input
+        $(".add_videos_btn").removeClass("add_video_container_expanded")
+        $(this).css("color", "var(--secondaryColor)")
+    } else {
+        $(".add_videos_btn").addClass("add_video_container_expanded")
+        // Show add input
+        $(this).css("color", "#d3773a")
+    }
+})
+
+$(".add_video_container").click(function (e) {
+    e.stopPropagation()
+})
+
+$(".add_btn_submit").click(async function () {
+    console.log(vidArray)
+    let inputAdd = $(".add_video_input").val()
+    inputAdd = extractVidId(inputAdd)
+    if (inputAdd.length == 11) {
+        console.log(inputAdd)
+        let thisIndex = $(".projects_box").find(".video_cards").length + 1
+        console.log(thisIndex)
+        vidArray[`video_${thisIndex}`] = inputAdd
+        console.log(vidArray)
+
+        let result = await getVidInfo(inputAdd) // call function to get returned Promise (calls async function sequentially)
+        let title = JSON.parse(result).title;
+
+        let listHTML = /* HTML */ `
+        <div class="video_cards">
+            <a href="https://youtu.be/${inputAdd}" class="grabbing" target="_blank" onclick="openInNewTab()" data-videoid="${inputAdd}">
+                <div class="thumbnail-box">
+                    <img class="thumbnail" src="https://i.ytimg.com/vi/${inputAdd}/hqdefault.jpg" alt="Thumbnail">
+                </div>
+                <h4>${title}</h4>
+            </a>
+            <span class="material-icons delete_vid">
+                clear
+            </span>
+        </div>`;
+        $(".projects_box").append(listHTML)
+
+        let projectID = getUrlParameter('id')
+        vidArray = JSON.stringify(vidArray)
+        // console.log(vidArray);
+        $.ajax({
+            type: "POST",
+            data: {
+                'videos': vidArray,
+                'projectID': projectID
+            },
+            url: "updateProjectVideos_backend.php",
+            cache: false,
+            success: function (response) {
+                console.log("Video Added! ✅")
+                vidArray = JSON.parse(response)
+                $(".add_video_input").val('')
+                // console.log(vidArray)
+                updateListMenu(vidArray)
+            }
+        })
+
+
+
+    } else {
+        alert("Please enter a valid link!")
+    }
+    // $(".projects_box").find(".video_cards").remove()
+    // listYTVideos($(".projects_box"), true)
+})
+
+// Updates list menus with available imported videos
+async function updateListMenu(array) {
+    // console.log(array)
+    // console.log(Object.keys(vidArray).length);
+    $(".dropdown_content ").html('')
+    const videoData = Object.values(array)
+    for (let i = 0; i < Object.keys(array).length; i++) {
+        const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
+        // let videoID = VideoDataArray[i];
+        let result = await getVidInfo(videoID) // call function to get returned Promise (calls async function sequentially)
+        const thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
+        const title = JSON.parse(result).title;
+
+        listMenu = /* HTML */ `
+        <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
+        $(listMenu).appendTo(".dropdown_content")
+        $(".projects_box").find(".vid_counter").text(" (" + videoData.length + " Videos)")
+    }
+}
 
 // ========= BLOCKS FUNCTIONALITY ===========
 let autoSave = 60000; // Autosave every 60 seconds by default
@@ -597,7 +758,14 @@ function loadingText() {
 
 // Event for successful data loaded
 function loadedText() {
-    console.log("Done Loading!✅");
+    // AUTO EDIT MODE FOR DEVELOPMENT ONLY
+    // $(".add_videos_btn").click()
+    // setTimeout(() => {
+    //     $(".edit_videos_btn").click()
+    // }, 500);
+
+
+    console.log("Done Loading!✅")
     updateBlocks()
     $(".save_msg").text("Done!")
     $(".save_msg .project_loader").fadeOut()
