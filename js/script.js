@@ -536,6 +536,20 @@ $(".card_view_btn").click(function () {
     $(".projects_box").removeClass("list_style")
 })
 
+$(".edit_container .search_input").keyup(function () {
+    let input = $(this).val().toUpperCase()
+    let vids = $(".projects_box .video_cards")
+    console.log(input);
+    for (i = 0; i < vids.length; i++) {
+        let thisVidTitle = vids.eq(i).find("h4").text().toUpperCase()
+        // console.log(thisVidTitle)
+        if (thisVidTitle.includes(input)) {
+            vids.eq(i).show()
+        } else {
+            vids.eq(i).hide()
+        }
+    }
+})
 
 
 // ========= BLOCKS FUNCTIONALITY ===========
@@ -623,7 +637,7 @@ $(document).bind("keydown", function (e) {
 
 $(window).scroll(function () {
     let scrollPos = $(window).scrollTop()
-    console.log(scrollPos);
+    // console.log(scrollPos);
     if (scrollPos == 0) {
         $(".edit_page .steps_bar").removeClass("collapse_bar")
     } else {

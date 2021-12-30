@@ -1030,7 +1030,7 @@ a:hover {
     color: var(--mainColor);
 }
 
-.edit_page .main_content{
+.edit_page .main_content {
     padding-top: 0;
 }
 
@@ -1046,10 +1046,10 @@ a:hover {
     transition: all 0.3s;
 }
 
-.edit_page .steps_container{
+.edit_page .steps_container {
     padding-top: 20px;
     position: fixed;
-    left:50%;
+    left: 50%;
     transform: translateX(-50%);
 }
 
@@ -1082,7 +1082,7 @@ a:hover {
     right: 360px;
 } */
 
-.collapse_bar .steps_container{
+.collapse_bar .steps_container {
     margin-top: -120px;
     /* opacity: 0; */
     /* max-height: 0px;
@@ -1122,9 +1122,9 @@ a:hover {
     background-color: var(--mainColor);
     width: calc(100% + 50px);
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
     padding: 10px;
-    margin-top: 20px;
     position: sticky;
     z-index: 1;
     top: -20px;
@@ -1132,6 +1132,13 @@ a:hover {
     box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
     -webkit-box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
     -moz-box-shadow: 2px 10px 7px -5px rgb(0 0 0 / 15%);
+}
+
+.toolbar_btns_container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .toolbar_btns {
@@ -1145,24 +1152,38 @@ a:hover {
     color: #598dc5;
 }
 
-.toolbar_btns_active{
+.toolbar_btns_active {
     color: #598dc5;
 }
 
 .list_style .video_cards {
     display: flex;
     align-items: center;
+    margin: 5px;
 }
 
 .list_style .thumbnail-box {
     min-width: 60px;
     max-width: 60px;
+    margin: 0px;
     margin-right: 10px;
 }
 
 .list_style .thumbnail {
     /* width: 60px; */
 }
+
+.toolbar_search {
+    display: flex;
+    width: 90%;
+}
+
+.toolbar_search .input_field {
+    min-width: 100%;
+}
+
+
+
 
 .edit_projects {
     display: flex;
@@ -1176,6 +1197,12 @@ a:hover {
 
 .edit_container .projects_box .video_cards {
     cursor: grab;
+    transition: none;
+    min-width: 100%;
+}
+
+.edit_container .projects_box .video_cards:hover {
+    color: var(--secondaryColor);
 }
 
 .edit_container .projects_box .video_cards:active {
