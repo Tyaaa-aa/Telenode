@@ -586,7 +586,7 @@ $(".edit_videos_btn").click(function (e) {
 
 // Delete video from project repository
 let vidArray
-if($(".projects_box").attr("data-getvid_urls") != undefined){
+if ($(".projects_box").attr("data-getvid_urls") != undefined) {
     vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
 }
 $(".projects_box").on("click", ".delete_vid", function () {
@@ -1247,4 +1247,85 @@ const saveJson = (filename, dataObjToWrite) => {
     link.remove()
 }
 
-// PROJECTS PAGE RENDERING ============
+// ======= PUBLISH SECTION ==========
+
+let publishScrollPos;
+$(".publish_btn").click(function () {
+    // $(".main_content")
+    if ($(".main_content").hasClass("view_form")) {
+        // HIDE PULISH FORM 
+        $(this).find(".publish_btn_label").text("Publish")
+        $(this).removeClass("publish_btn_active")
+        $(".main_content").removeClass("view_form")
+        $(".steps_three").removeClass("steps_number_active")
+        $(window).scrollTop(publishScrollPos)
+
+        // $(this).find(".material-icons").text("publish")
+        // $(".edit_page .steps_bar").addClass("collapse_bar")
+        // $('html').css({
+        //     'overflow-y': 'auto'
+        // })
+    } else {
+        // SHOW PULISH FORM 
+        $(this).addClass("publish_btn_active")
+        $(".main_content").addClass("view_form")
+        $(".steps_three").addClass("steps_number_active")
+        $(this).find(".publish_btn_label").text("Go Back")
+        publishScrollPos = $(window).scrollTop()
+        $(window).scrollTop(0)
+
+        // $(this).find(".material-icons").text("arrow_upward")
+        // $(".edit_page .steps_bar").removeClass("collapse_bar")
+        // saveProjectData()
+        // $('html').css({
+        //     'overflow-y': 'hidden'
+        // })
+    }
+})
+
+$(".publish_form").submit(function (e) {
+    e.preventDefault() // avoid to execute the actual submit of the form.
+    var form = $(this)
+    var formData = new FormData(form[0])
+    var url = form.attr('action')
+    // console.log(url)
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formData, 
+        processData: false, // tell jQuery not to process the data
+        contentType: false, // tell jQuery not to set contentType
+        success: function (response) {
+            let result = JSON.parse(response).message
+            // alert(result)
+            console.log(result)
+            if (result == "success") {
+                // If successfully updated
+                
+            } else {
+                // If error received alert error message
+                alert(result)
+            }
+        }
+    })
+})
+
+// UPDATE THUMBNAIL IMAGE FOR PUBLISHING (NOT DONE YET)
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader()
+
+        reader.onload = function (e) {
+            var filepath = e.target.result
+            //Change Target Image
+            $(".thumbnail_upload_image").attr("src", filepath)
+        }
+
+        reader.readAsDataURL(input.files[0]) // convert to base64 string
+    }
+}
+
+// Image Trigger
+$("#upload-img").change(function () {
+    readURL(this)
+});

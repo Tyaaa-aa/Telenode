@@ -187,8 +187,10 @@
             <form class="publish_form" action="publish_backend.php" method="POST" enctype="multipart/form-data">
                 <div class="publish_form_row">
                     <div class="input_fields_container">
-                        <input type="text" placeholder="Project Name" class="input_field upload_input_field" name="project_name" required value="<?= $getVid_Name ?>">
-                        <textarea type="text" placeholder="Project Description" class="input_field upload_input_field" name="project_description" required><?= $getVid_Description ?></textarea>
+                        <label for="project_name">Project Name</label>
+                        <input type="text" placeholder="Project Name" class="input_field upload_input_field" name="project_name" required value="<?= $getVid_Name ?>" id="project_name">
+                        <label for="project_description">Project Description</label>
+                        <textarea type="text" placeholder="Project Description" class="input_field upload_input_field" name="project_description" required id="project_description"><?= $getVid_Description ?></textarea>
                     </div>
                     <div class="thumbnail_upload thumbnail-box">
                         <input type="file" class="thumbnail_input" name="thumbnail_image" id="upload-img" title="Upload Thumbnail" accept="image/png, image/jpeg">
@@ -242,83 +244,8 @@
 
         listYTVideos($(".projects_box"), true)
         populateProjectData($(".projects_box"))
-        let currentScrollPos;
-        $(".publish_btn").click(function() {
-            // $(".main_content")
-            if ($(".main_content").hasClass("view_form")) {
-                // HIDE PULISH FORM 
-                $(this).find(".publish_btn_label").text("Publish")
-                $(this).removeClass("publish_btn_active")
-                $(".main_content").removeClass("view_form")
-                $(".steps_three").removeClass("steps_number_active")
-                $(window).scrollTop(currentScrollPos)
 
-                // $(this).find(".material-icons").text("publish")
-                // $(".edit_page .steps_bar").addClass("collapse_bar")
-                // $('html').css({
-                //     'overflow-y': 'auto'
-                // })
-            } else {
-                // SHOW PULISH FORM 
-                $(this).addClass("publish_btn_active")
-                $(".main_content").addClass("view_form")
-                $(".steps_three").addClass("steps_number_active")
-                $(this).find(".publish_btn_label").text("Go Back")
-                currentScrollPos = $(window).scrollTop()
-                $(window).scrollTop(0)
-
-                // $(this).find(".material-icons").text("arrow_upward")
-                // $(".edit_page .steps_bar").removeClass("collapse_bar")
-                // saveProjectData()
-                // $('html').css({
-                //     'overflow-y': 'hidden'
-                // })
-            }
-        })
         $(".publish_btn").click()
-
-        $(".publish_form").submit(function(e) {
-            e.preventDefault() // avoid to execute the actual submit of the form.
-            var form = $(this)
-            var formData = new FormData(form[0])
-            var url = form.attr('action')
-            // console.log(url)
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: formData, // serializes the form's elements.
-                processData: false, // tell jQuery not to process the data
-                contentType: false, // tell jQuery not to set contentType
-                // dataType: "json",
-                success: function(response) {
-                    // alert(data) // show response from the php script.
-                    // alert("Done")
-                    let result = JSON.parse(response).message
-                    alert(result);
-                    console.log(result);
-                }
-            })
-        })
-
-        // UPDATE THUMBNAIL IMAGE FOR PUBLISHING (NOT DONE YET)
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader()
-
-                reader.onload = function(e) {
-                    var filepath = e.target.result
-                    //Change Target Image
-                    $(".thumbnail_upload_image").attr("src", filepath)
-                }
-
-                reader.readAsDataURL(input.files[0]) // convert to base64 string
-            }
-        }
-
-        // Image Trigger
-        $("#upload-img").change(function() {
-            readURL(this)
-        });
     </script>
 </body>
 
