@@ -54,6 +54,7 @@ html {
     height: 100%;
     width: 100%;
     color: var(--secondaryColor);
+    /* scroll-behavior: smooth; */
 }
 
 body {
@@ -94,11 +95,11 @@ nav {
 
 footer {
     height: 80px;
-    background-color: darkslategrey;
+    /* background-color: darkslategrey; */
     /* position:absolute; */
     /* bottom:0; */
     /* width:100%; */
-    height: 200px;
+    /* height: 200px; */
 
     /* display: none; */
 }
@@ -753,6 +754,10 @@ a:hover {
     margin-top: 50px;
 }
 
+.edit_account_btn:hover {
+    background-color: #d3773a;
+}
+
 .readonly_field {
     background-color: transparent;
     padding: 10px 20px;
@@ -854,24 +859,28 @@ a:hover {
     right: 20px;
     top: 0%;
     /* transform: translate(-50%, -50%); */
-    background-color: #FF8F44;
+    background-color: #598dc5;
     border: none;
     outline: none;
 }
 
+.publish_btn {
+    width: 130px;
+}
+
 .save_btn {
-    right: 150px;
+    right: 160px;
 }
 
 .publish_btn:hover,
 .save_btn:hover {
-    background-color: #d3773a;
+    background-color: #4d7caf;
 }
 
 .save_msg {
     position: absolute;
     white-space: nowrap;
-    right: 270px;
+    right: 240px;
     width: 120px;
     padding: 20px 0;
     text-align: right;
@@ -896,16 +905,6 @@ a:hover {
     animation-timing-function: linear;
 }
 
-.publish_form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-}
-
-.publish_form .upload_input_field {
-    margin-bottom: 10px;
-}
-
 
 
 
@@ -916,6 +915,7 @@ a:hover {
 /* =========== CREATE SECTION ========== */
 .create_container {
     padding-top: 20px;
+    transition: all 0.3s;
     /* height: 2000px; */
 }
 
@@ -1150,6 +1150,7 @@ a:hover {
     align-items: center;
     margin-bottom: 10px;
     width: 100%;
+    min-height: 50px;
 }
 
 .toolbar_btns {
@@ -1173,7 +1174,7 @@ a:hover {
     align-items: center;
 }
 
-.add_video_icon{
+.add_video_icon {
     transition: all 0.3s;
 }
 
@@ -1192,8 +1193,8 @@ a:hover {
     max-width: 360px;
 }
 
-.add_video_container_expanded .add_video_icon{
-    transform: rotate(45deg);
+.add_video_container_expanded .add_video_icon {
+    transform: rotate(-45deg);
 }
 
 
@@ -1229,11 +1230,16 @@ a:hover {
     transform: translateY(-50%);
     user-select: none;
     transition: all 0.3s;
+    padding: 5px;
 }
 
 .delete_vid:hover {
     cursor: pointer;
     color: #598dc5;
+    cursor: pointer;
+    color: #598dc5;
+    background-color: var(--sidebar);
+    border-radius: var(--globalRadius);
 }
 
 .delete_vid_hidden {
@@ -1452,4 +1458,250 @@ a:hover {
 
 .dropped {
     max-height: 250px;
+}
+
+/* ===== EDIT PAGE PUBLISH FORM ===== */
+
+.publish_form {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    position: fixed;
+    top: 25%;
+    right: -50%;
+    background-color: var(--mainColor);
+    /* background-color: red; */
+    border-radius: var(--globalRadius);
+    padding: 20px;
+    transform: translateX(50%);
+    z-index: 100;
+    transition: all 0.3s;
+}
+
+.publish_form .upload_input_field {
+    margin-bottom: 10px;
+    background-color: var(--inputField);
+}
+
+.view_form .create_container {
+    transform: translateX(-100%);
+
+}
+
+.view_form .publish_form {
+    right: 50%;
+}
+
+.publish_btn .material-icons {
+    transition: all 0.2s;
+}
+
+.publish_btn_active .material-icons {
+    transform: rotate(-90deg);
+}
+
+.publish_form_row {
+    display: flex;
+}
+
+.publish_form_row>div {
+    width: 50%;
+}
+
+.publish_form textarea {
+    resize: none;
+    max-height: 300px;
+    min-height: 140px;
+    border-radius: var(--globalRadius);
+}
+
+.thumbnail_upload {
+    position: relative;
+    height: 100%;
+    margin-bottom: 0;
+    border-radius: var(--globalRadius);
+}
+
+.thumbnail_upload .thumbnail {
+    border-radius: var(--globalRadius);
+}
+
+.thumbnail_input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.thumbnail_upload .material-icons {
+    z-index: 5;
+    color: #FFF;
+    pointer-events: none;
+    transform: scale(0.2) translate(-25%, -25%);
+    transform-origin: center;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transition: all 0.15s;
+}
+
+.thumbnail_upload:hover .material-icons {
+    opacity: 1;
+    transform: scale(1.3) translate(-25%, -25%);
+    background-color: var(--sidebar);
+    padding: 5px;
+    border-radius: var(--globalRadius);
+    /* color: #598dc5; */
+}
+
+.publish_form_btn {
+    background-color: #FF8F44;
+    width: 118px;
+    margin-left: 0;
+}
+
+.publish_form_btn:hover {
+    background-color: #d3773a;
+}
+
+/* RADIO BUTTON CSS */
+.control {
+    font-family: arial;
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.control_indicator {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #dddddd;
+    border: 0px solid #000000;
+    /* border-radius: undefinedpx; */
+}
+
+.control:hover input~.control_indicator,
+.control input:focus~.control_indicator {
+    background: #cccccc;
+}
+
+.control input:checked~.control_indicator {
+    background: #ff8f44;
+}
+
+.control:hover input:not([disabled]):checked~.control_indicator,
+.control input:checked:focus~.control_indicator {
+    background: #ff8f44;
+}
+
+.control input:disabled~.control_indicator {
+    background: #e6e6e6;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.control_indicator:after {
+    box-sizing: unset;
+    content: '';
+    position: absolute;
+    display: none;
+}
+
+.control input:checked~.control_indicator:after {
+    display: block;
+}
+
+.control-radio .control_indicator {
+    border-radius: 50%;
+}
+
+.control-radio .control_indicator:after {
+    left: 7px;
+    top: 7px;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: background 250ms;
+}
+
+.control-radio input:disabled~.control_indicator:after {
+    background: #7b7b7b;
+}
+
+.control-radio .control_indicator::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-left: -1.3rem;
+    margin-top: -1.3rem;
+    background: #ff8f44;
+    border-radius: 3rem;
+    opacity: 0.6;
+    z-index: 99999;
+    transform: scale(0);
+}
+
+@keyframes s-ripple {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    20% {
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.01;
+        transform: scale(1);
+    }
+}
+
+@keyframes s-ripple-dup {
+    0% {
+        transform: scale(0);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    60% {
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+.control-radio input+.control_indicator::before {
+    animation: s-ripple 450ms ease-out;
+}
+
+.control-radio input:checked+.control_indicator::before {
+    animation-name: s-ripple-dup;
 }

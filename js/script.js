@@ -420,7 +420,7 @@ async function listYTVideos(container, isYT) {
                         </div>
                         <h4>${title}</h4>
                     </a>
-                    <span class="material-icons delete_vid delete_vid_hidden">
+                    <span class="material-icons delete_vid delete_vid_hidden" title="Remove video">
                         clear
                     </span>
                 </div>`;
@@ -585,11 +585,14 @@ $(".edit_videos_btn").click(function (e) {
 })
 
 // Delete video from project repository
-let vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+let vidArray
+if($(".projects_box").attr("data-getvid_urls") != undefined){
+    vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+}
 $(".projects_box").on("click", ".delete_vid", function () {
     if (window.confirm("Delete Video?")) {
 
-        console.log("Delete Video");
+        // console.log("Delete Video");
         // console.log(vidArray);
         // console.log($(this).parent().index()-2);
         let thisVid = $(this).parent()
@@ -637,15 +640,15 @@ $(".add_video_container").click(function (e) {
 })
 
 $(".add_btn_submit").click(async function () {
-    console.log(vidArray)
+    // console.log(vidArray)
     let inputAdd = $(".add_video_input").val()
     inputAdd = extractVidId(inputAdd)
     if (inputAdd.length == 11) {
-        console.log(inputAdd)
+        // console.log(inputAdd)
         let thisIndex = $(".projects_box").find(".video_cards").length + 1
-        console.log(thisIndex)
+        // console.log(thisIndex)
         vidArray[`video_${thisIndex}`] = inputAdd
-        console.log(vidArray)
+        // console.log(vidArray)
 
         let result = await getVidInfo(inputAdd) // call function to get returned Promise (calls async function sequentially)
         let title = JSON.parse(result).title;
@@ -658,7 +661,7 @@ $(".add_btn_submit").click(async function () {
                 </div>
                 <h4>${title}</h4>
             </a>
-            <span class="material-icons delete_vid">
+            <span class="material-icons delete_vid" title="Remove video">
                 clear
             </span>
         </div>`;

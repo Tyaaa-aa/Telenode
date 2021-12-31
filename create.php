@@ -7,7 +7,7 @@
     <!-- HEADER CONTENT -->
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
-
+    <?php include "verifyanyuser.php"; ?>
     <section class="main_body">
         <div class="main_content">
             <div class="steps_bar">
