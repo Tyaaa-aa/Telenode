@@ -49,7 +49,7 @@
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
                     <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">
                     <div class="field_text">
-                        <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0">
+                        <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_0" required>
                         <img src="" class="thumbnailPreview" alt="">
                     </div>
                 </form>

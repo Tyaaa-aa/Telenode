@@ -761,13 +761,6 @@ function loadingText() {
 
 // Event for successful data loaded
 function loadedText() {
-    // AUTO EDIT MODE FOR DEVELOPMENT ONLY
-    // $(".add_videos_btn").click()
-    // setTimeout(() => {
-    //     $(".edit_videos_btn").click()
-    // }, 500);
-
-
     console.log("Done Loading!✅")
     updateBlocks()
     $(".save_msg").text("Done!")
@@ -796,9 +789,8 @@ function loadedText() {
     // Click save button to save data
     $(".save_btn").click(saveProjectData)
 
-    // setTimeout(() => {
-    //     $(".edit_page .steps_bar").addClass("collapse_bar")
-    // }, 2000);
+    // Enables publish button only after project loaded
+    activatePublishBtn()
 }
 $(document).bind("keydown", function (e) {
     if (e.ctrlKey && e.which == 83) {
@@ -959,6 +951,10 @@ async function updateBlocks() {
     console.log("Updating blocks")
     // Autosave after action feature
     // saveProjectData()
+
+    if ($(".publish_form").has("success_form")) {
+        $(".publish_form").removeClass("success_form") //FOR DEVELOPMENT ONLY
+    }
 }
 
 
@@ -1248,43 +1244,46 @@ const saveJson = (filename, dataObjToWrite) => {
 }
 
 // ======= PUBLISH SECTION ==========
+function activatePublishBtn() {
+    let publishScrollPos
+    $(".publish_btn").click(function () {
+        // $(".main_content")
+        if ($(".main_content").hasClass("view_form")) {
+            // HIDE PULISH FORM 
+            $(this).find(".publish_btn_label").text("Publish")
+            $(this).removeClass("publish_btn_active")
+            $(".main_content").removeClass("view_form")
+            $(".steps_three").removeClass("steps_number_active")
+            $(window).scrollTop(publishScrollPos)
 
-let publishScrollPos;
-$(".publish_btn").click(function () {
-    // $(".main_content")
-    if ($(".main_content").hasClass("view_form")) {
-        // HIDE PULISH FORM 
-        $(this).find(".publish_btn_label").text("Publish")
-        $(this).removeClass("publish_btn_active")
-        $(".main_content").removeClass("view_form")
-        $(".steps_three").removeClass("steps_number_active")
-        $(window).scrollTop(publishScrollPos)
+            // $(this).find(".material-icons").text("publish")
+            // $(".edit_page .steps_bar").addClass("collapse_bar")
+            // $('html').css({
+            //     'overflow-y': 'auto'
+            // })
+        } else {
+            // SHOW PULISH FORM 
+            $(this).addClass("publish_btn_active")
+            $(".main_content").addClass("view_form")
+            $(".steps_three").addClass("steps_number_active")
+            $(this).find(".publish_btn_label").text("Go Back")
+            publishScrollPos = $(window).scrollTop()
+            $(window).scrollTop(0)
 
-        // $(this).find(".material-icons").text("publish")
-        // $(".edit_page .steps_bar").addClass("collapse_bar")
-        // $('html').css({
-        //     'overflow-y': 'auto'
-        // })
-    } else {
-        // SHOW PULISH FORM 
-        $(this).addClass("publish_btn_active")
-        $(".main_content").addClass("view_form")
-        $(".steps_three").addClass("steps_number_active")
-        $(this).find(".publish_btn_label").text("Go Back")
-        publishScrollPos = $(window).scrollTop()
-        $(window).scrollTop(0)
-
-        // $(this).find(".material-icons").text("arrow_upward")
-        // $(".edit_page .steps_bar").removeClass("collapse_bar")
-        // saveProjectData()
-        // $('html').css({
-        //     'overflow-y': 'hidden'
-        // })
-    }
-})
+            // $(this).find(".material-icons").text("arrow_upward")
+            // $(".edit_page .steps_bar").removeClass("collapse_bar")
+            // saveProjectData()
+            // $('html').css({
+            //     'overflow-y': 'hidden'
+            // })
+        }
+    })
+    // $(".publish_btn").click()
+}
 
 $(".publish_form").submit(function (e) {
     e.preventDefault() // avoid to execute the actual submit of the form.
+    saveProjectData() // Save data before publishing project
     var form = $(this)
     var formData = new FormData(form[0])
     var url = form.attr('action')
@@ -1292,7 +1291,7 @@ $(".publish_form").submit(function (e) {
     $.ajax({
         type: "POST",
         url: url,
-        data: formData, 
+        data: formData,
         processData: false, // tell jQuery not to process the data
         contentType: false, // tell jQuery not to set contentType
         success: function (response) {
@@ -1301,7 +1300,14 @@ $(".publish_form").submit(function (e) {
             console.log(result)
             if (result == "success") {
                 // If successfully updated
-                
+                $(".publish_form").addClass("success_form")
+
+                // Update project name in share links
+                let projectName = $("#project_name").val()
+                let projectURL = $(".view_project").val()
+                $(".share_whatsapp").attr("href", `https://api.whatsapp.com/send/?phone&text=Watch%20${projectName}%0D%0A${projectURL}`)
+                $(".share_twitter").attr("href", `https://twitter.com/intent/tweet?url=${projectURL}&text=Watch%20${projectName}%0D%0A`)
+                $(".share_email").attr("href", `mailto:?body=Watch%20${projectName}%0D%0A${projectURL}`)
             } else {
                 // If error received alert error message
                 alert(result)
@@ -1329,3 +1335,21 @@ function readURL(input) {
 $("#upload-img").change(function () {
     readURL(this)
 });
+
+// Copy to clipboard 
+$(".copy_link_btn").click(function () {
+    const copyLink = $(".view_project").val()
+    navigator.clipboard.writeText(copyLink).then(
+        function () {
+            /* clipboard successfully set */
+            $(".copy_msg").addClass("copy_msg_expanded")
+            setTimeout(() => {
+                $(".copy_msg").removeClass("copy_msg_expanded")
+            }, 2000)
+        },
+        function () {
+            /* clipboard write failed */
+            alert('Opps! Your browser does not support the Clipboard API')
+        }
+    )
+})
