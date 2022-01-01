@@ -853,15 +853,16 @@ a:hover {
 }
 
 .publish_btn,
-.save_btn {
+.save_btn,
+.settings_btn {
     display: flex;
     position: absolute;
-    right: 20px;
+    right: 95px;
     top: 0%;
     /* transform: translate(-50%, -50%); */
-    background-color: #598dc5;
     border: none;
     outline: none;
+    z-index: 51;
 }
 
 .publish_btn {
@@ -869,7 +870,7 @@ a:hover {
 }
 
 .save_btn {
-    right: 160px;
+    right: 240px;
 }
 
 .publish_btn:hover,
@@ -877,10 +878,73 @@ a:hover {
     background-color: #4d7caf;
 }
 
+.settings_btn {
+    right: 20px;
+    background-color: transparent;
+    /* position: relative; */
+    color: var(--secondaryColor);
+}
+
+.settings_btn:hover {
+    background-color: var(--sidebar);
+    color: #4d7caf;
+    transform: scale(1);
+}
+
+.more_options_container {
+    position: absolute;
+    background-color: var(--mainColor);
+    border-radius: var(--globalRadius);
+    right: 30px;
+    z-index: 50;
+    /* width: 200px; */
+    top: 40%;
+    overflow: hidden;
+    max-height: 0px;
+    /* max-width: 0px; */
+    box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    /* opacity: 0; */
+    transition: all 0.3s;
+}
+
+.collapse_bar .more_options_container_expanded {
+    top: 100%;
+}
+
+.more_options_container_expanded {
+    top: 70%;
+    max-height: 180px;
+    max-width: 180px;
+    /* opacity: 1; */
+}
+
+.more_options {
+    color: var(--secondaryColor);
+    padding: 15px 20px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: var(--globalRadius);
+    display: flex;
+    align-items: center;
+}
+
+.more_options:hover {
+    background-color: var(--secondTextColor);
+}
+
+.more_options .material-icons {
+    margin-right: 5px;
+}
+
 .save_msg {
     position: absolute;
     white-space: nowrap;
-    right: 240px;
+    right: 320px;
     width: 120px;
     padding: 20px 0;
     text-align: right;
@@ -1039,7 +1103,7 @@ a:hover {
     position: relative;
     /* height: 0; */
     width: 93.5%;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: 0 auto;
     max-height: 100px;
     min-height: 100px;
@@ -1277,7 +1341,7 @@ a:hover {
     align-items: center;
     flex-direction: column;
     width: 80%;
-    transition-delay: 0.15s !important;
+    transition-delay: 0.20s !important;
     transition: all 0.3s;
 }
 
@@ -1576,6 +1640,7 @@ a:hover {
 }
 
 .dropdown_content div {
+    border-radius: var(--globalRadius);
     color: var(--secondaryColor);
     padding: 12px 16px;
     text-decoration: none;

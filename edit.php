@@ -26,12 +26,35 @@
                         <span>Publish</span>
                     </div>
                 </div>
-                <button class="publish_btn btn" title="Publish Project">
+
+                <button class="settings_btn btn" title="More Options">
                     <span class="material-icons">
-                        publish
+                        settings
                     </span>
-                    <span class="publish_btn_label">Publish</span>
+                    <!-- <span>Save</span> -->
                 </button>
+
+                <div class="more_options_container">
+                    <span class="more_options options_download">
+                        <span class="material-icons">
+                            save_alt
+                        </span>
+                        Download Data
+                    </span>
+                    <span class="more_options options_import">
+                        <span class="material-icons">
+                            import_export
+                        </span>
+                        Import
+                        <!--  Project --> (undone)
+                    </span>
+                    <span class="more_options options_delete">
+                        <span class="material-icons">
+                            delete_forever
+                        </span>
+                        Delete Project
+                    </span>
+                </div>
                 <button class="save_btn btn" title="Save Project">
                     <span class="material-icons">
                         save
@@ -39,6 +62,13 @@
                     <!-- <span>Save</span> -->
                 </button>
                 <span class="save_msg save_msg_closed">Project saved!</span>
+
+                <button class="publish_btn btn" title="Publish Project">
+                    <span class="material-icons">
+                        publish
+                    </span>
+                    <span class="publish_btn_label">Publish</span>
+                </button>
                 <!-- <button class="jsondebug btn" style="position:fixed;bottom:5%;right:2%;z-index:99999;">(Download Current Data)</button> -->
             </div>
             <div class="create_container">
@@ -254,13 +284,15 @@
                     }
 
                     $absolute_url = full_url($_SERVER);
-                    $absolute_url = str_replace("edit", "view", $absolute_url);
+                    $absolute_url = str_replace("edit", "watch", $absolute_url);
                     // echo $absolute_url;
                     ?>
                     <span class="success_icon material-icons">
                         task_alt
                     </span>
-                    <h3 class="success_message_text">Project Saved!</h3>
+                    <h3 class="success_message_text">Project Published!</h3>
+                    <br>
+                    <a href="<?= $absolute_url ?>">Watch Video</a>
                     <div class="copy_link_container">
                         <span>Share: </span>
                         <input type="text" class="input_field view_project" value="<?= $absolute_url ?>" readonly>

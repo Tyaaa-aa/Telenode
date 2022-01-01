@@ -23,8 +23,10 @@
                     // Assign all user table content to variables for use later
                     $hasVid = true;
                     $getVid_id = $row['vid_id'];
+                    $getVid_UID = $row['vid_UID'];
                     $getVid_userID = $row['vid_userID'];
                     $getVid_URLS = $row['vid_URLS'];
+                    $getVid_ProjectData = $row['vid_projectData'];
                     $getVid_Name = $row['vid_name'];
                     $getVid_Description = $row['vid_description'];
                     $getVid_Thumbnail = $row['vid_thumbnail'];
@@ -34,7 +36,7 @@
                 }
             ?>
 
-                <div class="projects_box" data-getVid_id='<?= $getVid_id ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
+                <div class="projects_box " data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
                 </div>
             <?php
             }
@@ -49,26 +51,32 @@
     <br>
 
     <script>
-        collapseSidebar();
-        
-// container = container to be populated with data provided
-// isYT = is this a youtube link or local project link, true = youtube & false = local
-        listYTVideos($(".projects_box"), false)
+        collapseSidebar()
 
-        let container = $(".projects_box");
-        let videoData = container.data("getvid_urls")
-        let firstVid = Object.values(videoData)[0];
-        playThisVid(firstVid);
-        console.log(firstVid);
+        // container = container to be populated with data provided
+        // isYT = is this a youtube link or local project link, true = youtube & false = local
+        // listYTVideos($(".projects_box"), false)
+
+        let container = $(".projects_box")
+        let videoData = container.attr("data-getVid_ProjectData")
+        videoData = JSON.parse(videoData)
+        // console.log();
+        let firstVid = Object.values(videoData)
+        console.log(videoData[0])
+        console.log(firstVid[0].questionTitle)
+        // console.log(firstVid.length)
+        // firstVid = firstVid[0]
+        // playThisVid(firstVid)
+        // console.log(firstVid)
 
         function playThisVid(videolinks) {
-            let firstVidURL = getVidData(videolinks);
+            let firstVidURL = getVidData(videolinks)
             // await async function
             firstVidURL.then(function(result) {
-                console.log("Found Video: \n" + JSON.parse(result).links);
+                console.log("Found Video: \n" + JSON.parse(result).links)
                 let vidLink = JSON.parse(result).links
-                $('.vid_preview').attr('src', vidLink);
-                $('.vid_preview').focus();
+                $('.vid_preview').attr('src', vidLink)
+                $('.vid_preview').focus()
             })
         }
     </script>

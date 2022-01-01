@@ -7,9 +7,6 @@ window.addEventListener('load', function () {
 
 $(function () {
     // START OF DOCUMENT READY FUNCTION
-    // setTimeout(() => {
-    // }, 1000)
-
     // Remove this if video API being used
     loadingBarAnimation()
 
@@ -29,44 +26,9 @@ $(function () {
         evt.stopPropagation()
     })
 
-
-    // $(".video_cards").on("click", function (e) {
-    //     // e.stopImmediatePropagation()
-    //     // e.stopPropagation()
-    // })
-
-    // $(".edit_btn").on("click", function (e) {
-    //     // e.stopImmediatePropagation()
-    //     // console.log($(this).data("vid"))
-    //     console.log("SCREAM")
-    //     let url = $(this).data("vid")
-    //     window.location.href = `edit.php?id=${url}`;
-    //     e.stopPropagation()
-
-    // })
-
-
-
-    // ======== PROJECTS PAGE CONTENT RENDER ON PROJECTS.PHP =========
-
-    // if ($(".projects_box").data("getvid_urls") != undefined) {
-    //     let videoData = $(".projects_box").data("getvid_urls")
-    //     let videoData = Object.keys(videoData)
-    //     console.log(videoData)
-    //     console.log(videoData[0])
-    // }
-
-
-
-
-
-
-
-
-
 }) // END OF DOCUMENT READY FUNCTION
 
-// ======== FUNCTIONS ZONE =======
+// ======== Preloader animations =======
 function hidePreloader() {
     $("#preloader").fadeOut(300)
 }
@@ -74,6 +36,15 @@ function hidePreloader() {
 function showPreloader() {
     $("#preloader").show()
 }
+
+// ======== login/signup =======
+showLogin()
+$(".registerForm-btn").click(function () {
+    showRegister()
+})
+$(".loginForm-btn").click(function () {
+    showLogin()
+})
 
 function showLogin() {
     $(".login-box").show()
@@ -84,19 +55,6 @@ function showRegister() {
     $(".login-box").hide()
     $(".register-box").show()
 }
-
-
-// Login/Register toggle
-showLogin()
-$(".registerForm-btn").click(function () {
-    showRegister()
-})
-$(".loginForm-btn").click(function () {
-    showLogin()
-})
-
-
-// Login and register form code
 
 // Show password
 function showpassword() {
@@ -159,19 +117,11 @@ $("#toggleAll").click(function () {
     }
 })
 
-
 $("#upload-img").change(function () {
     $(".account_pic").submit()
 });
 
-
-
-
-
-
-
-
-// HEADER CODE==========
+// ========= HEADER CODE ==========
 $(".profile_box").click(function () {
     if ($(".profile_popup").hasClass("profile_popup_hidden")) {
         // Show pop up
@@ -222,7 +172,6 @@ $('.sidebar_items').click(function (e) {
 })
 
 let collapsedSidebarWidth = 70;
-
 function collapseSidebar() {
     // Expand body content
     $(".main_body").css({
@@ -271,10 +220,6 @@ function loadingBarAnimation() {
         $(".loading_bar").css("opacity", "0%")
     }, 200)
 }
-
-
-
-
 
 function playVideo(vidURL) {
     // showPreloader()
@@ -499,6 +444,7 @@ $(document).on("click", function () {
         $(".dropdown_content").removeClass("dropped")
         $(".dropbtn_container .material-icons").removeClass("droparrow")
     }
+    $(".more_options_container").removeClass("more_options_container_expanded")
 })
 
 // Dropdown menu
@@ -601,7 +547,7 @@ $(".projects_box").on("click", ".delete_vid", function () {
         delete vidArray[Object.keys(vidArray)[selectedIndex]]
         $(thisVid).remove()
 
-        let projectID = getUrlParameter('id')
+        let projectID = $('.projects_box').attr("data-getVid_UID");
         vidArray = JSON.stringify(vidArray)
         // console.log(vidArray);
         $.ajax({
@@ -667,7 +613,7 @@ $(".add_btn_submit").click(async function () {
         </div>`;
         $(".projects_box").append(listHTML)
 
-        let projectID = getUrlParameter('id')
+        let projectID = $('.projects_box').attr("data-getVid_UID");
         vidArray = JSON.stringify(vidArray)
         // console.log(vidArray);
         $.ajax({
@@ -972,7 +918,7 @@ function arrangeBlocks() {
 }
 
 // Creates JSON save based on user provided data
-function saveProjectData() {
+function saveProjectData(download) {
     console.log("Saving Data...");
     savingData()
     // Create main container array to store all project data
@@ -1012,7 +958,7 @@ function saveProjectData() {
     // console.log(projectDataArray)
     // console.log(projectDataArray[0].options)
 
-    let projectID = getUrlParameter('id');
+    let projectID = $('.projects_box').attr("data-getVid_UID");
     let processedData = JSON.stringify(projectDataArray)
     $.ajax({
         type: "POST",
@@ -1027,14 +973,17 @@ function saveProjectData() {
             // console.log("Returned DATA:");
             // console.log(JSON.parse(response));
             dataSaved()
+            if (download == true) {
+                let downloadData = new Object()
+                downloadData.videoList = vidArray
+                downloadData.videoData = projectDataArray
+                // console.log(downloadData)
+                // console.log(projectDataArray)
+                // saveJson('tn_' + projectID + "_" + Date.now() + '.json', downloadData)
+                saveJson('tn_' + projectID + '.json', downloadData)
+            }
         }
     })
-
-    // console.log(projectDataArray[0].options)
-
-
-    // Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
-    // saveJson('tn_' + projectID + '.json', projectDataArray);
 }
 
 
@@ -1279,6 +1228,50 @@ function activatePublishBtn() {
         }
     })
     // $(".publish_btn").click()
+
+
+    // ====== Project Settings Section ======
+    $(".settings_btn").click(function () {
+        setTimeout(() => {
+            $(".more_options_container").addClass("more_options_container_expanded")
+        }, 0)
+    })
+
+    // Save and download data
+    $(".options_download").click(function () {
+        saveProjectData(true)
+    })
+
+    // Delete project
+    $(".options_delete").click(function () {
+        if (window.confirm("Are you sure you want to permanently delete this project? \nThis action cannot be undone!")) {
+            let projectID = $('.projects_box').attr("data-getVid_UID");
+            let userID = $('.projects_box').attr("data-getVid_userID");
+            $.ajax({
+                type: "POST",
+                url: "deleteProject_backend.php",
+                data: {
+                    "projectID": projectID,
+                    "userID": userID
+                },
+                success: function (response) {
+                    let result = JSON.parse(response).message
+                    // alert(result)
+                    // let result = response
+                    console.log(result)
+                    if (result == "success") {
+                        // If successfully deleted
+                        alert("Project has been deleted!")
+                        window.location = 'home.php#projects';
+                    } else {
+                        // If error received alert error message
+                        alert(result)
+                    }
+                }
+            })
+        }
+    })
+
 }
 
 $(".publish_form").submit(function (e) {

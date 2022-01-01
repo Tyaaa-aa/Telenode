@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
 
 ?>
         <div class="video_cards">
-            <a href="view.php?id=<?= $getVid_UID ?>">
+            <a href="watch.php?id=<?= $getVid_UID ?>">
                 <div class="thumbnail-box">
                     <img class="thumbnail" src="<?= $getVid_Thumbnail ?>" alt="Thumbnail">
                 </div>
