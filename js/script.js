@@ -1358,7 +1358,7 @@ $("#upload-img").change(function () {
 });
 
 // Copy to clipboard 
-$(".copy_link_btn").click(function () {
+$("body").on("click", ".copy_link_btn", function () {
     const copyLink = $(".view_project").val()
     navigator.clipboard.writeText(copyLink).then(
         function () {
@@ -1373,4 +1373,5 @@ $(".copy_link_btn").click(function () {
             alert('Opps! Your browser does not support the Clipboard API')
         }
     )
+    console.log("Copied!");
 })

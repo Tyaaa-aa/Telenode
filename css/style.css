@@ -1908,12 +1908,25 @@ a:hover {
 
 /* ======= WATCH PAGE / VIDEO PAGE ======= */
 #watch_body {
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 #watch_body .main_content {
     display: flex;
     justify-content: space-around;
+    /* flex-direction: column; */
+}
+
+#watch_body #dashboard-container {
+    width: 20%;
+}
+
+#watch_body #dashboard-container .video_cards {
+    width: 100%;
+}
+
+.video_container {
+    width: 75%;
 }
 
 .project_data {
@@ -1924,10 +1937,16 @@ a:hover {
     /* max-height: 80vh !important;
     max-width: 75vw; */
     border-radius: var(--globalRadius);
-    transform: scale(0.8) translateY(-14%);
+    /* transform: scale(0.7) translate(-21%, -20%); */
     z-index: 0;
     position: relative;
     overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.video_info {
+    /* margin-top: -15%; */
+
 }
 
 .video_debug_btn {
@@ -1948,7 +1967,8 @@ a:hover {
 }
 
 /* disable modal close btn */
-.vjs-close-button {
+.vjs-close-button,
+.vjs-picture-in-picture-control {
     display: none !important;
 }
 
@@ -2118,4 +2138,15 @@ a:hover {
     padding: 1em;
     cursor: pointer;
     margin: 10px;
+}
+
+.video_end {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.5);
+    background-color: var(--mainBackground);
+    padding: 20px 60px;
+    border-radius: var(--globalRadius);
 }
