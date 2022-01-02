@@ -18,6 +18,13 @@ const myPlayer = videojs('my-video', {
 // NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
 // NEED TO IMPLEMENT END OF VIDEO CATCHING
 // NEED TO IMPLEMENT BACK BUTTON
+// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER
+// NEED TO IMPLEMENT LOCAL STORAGE SAVE AUDIO LEVEL AND ETC
+// NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING
+// UPGRADE API TO GRAB HD VERSION OF VIDEOS
+// ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS)
+// ADD LIKES AND COMMENTS AND VIEW COUNT
+// IMPLEMENT 360 VIDEOS
 
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
@@ -135,10 +142,10 @@ function changeVid(videoid, noautoplay) {
     let vidUrl = getVidData(videoLinks)
     // await async function
     vidUrl.then(function (result) {
-        let vidLink = JSON.parse(result).links
+        let vidLink = result.links
         myPlayer.src({
             type: 'video/mp4',
-            src: vidLink[0]
+            src: vidLink
         })
         if (noautoplay) return
         myPlayer.ready(function () {

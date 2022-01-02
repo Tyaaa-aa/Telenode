@@ -2159,4 +2159,5 @@ a:hover {
     background-color: var(--mainBackground);
     padding: 20px 60px;
     border-radius: var(--globalRadius);
+    color: var(--secondaryColor);
 }

@@ -308,8 +308,8 @@ function ajaxVidData(scriptUrl) {
         type: 'get',
         dataType: 'text',
         success: function (data) {
-            const videoURL_parsed = JSON.parse(data)
-            videoURL = videoURL_parsed.links[0]
+            const videoURL_parsed = JSON.parse(JSON.stringify(data))
+            videoURL = videoURL_parsed.links
             videoData = {
                 "video": videoURL,
             }
@@ -321,9 +321,13 @@ async function getVidData(videoID) {
     // Convert any valid youtube url to its video id
     videoID = extractVidId(videoID)
     // Get the video URL
-    let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
+    // OLD LOW QUALITY API
+    // let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
+    // 720p VIDEO API
+    let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url=" + videoID;
     let result = await ajaxVidData(scriptUrl)
-    // console.log(x)
+    // console.log(result)
+    result = JSON.parse(result)
     hidePreloader()
     return result;
 }
