@@ -29,11 +29,15 @@ $(function () {
 }) // END OF DOCUMENT READY FUNCTION
 
 // ======== Preloader animations =======
+let usePreloader = false
+
 function hidePreloader() {
+    if (!usePreloader) return
     $("#preloader").fadeOut(300)
 }
 
 function showPreloader() {
+    if (!usePreloader) return
     $("#preloader").show()
 }
 
@@ -172,6 +176,7 @@ $('.sidebar_items').click(function (e) {
 })
 
 let collapsedSidebarWidth = 70;
+
 function collapseSidebar() {
     // Expand body content
     $(".main_body").css({
@@ -221,54 +226,80 @@ function loadingBarAnimation() {
     }, 200)
 }
 
-function playVideo(vidURL) {
-    // showPreloader()
+// function playVideo(vidURL) {
+//     // showPreloader()
 
-    // GET VIDEO URL FROM API
-    $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function (data, status, xhr) {
-        // console.log(xhr.status)
-        // IF STATUS IS 200 (SUCCESS) 
-        if (xhr.status = 200) {
-            // JSON result in `data` variable
-            // console.log(data)
-            if ("links" in data) {
-                // API returned a usable link successfully
-                console.log("%c✔ SUCCESS", "color:green;", "\nURL: " + data.links[0])
-                //Load the player with new source
-                $("#video-player").attr("src", data.links[0])
-                hidePreloader()
+//     // GET VIDEO URL FROM API
+//     $.get("https://ytdirectvidapi.herokuapp.com/api/?url=" + vidURL, function (data, status, xhr) {
+//         // console.log(xhr.status)
+//         // IF STATUS IS 200 (SUCCESS) 
+//         if (xhr.status = 200) {
+//             // JSON result in `data` variable
+//             // console.log(data)
+//             if ("links" in data) {
+//                 // API returned a usable link successfully
+//                 console.log("%c✔ SUCCESS", "color:green;", "\nURL: " + data.links[0])
+//                 //Load the player with new source
+//                 $("#video-player").attr("src", data.links[0])
+//                 hidePreloader()
 
-            } else {
-                // API did not return usable link
-                console.log("%c ❌ ERROR", "color:red;")
-                hidePreloader()
-            }
-        } else {
-            // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
-            console.log("%c ❌ ERROR", "color:red;")
-            hidePreloader()
-        }
-    }).fail(function () {
-        // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
-        console.log("%c ❌ ERROR", "color:red;")
-    })
-}
+//             } else {
+//                 // API did not return usable link
+//                 console.log("%c ❌ ERROR", "color:red;")
+//                 hidePreloader()
+//             }
+//         } else {
+//             // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+//             console.log("%c ❌ ERROR", "color:red;")
+//             hidePreloader()
+//         }
+//     }).fail(function () {
+//         // IF ERROR RESUBMIT SEARCH TERM (DO THIS BECAUSE API IS UNSTABLE AND NEEDS TO SUBMIT SEARCH QUERY TWICE)
+//         console.log("%c ❌ ERROR", "color:red;")
+//     })
+// }
 
-// $("#nextVid").click(function () {
-//     if (playstate < (jsonData.videos.length - 1)) {
-//         playstate++;
-//         playVideo(jsonData.videos[playstate])
-//         console.log(playstate)
-//     }
-// })
+// ======= CREATE PAGE ========
+$(document).on("keyup input change", ".upload_input_field", function () {
+    // console.log("ASDASD");
+    let lastInput = $(".upload_input_field").last();
+    let thumbnail = extractVidId($(this).val());
+    $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
+    if (lastInput.val() != "") {
+        // Add Fields
+        console.log("Adding field");
+        let vidNum = $(".upload_input_field").length;
+        $("#videoLength").val(vidNum)
+        $(".upload_field_box").append(`
+        <div class="field_text">
+            <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
+            <div class="thumbnailPreview-box">
+                <img src="" class="thumbnailPreview" alt="">
+            </div>
+        </div>`);
+        $(".submit_btn").fadeIn();
+    } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
+        // Delete empty field
+        console.log("Deleting field");
+        $(".field_text").last().fadeOut(300, function () {
+            $(".field_text").last().remove()
+        });
+    }
+    console.log(($(".upload_input_field").length));
+})
 
-// $("#prevVid").click(function () {
-//     if (playstate > 0) {
-//         playstate--;
-//         playVideo(jsonData.videos[playstate])
-//         console.log(playstate)
-//     }
-// })
+$(".upload_field_box").submit(function (e) {
+    let thisVidID = extractVidId($(".upload_input_field").first().val())
+    $("#videoThumbnail").val("https://i.ytimg.com/vi/" + thisVidID + "/hqdefault.jpg")
+    $(".upload_input_field").last().removeAttr("name")
+    for (let i = 0; i < $(".upload_input_field").length; i++) {
+        let thisVid = $(".upload_input_field").eq(i)
+        thisVid.val(extractVidId(thisVid.val()))
+    }
+})
+
+
+// ========= API FUNCTIONS =========
 
 function ajaxVidData(scriptUrl) {
     showPreloader()
@@ -312,7 +343,6 @@ function ajaxVidInfo(scriptUrlData) {
     })
 }
 
-
 // Get Video Info Without MP4 URL
 async function getVidInfo(videoID) {
     // Convert any valid youtube url to its video id
@@ -336,8 +366,6 @@ function extractVidId(url) {
     }
 }
 
-// let vids = `<?= $getVid_URLS ?>`
-// console.log(Object.keys(JSON.parse(vids)).length);
 // List Populating function 
 // container = container to be populated with data provided
 // isYT = is this a youtube link or local project link, true = youtube & false = local

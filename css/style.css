@@ -1905,3 +1905,61 @@ a:hover {
 .control-radio input:checked+.control_indicator::before {
     animation-name: s-ripple-dup;
 }
+
+/* ======= WATCH PAGE / VIDEO PAGE ======= */
+#watch_body {
+    overflow-y: hidden;
+}
+
+#watch_body .main_content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.project_data {
+    position: absolute;
+}
+
+#my-video {
+    /* max-height: 80vh !important;
+    max-width: 75vw; */
+    border-radius: var(--globalRadius);
+    transform: scale(0.8) translateY(-14%);
+    z-index: 0;
+    position: relative;
+}
+
+.video_debug_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2147483647;
+}
+
+.video-js .vjs-big-play-button {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.vjs-modal-dialog-content{
+    padding: 0 !important;
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: 5px solid red;
+    backdrop-filter: blur(5px);
+}
+
+.modal h1 {
+    background: red;
+    padding: 1em;
+}
+
+.vjs-close-button{
+    display: none !important;
+}

@@ -63,46 +63,7 @@
 
 </html>
 
-<!-- Testing Script -->
 <script>
-    // 6WQphW7wS7E
-    // https://i.ytimg.com/vi/${thumbnail}/hqdefault.jpg
-    // THIS DOESNT WORK SO PLEASE FIX IT OK THANKS BYE 
-    $(document).on("keyup input change", ".upload_input_field", function() {
-        // console.log("ASDASD");
-        let lastInput = $(".upload_input_field").last();
-        let thumbnail = extractVidId($(this).val());
-        $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
-        if (lastInput.val() != "") {
-            // Add Fields
-            console.log("Adding field");
-            let vidNum = $(".upload_input_field").length;
-            $("#videoLength").val(vidNum)
-            $(".upload_field_box").append(`
-            <div class="field_text">
-                <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
-                <div class="thumbnailPreview-box">
-                    <img src="" class="thumbnailPreview" alt="">
-                </div>
-            </div>`);
-            $(".submit_btn").fadeIn();
-        } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
-            // Delete empty field
-            console.log("Deleting field");
-            $(".field_text").last().fadeOut(300, function() {
-                $(".field_text").last().remove()
-            });
-        }
-        console.log(($(".upload_input_field").length));
-    });
-
-    $(".upload_field_box").submit(function(e) {
-        let thisVidID = extractVidId($(".upload_input_field").first().val())
-        $("#videoThumbnail").val("https://i.ytimg.com/vi/" + thisVidID + "/hqdefault.jpg");
-        $(".upload_input_field").last().removeAttr("name");
-    });
-
-
     // Collapse sidebar onload for cleaner User Experience
     collapseSidebar()
 </script>
