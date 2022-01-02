@@ -9,5 +9,6 @@
         --inputField: #2a2a2a;
         --secondTextColor: #444444;
         --sidebar: #313c47;
+        --playerTheme: #598DC5;
     }
 </style>

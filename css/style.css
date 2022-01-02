@@ -1927,6 +1927,7 @@ a:hover {
     transform: scale(0.8) translateY(-14%);
     z-index: 0;
     position: relative;
+    overflow: hidden;
 }
 
 .video_debug_btn {
@@ -1942,24 +1943,179 @@ a:hover {
     transform: translate(-50%, -50%) !important;
 }
 
-.vjs-modal-dialog-content{
+.vjs-modal-dialog-content {
     padding: 0 !important;
 }
 
+/* disable modal close btn */
+.vjs-close-button {
+    display: none !important;
+}
+
+/* VIDEO CONTROLS CONTAINER */
+.vjs-control-bar {
+    justify-content: space-between;
+    bottom: -1px !important;
+    background-image: linear-gradient(0deg, rgb(0 0 0 / 50%), transparent) !important;
+    transition: all 0.3s !important;
+}
+
+.vjs-user-inactive .vjs-control-bar {
+    bottom: -50px !important;
+}
+
+.vjs-paused .vjs-control-bar {
+    bottom: -1px !important;
+}
+
+.vjs-control-bar>* {
+    flex: none !important;
+}
+
+.video-js .vjs-fullscreen-control {
+    width: 50px !important;
+    flex: none !important;
+    font-size: 20px;
+}
+
+/* Hover icons */
+.video-js .vjs-fullscreen-control,
+.video-js .vjs-play-control,
+.video-js .vjs-volume-panel {
+    transition: all 0.3s;
+}
+
+.vjs-theme-city .vjs-volume-level::before {
+    transition: all 0.3s;
+}
+
+/* .video-js .vjs-fullscreen-control:hover,
+.video-js .vjs-play-control:hover {
+    color: var(--playerTheme) !important;
+} */
+
+/* VIDEO VOLUME SLIDER */
+.video-js .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-hover,
+.video-js .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-slider-active,
+.video-js .vjs-volume-panel.vjs-volume-panel-horizontal {
+    width: 50px !important;
+    position: absolute;
+    left: 150px;
+}
+
+/* Hover volume color */
+/* .vjs-theme-city .vjs-volume-level:hover::before {
+    border-bottom-color: var(--playerTheme);
+} */
+
+/* VIDEO TIME */
+.vjs-theme-city .vjs-remaining-time {
+    flex: none;
+    width: 100px;
+    margin-left: 20px !important;
+    display: none !important;
+}
+
+.vjs-theme-city .vjs-current-time,
+.vjs-theme-city .vjs-duration {
+    display: flex !important;
+    font-size: 16px !important;
+}
+
+.vjs-theme-city .vjs-duration {
+    position: absolute !important;
+    left: 70px !important;
+}
+
+.vjs-theme-city .vjs-duration::after {
+    content: "/";
+    position: absolute;
+    left: -5px;
+    transform: translateX(50%);
+}
+
+/* VIDEO SEEKER AND PROGRESS BAR */
+
+.vjs-play-progress {
+    background-color: var(--playerTheme) !important;
+}
+
+.vjs-play-progress::after {
+    transition: all 0.3s;
+    content: "";
+    border-radius: 50px;
+    background-color: var(--playerTheme);
+    width: 20px;
+    height: 20px;
+    right: 0;
+    top: 0;
+    position: absolute;
+    transform: translate(50%, -35%) scale(0);
+    /* transform: translate(50%, -50%) scale(1); */
+}
+
+.vjs-control-bar:hover .vjs-play-progress::after {
+    transform: translate(50%, -35%) scale(1);
+
+}
+
+.video-js .vjs-load-progress div {
+    background: rgb(221 221 221 / 50%) !important;
+}
+
+.video-js .vjs-progress-holder {
+    height: 4px !important;
+    margin-top: -6px !important;
+}
+
+.vjs-control-bar:hover .vjs-progress-holder {
+    height: 8px !important;
+    margin-top: -8px !important;
+}
+
+/* .vjs-user-inactive .vjs-play-progress::after {
+    transform: translate(50%, -50%) scale(0);
+}
+
+.vjs-paused .vjs-play-progress::after {
+    transform: translate(50%, -50%) scale(1);
+} */
+
+
+
+/* ===== INTERACTIVE VIDEO SECTION (MODAL POPUP) ========= */
+
+
 .modal {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
-    border: 5px solid red;
+    /* border: 5px solid red; */
     backdrop-filter: blur(5px);
 }
 
-.modal h1 {
-    background: red;
-    padding: 1em;
+.modal_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--mainBackground);
+    padding: 20px;
+    border-radius: var(--globalRadius);
+    max-width: 800px;
 }
 
-.vjs-close-button{
-    display: none !important;
+.video_options_container {
+    display: flex;
+}
+
+.video_options {
+    background: var(--playerTheme);
+    border-radius: var(--globalRadius);
+    font-size: 20px;
+    padding: 1em;
+    cursor: pointer;
+    margin: 10px;
 }
