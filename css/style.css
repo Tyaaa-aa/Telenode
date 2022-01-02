@@ -1959,6 +1959,7 @@ a:hover {
 .video-js .vjs-big-play-button {
     top: 50% !important;
     left: 50% !important;
+    width: 2em !important;
     transform: translate(-50%, -50%) !important;
 }
 
@@ -2127,6 +2128,10 @@ a:hover {
     max-width: 800px;
 }
 
+.modal_content h1{
+    color: var(--secondaryColor);
+}
+
 .video_options_container {
     display: flex;
 }
@@ -2138,6 +2143,11 @@ a:hover {
     padding: 1em;
     cursor: pointer;
     margin: 10px;
+    transition: all 0.3s;
+}
+
+.video_options:hover{
+    transform: scale(0.95);
 }
 
 .video_end {

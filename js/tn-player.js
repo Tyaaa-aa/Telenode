@@ -17,6 +17,7 @@ const myPlayer = videojs('my-video', {
 
 // NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
 // NEED TO IMPLEMENT END OF VIDEO CATCHING
+// NEED TO IMPLEMENT BACK BUTTON
 
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
@@ -30,12 +31,23 @@ let firstVid = Object.values(projectData)
 let optionsBlocks
 
 let firstBlock = projectData[0]
-console.log(firstBlock)
+
+let currentBlock = firstBlock
+
+// console.log(currentBlock)
 if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined)) {
-    playBlock(firstBlock)
+    setTimeout(() => {
+        playBlock(currentBlock)
+
+    }, 10);
 } else {
     alert("Project is unpublished or undone")
 }
+
+myPlayer.on("error", function () {
+    playBlock(currentBlock)
+
+})
 
 function playBlock(block) {
     // console.log(projectData)
@@ -170,7 +182,8 @@ $("#watch_body").on("click", ".video_options", function () {
     let nextBlock = filter(projectData, selectedOptionBlockID, 'blockID')[0]
     console.log(nextBlock)
     modal.close();
-    playBlock(nextBlock)
+    currentBlock = nextBlock
+    playBlock(currentBlock)
 })
 
 const filter = (array, value, key) => {
