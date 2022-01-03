@@ -829,6 +829,21 @@ a:hover {
     box-shadow: none;
 }
 
+.video_author {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    text-decoration: none;
+    color: var(--secondaryColor);
+}
+
+.author_image{
+    width: 30px;
+    height:30px;
+    border-radius: var(--globalRadius);
+    margin-right: 5px;
+}
+
 .edit_btn {
     position: absolute;
     top: -10px;
@@ -1923,6 +1938,7 @@ a:hover {
 
 #watch_body #dashboard-container .video_cards {
     width: 100%;
+    margin-top: 0;
 }
 
 .video_container {
@@ -2128,7 +2144,7 @@ a:hover {
     max-width: 800px;
 }
 
-.modal_content h1{
+.modal_content h1 {
     color: var(--secondaryColor);
 }
 
@@ -2146,7 +2162,7 @@ a:hover {
     transition: all 0.3s;
 }
 
-.video_options:hover{
+.video_options:hover {
     transform: scale(0.95);
 }
 

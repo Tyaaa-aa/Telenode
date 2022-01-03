@@ -8,7 +8,7 @@ window.addEventListener('load', function () {
 $(function () {
     // START OF DOCUMENT READY FUNCTION
     // Remove this if video API being used
-    loadingBarAnimation()
+    // loadingBarAnimation()
 
     $(".showPassword").click(function () {
         showpassword()
@@ -169,7 +169,7 @@ $('.sidebar_items').click(function (e) {
     if (window.location.href.indexOf("home") > -1) {
         let hash = goTo.substring(goTo.indexOf("#") + 1)
         document.location.hash = hash;
-        loadingBarAnimation()
+        // loadingBarAnimation()
     } else {
         window.location.href = goTo;
     }
@@ -315,7 +315,7 @@ function ajaxVidData(scriptUrl) {
             }
         }
     })
-};
+}
 
 async function getVidData(videoID) {
     // Convert any valid youtube url to its video id

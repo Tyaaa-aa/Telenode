@@ -15,6 +15,7 @@ const myPlayer = videojs('my-video', {
 //     changeVid(firstVid[0].videoID)
 // })
 
+// SHOW AUTHOR ON VIDEO CARDS
 // NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
 // NEED TO IMPLEMENT END OF VIDEO CATCHING
 // NEED TO IMPLEMENT BACK BUTTON
@@ -25,6 +26,7 @@ const myPlayer = videojs('my-video', {
 // ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS)
 // ADD LIKES AND COMMENTS AND VIEW COUNT
 // IMPLEMENT 360 VIDEOS
+// IMPLEMENT META TAGS FOR SOCIAL SHARING
 
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
