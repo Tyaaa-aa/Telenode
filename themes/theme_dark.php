@@ -10,5 +10,6 @@
         --secondTextColor: #444444;
         --sidebar: #313c47;
         --playerTheme: #598DC5;
+        --thirdTextColor: #aeaeae;
     }
 </style>

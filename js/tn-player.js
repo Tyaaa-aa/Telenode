@@ -1,13 +1,30 @@
+// ===== Video controls =====
+
+// Store user adjusted volume into localstorage and use that next time
+// Default volume of player (Value range from: 0 - 1)
+let defaultVolume = 0.1
+// Load video on page load. Leave on by default. Mostly used for development
+let vidOnLoad = true
+// Autoplay video
+let autoPlay = false
+// If watched at least 30 seconds or 15% of the video add to view count
+let minWatchTimeSec = 30
+let minWatchTimePercent = 15
+
+
+
 // Initialize video player
 const myPlayer = videojs('my-video', {
     // aspectRatio: '16:9',
     // muted: true,
-    autoplay: true,
+    // autoplay: true,
     responsive: true,
     controlBar: {
         'pictureInPictureToggle': false
     }
 })
+
+myPlayer.volume(defaultVolume)
 
 // SHOW AUTHOR ON VIDEO CARDS✅
 // NEED TO IMPLEMENT END OF VIDEO CATCHING✅
@@ -41,8 +58,9 @@ let currentBlock = firstBlock
 // console.log(currentBlock)
 if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined)) {
     setTimeout(() => {
-        playBlock(currentBlock)
-
+        if (vidOnLoad) {
+            playBlock(currentBlock)
+        }
     }, 10);
 } else {
     alert("Project is unpublished or undone")
@@ -50,7 +68,6 @@ if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined
 
 myPlayer.on("error", function () {
     playBlock(currentBlock)
-
 })
 
 function playBlock(block) {
@@ -127,8 +144,9 @@ function playBlock(block) {
 
     }
     // console.log(currentVideoOptions.length)
-    // Play first video (Add true 2nd parameter to disable autoplay)
-    changeVid(currentVideoid)
+    // Play first video (Add false 2nd parameter to disable autoplay)
+    // DISABLED FOR DEVELOPMENT PURPOSES
+    changeVid(currentVideoid, autoPlay)
 }
 
 
@@ -140,11 +158,12 @@ function changeVid(videoid, noautoplay) {
     // await async function
     vidUrl.then(function (result) {
         let vidLink = result.links
+        // console.log(vidLink);
         myPlayer.src({
             type: 'video/mp4',
             src: vidLink
         })
-        if (noautoplay) return
+        if (!noautoplay) return
         myPlayer.ready(function () {
             myPlayer.play()
         })
@@ -200,3 +219,38 @@ const filter = (array, value, key) => {
         )
     )
 }
+
+
+// ===== VIEW COUNTER =====
+// Add timeout before view count is updated. Maybe 10% || 30 seconds of first video
+let projectViews = $(".project_data").attr("data-getVid_Views")
+let projectUID = $(".project_data").attr("data-getVid_UID")
+// console.log(projectViews)
+let viewcounter = 0
+let viewTimer = setInterval(() => {
+    viewcounter++
+    // console.log("Iteration: " + viewcounter)
+    let currentTime = Math.floor(myPlayer.currentTime())
+    let durationTime = Math.floor(myPlayer.duration())
+    if (durationTime != undefined && !isNaN(durationTime)) {
+        // console.log(currentTime + "/" + durationTime)
+        let vidPercent = ((currentTime / durationTime) * 100).toFixed(2)
+        console.log(vidPercent + `% / ${minWatchTimePercent}%`)
+        if (currentTime >= minWatchTimeSec || vidPercent >= minWatchTimePercent) {
+            // console.log(`Adding View Count to ${projectUID}!`);
+            clearInterval(viewTimer)
+            $.ajax({
+                type: "POST",
+                data: {
+                    'projectUID': projectUID
+                },
+                url: "update_viewcount.php",
+                cache: false,
+                success: function (response) {
+                    console.log("Added View! ✅")
+                    // console.log("New view count: "+response)
+                }
+            })
+        }
+    }
+}, 1000);

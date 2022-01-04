@@ -37,6 +37,15 @@
                     $getVid_Visibility = $row['vid_visibility'];
                     $getVid_Status = $row['vid_status'];
                     $getVid_UploadTime = $row['vid_uploadTime'];
+                    $getVid_Views = $row['vid_views'];
+
+                    if ($getVid_Views == 0) {
+                        $views = "No Views";
+                    } else if ($getVid_Views == 1) {
+                        $views = $getVid_Views . " View";
+                    } else {
+                        $views = $getVid_Views . " Views";
+                    }
 
                     $profileImg = $row['profileImg'];
                     $getUsernames = $row['userName'];
@@ -49,7 +58,7 @@
                     echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
                 }
             ?>
-                <div class="project_data" data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'></div>
+                <div class="project_data" data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_Views='<?= $getVid_Views ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'></div>
             <?php
             } else {
                 $URL = "home.php#dashboard";
@@ -64,7 +73,7 @@
             <div class="video_container">
                 <video id="my-video" class="video-js vjs-theme-city vjs-16-9" controls preload="auto" data-setup="{}">
                     <!-- <!-- <source src="MY_VIDEO.mp4" type="video/mp4" /> -->
-                    <!-- <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/webm" /> --> -->
+                    <!-- <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/webm" /> -->
                     <p class="vjs-no-js">
                         To view this video please enable JavaScript, and consider upgrading to a
                         web browser that
@@ -73,12 +82,16 @@
                 </video>
                 <div class="video_info">
                     <h2><?= $getVid_Name ?></h2>
-                    <br>
-                    <?= date("M jS, Y", strtotime($getVid_UploadTime)); ?>
-                    <br>
-                    <br>
-                    <p><?= $getVid_Description ?></p>
+                    <div class="video_details">
+                        <p class="upload_day"><?= date("M jS, Y", strtotime($getVid_UploadTime)); ?></p>
+                        <p class="view_count"><?= $views ?></p>
+                    </div>
 
+
+
+
+
+                    <p class="main_vid_description"><?= $getVid_Description ?></p>
                     <a href="user?id=<?= $getUsernames ?>" class="video_author">
                         <img src="<?= $profileImg ?>" alt="profile picture" class="author_image">
                         <p class="author_username"><?= $getUsernames ?></p>
@@ -91,7 +104,7 @@
                 // $sql = "SELECT * from tb_videos where vid_visibility = 'public' ORDER BY RAND ()";
                 $uuid = $_GET["id"];
 
-                $sql = "SELECT v.vid_id,  v.vid_UID,  v.vid_userID,  v.vid_name,  v.vid_thumbnail,  v.vid_uploadTime, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' AND v.vid_UID != '$uuid' ORDER BY RAND ()";
+                $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' AND v.vid_UID != '$uuid' ORDER BY RAND ()";
 
                 include "populate_list.php";
                 ?>

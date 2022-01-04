@@ -4,7 +4,7 @@
 <div id="projects-container">
     <?php
     if (isset($userid)) {
-        $sql = "SELECT vid_id,  vid_UID,  vid_userID,  vid_name,  vid_thumbnail,  vid_uploadTime, vid_status from tb_videos where vid_userID = $userid order by vid_id DESC";
+        $sql = "SELECT * from tb_videos where vid_userID = $userid order by vid_id DESC";
 
 
         include "populate_list.php";
