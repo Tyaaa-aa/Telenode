@@ -1090,7 +1090,7 @@ a:hover {
 .more_options_container_expanded {
     top: 70%;
     max-height: 220px;
-    max-width: 180px;
+    /* max-width: 180px; */
     /* opacity: 1; */
 }
 
