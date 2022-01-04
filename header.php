@@ -88,9 +88,9 @@
             $hasVid = false;
         ?>
             <!-- IF USER IS NOT LOGGED IN -->
-            <a href="home.php" class="header_logo">
+            <!-- <a href="home.php" class="header_logo">
                 <img src="img/logo.png" alt="Header Logo">
-            </a>
+            </a> -->
             <form action="search.php" method="GET" id="search-form">
                 <input type="text" placeholder="Search" name="q" class="search_input input_field">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
@@ -121,7 +121,7 @@
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
                     </a>
-                    <div class="login_box">
+                    <div class="login_box create_prompt">
                         <a href="login.php#signup" class="signup_btn btn">Start Creating</a>
                     </div>
                 </ul>
