@@ -14,7 +14,6 @@ if ($result->num_rows > 0) {
         // $getVid_Description = $row['vid_description'];
         // $getVid_Thumbnail = $row['vid_thumbnail'];
         // $getVid_Visibility = $row['vid_visibility'];
-        // $getVid_Status = $row['vid_status'];
         // $getVid_UploadTime = $row['vid_uploadTime'];
 
 
@@ -25,6 +24,15 @@ if ($result->num_rows > 0) {
         $getVid_Thumbnail = $row['vid_thumbnail'];
         $getVid_UploadTime = $row['vid_uploadTime'];
         $getVid_Views = $row['vid_views'];
+        $getVid_Visibility = $row['vid_visibility'];
+
+        if ($getVid_Visibility == "private") {
+            $visibility_icon = "<span class='material-icons visibility_icon' title='Private Video'>lock</span>";
+        } else if ($getVid_Visibility == "unlisted") {
+            $visibility_icon = '<span class="material-icons visibility_icon" title="Unlisted Video">link</span>';
+        } else if ($getVid_Visibility == "public") {
+            $visibility_icon = '<span class="material-icons visibility_icon" title="Public Video">public</span>';
+        }
 
         if ($getVid_Views == 0) {
             $views = "No Views";
@@ -132,6 +140,7 @@ if ($result->num_rows > 0) {
                                 <div class="video_details">
                                     <p class="upload_day"><?= $time ?></p>
                                     <p class="view_count"><?= $views ?></p>
+                                    <?= $visibility_icon ?>
                                 </div>
                             </div>
                         </div>
@@ -142,6 +151,7 @@ if ($result->num_rows > 0) {
                     <div class="video_details">
                         <p class="upload_day"><?= $time ?></p>
                         <p class="view_count"><?= $views ?></p>
+                        <?= $visibility_icon ?>
                     </div>
                 <?php
                 }
@@ -168,10 +178,10 @@ if ($result->num_rows > 0) {
     }
 } else {
     ?>
-    <div>
-        <br>
-        You have no projects :(
-        <a href="create.php" class="signup_btn btn">Start Creating</a>
+    <div class="no_projects_container">
+        <h3>You have no projects yet :(</h3>
+        <p>Create your first interactive video now!</p>
+        <a href="create.php" class="signup_btn btn">Start Now</a>
     </div>
 <?php
 }

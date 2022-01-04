@@ -6,10 +6,10 @@ let defaultVolume = 0.1
 // Load video on page load. Leave on by default. Mostly used for development
 let vidOnLoad = true
 // Autoplay video
-let autoPlay = false
+let autoPlay = true
 // If watched at least 30 seconds or 15% of the video add to view count
-let minWatchTimeSec = 30
-let minWatchTimePercent = 15
+let minWatchTimeSec = 30 // Minimum time in seconds
+let minWatchTimePercent = 15 // Minimum time as a percentage
 
 
 
@@ -26,19 +26,24 @@ const myPlayer = videojs('my-video', {
 
 myPlayer.volume(defaultVolume)
 
-// SHOW AUTHOR ON VIDEO CARDS✅
-// NEED TO IMPLEMENT END OF VIDEO CATCHING✅
-// UPGRADE API TO GRAB HD VERSION OF VIDEOS✅
-// NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS (AND PREVENT PUBLISHING OF BLANK PROJECT TITLES)
-// SEPARATE PUBLISHED AND UNPUBLISHED PROJECTS IN MY PROJECTS TAB
-// NEED TO IMPLEMENT BACK BUTTON
-// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER
+// SHOW AUTHOR ON VIDEO CARDS ✅
+// NEED TO IMPLEMENT END OF VIDEO CATCHING ✅
+// UPGRADE API TO GRAB HD VERSION OF VIDEOS ✅
+// ADD VIEW COUNT ✅
+// SEPARATE PUBLISHED AND UNPUBLISHED PROJECTS IN MY PROJECTS TAB ✅
+// NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS ✅
+// NEED TO IMPLEMENT BACK BUTTON ✅
+// IMPLEMENT TAGS FOR VIDEO VISIBILITY STATUS ✅
+// PROVIDE VIEW BUTTON IN EDIT PAGE (EITHER POP UP IFRAME OR JUST SIMPLE REDIRECT) ✅
+// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER **
+// NEED TO IMPLEMENT IDENTIFICATION COLOURED DOTS *****
+// NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING **
+// ADD ABILITY TO IMPORT PROJECTS **
+// ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS) **
 // NEED TO IMPLEMENT LOCAL STORAGE SAVE AUDIO LEVEL AND ETC
-// NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING
-// ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS)
-// ADD LIKES AND COMMENTS AND VIEW COUNT
-// IMPLEMENT 360 VIDEOS
 // IMPLEMENT META TAGS FOR SOCIAL SHARING
+// ADD LIKES AND COMMENTS
+// IMPLEMENT 360 VIDEOS
 
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
@@ -53,22 +58,43 @@ let optionsBlocks
 
 let firstBlock = projectData[0]
 
-let currentBlock = firstBlock
 
-// console.log(currentBlock)
-if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined)) {
+let hash = document.location.hash
+// console.log(hash);
+// console.log(firstBlock.videoID)
+if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
     setTimeout(() => {
         if (vidOnLoad) {
-            playBlock(currentBlock)
+            if (hash != "") {
+                playFromHash()
+            } else {
+                playBlock(firstBlock)
+            }
         }
     }, 10);
 } else {
     alert("Project is unpublished or undone")
+    history.back()
+    window.location.replace('home.php#dashboard')
 }
 
 myPlayer.on("error", function () {
-    playBlock(currentBlock)
+    playBlock(firstBlock)
 })
+
+$(window).on('hashchange', function (e) {
+    playFromHash()
+    // console.log(hashBlock)
+})
+
+function playFromHash() {
+    hash = document.location.hash.replace("#", "")
+    hash = decodeURI(hash)
+    // console.log(hash)
+    modal.close()
+    let hashBlock = filter(projectData, hash, 'blockID')[0]
+    playBlock(hashBlock)
+}
 
 function playBlock(block) {
     // console.log(projectData)
@@ -85,9 +111,9 @@ function playBlock(block) {
         let optionVideoBlock = thisTitle
         if (!thisTitle == "" || !thisTitle == undefined) {
             optionsBlocks.append(`
-                    <div class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
+                    <a href="#${encodeURI(optionVideoBlock)}" class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
                         ${thisTitle}
-                    </div>`)
+                    </a>`)
         } else {
             counter++
             // console.log("COUNTER: " + counter);
@@ -187,12 +213,12 @@ var modal = new ModalDialog(myPlayer, {
 myPlayer.addChild(modal);
 
 myPlayer.on('ended', function () {
-    console.log("Video Ended");
-    modal.open();
+    // console.log("Video Ended")
+    modal.open()
 });
 
 modal.on('modalopen', function () {
-    console.log('modalopen')
+    // console.log('modalopen')
     modal.contentEl().innerHTML = optionsBlocks
 });
 
@@ -200,13 +226,12 @@ modal.on('modalopen', function () {
 $("#watch_body").on("click", ".video_options", function () {
     let selectedOptionTitle = $(this).data("title")
     let selectedOptionBlockID = $(this).data("blockid")
-    console.log(selectedOptionTitle, selectedOptionBlockID);
+    // console.log(selectedOptionTitle, selectedOptionBlockID);
 
     let nextBlock = filter(projectData, selectedOptionBlockID, 'blockID')[0]
-    console.log(nextBlock)
-    modal.close();
-    currentBlock = nextBlock
-    playBlock(currentBlock)
+    // console.log(nextBlock)
+    modal.close()
+    playBlock(nextBlock)
 })
 
 const filter = (array, value, key) => {
@@ -235,7 +260,7 @@ let viewTimer = setInterval(() => {
     if (durationTime != undefined && !isNaN(durationTime)) {
         // console.log(currentTime + "/" + durationTime)
         let vidPercent = ((currentTime / durationTime) * 100).toFixed(2)
-        console.log(vidPercent + `% / ${minWatchTimePercent}%`)
+        // console.log(vidPercent + `% / ${minWatchTimePercent}%`)
         if (currentTime >= minWatchTimeSec || vidPercent >= minWatchTimePercent) {
             // console.log(`Adding View Count to ${projectUID}!`);
             clearInterval(viewTimer)
@@ -247,7 +272,7 @@ let viewTimer = setInterval(() => {
                 url: "update_viewcount.php",
                 cache: false,
                 success: function (response) {
-                    console.log("Added View! ✅")
+                    // console.log("Added View! ✅")
                     // console.log("New view count: "+response)
                 }
             })

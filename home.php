@@ -31,7 +31,7 @@
                 $(".sidebar_items").each(function() {
                     if ($(this).attr("href").includes(hash)) {
                         $(this).addClass("sidebar_items_selected");
-                        console.log(hash);
+                        // console.log(hash);
                     }
                 })
             }

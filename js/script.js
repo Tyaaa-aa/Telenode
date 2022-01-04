@@ -470,6 +470,15 @@ $(".edit_projects").on("input click ", ".question_field", async function (e) {
     }
 })
 
+// $(".edit_projects").on("keyup", ".question_title, .options_field", function (event) {
+//     console.log("TEST");
+//     $(this).val($(this).val().replace(/[~`!@#$%\^&*()+=\-\[\]\\';,/{}|\\":<>\?]/g, ''));
+// })
+
+// function isValid(str) {
+//     return !/[`#\^&=\-;,/\\:\?]/g.test(str);
+// }
+
 // Dropdown menu dismiss on click anywhere
 $(document).on("click", function () {
     if ($(".dropdown_content").hasClass("dropped")) {

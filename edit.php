@@ -35,6 +35,12 @@
                 </button>
 
                 <div class="more_options_container">
+                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options">
+                        <span class="material-icons">
+                            play_circle_outline
+                        </span>
+                        Watch Video
+                    </a>
                     <span class="more_options options_download">
                         <span class="material-icons">
                             save_alt

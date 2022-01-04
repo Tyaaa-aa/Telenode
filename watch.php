@@ -34,11 +34,18 @@
                     $getVid_Name = $row['vid_name'];
                     $getVid_Description = $row['vid_description'];
                     $getVid_Thumbnail = $row['vid_thumbnail'];
-                    $getVid_Visibility = $row['vid_visibility'];
                     $getVid_Status = $row['vid_status'];
                     $getVid_UploadTime = $row['vid_uploadTime'];
                     $getVid_Views = $row['vid_views'];
+                    $getVid_Visibility = $row['vid_visibility'];
 
+                    if ($getVid_Visibility == "private") {
+                        $visibility_icon = "<span class='material-icons visibility_icon' title='Private Video'>lock</span>";
+                    } else if ($getVid_Visibility == "unlisted") {
+                        $visibility_icon = '<span class="material-icons visibility_icon" title="Unlisted Video">link</span>';
+                    } else if ($getVid_Visibility == "public") {
+                        $visibility_icon = '';
+                    }
                     if ($getVid_Views == 0) {
                         $views = "No Views";
                     } else if ($getVid_Views == 1) {
@@ -53,8 +60,11 @@
 
                 if ($getVid_Visibility == "private" && $getVid_userID != $getUserID) {
                     $URL = "home.php#dashboard";
-
                     echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+                    echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
+                } else if ($getVid_Status == "unpublished") {
+                    $URL = "home.php#projects";
+                    echo "<script type='text/javascript'>alert('Project is unpublished! If you are the owner of this project please publish it first!');document.location.href='{$URL}';</script>";
                     echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
                 }
             ?>
@@ -81,21 +91,17 @@
                     </p>
                 </video>
                 <div class="video_info">
-                    <h2><?= $getVid_Name ?></h2>
+                    <h2><?= $getVid_Name ?><?= $visibility_icon ?></h2>
                     <div class="video_details">
                         <p class="upload_day"><?= date("M jS, Y", strtotime($getVid_UploadTime)); ?></p>
                         <p class="view_count"><?= $views ?></p>
                     </div>
 
-
-
-
-
-                    <p class="main_vid_description"><?= $getVid_Description ?></p>
-                    <a href="user?id=<?= $getUsernames ?>" class="video_author">
+                    <a href="user?id=<?= $getUsernames ?>" class="video_author" title="Visit <?= $getUsernames ?>'s profile">
                         <img src="<?= $profileImg ?>" alt="profile picture" class="author_image">
                         <p class="author_username"><?= $getUsernames ?></p>
                     </a>
+                    <p class="main_vid_description"><?= $getVid_Description ?></p>
                 </div>
             </div>
             <!-- <button class="btn video_debug_btn" style="z-index: 999999999999;">DEBUG</button> -->
