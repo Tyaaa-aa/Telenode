@@ -794,7 +794,7 @@ a:hover {
     background-color: transparent;
     border-radius: var(--globalRadius);
     padding: 10px;
-    margin: 10px;
+    /* margin: 10px; */
     text-decoration: none;
     color: var(--secondaryColor);
     position: relative;
@@ -862,8 +862,9 @@ a:hover {
 
 #projects-container .video_cards,
 #dashboard-container .video_cards {
-    width: 23%;
+    width: 24%;
     box-shadow: none;
+    margin-right: 1%;
 }
 
 .video_author {
@@ -889,7 +890,7 @@ a:hover {
 
 .video_info_container {
     display: flex !important;
-    max-height: 50px;
+    max-height: 40px;
     max-width: max-content;
     margin-top: -50px;
     /* transform: translateY(-100%); */
@@ -2041,7 +2042,11 @@ a:hover {
 
 #watch_body #dashboard-container .video_cards {
     width: 100%;
-    margin-top: 0;
+    margin: 5px;
+}
+
+#watch_body #dashboard-container .video_cards:first-child{
+    margin-top: -10px;
 }
 
 .video_container {
@@ -2068,7 +2073,7 @@ a:hover {
 }
 
 .video_info>h2 {
-    margin-bottom: 15px;
+    margin: 15px 0;
     color: var(--secondaryColor);
 }
 
