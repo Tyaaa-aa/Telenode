@@ -1,4 +1,5 @@
 <?php
+ini_set('error_reporting', E_ALL);
 include "head.php";
 // $conn = new mysqli("localhost", "root", "", "thebigtest");
 
@@ -10,6 +11,7 @@ include "head.php";
 $videoLength = $_POST["videoLength"];
 $videoThumbnail = $_POST["videoThumbnail"];
 
+$projectData = "";
 // ====== JSON ========
 
 // Raw JSON from POST data
@@ -26,10 +28,15 @@ $uuid = substr(base64_encode(md5(mt_rand())), 0, 11);
 
 $id = $_SESSION["userID"];
 echo $_SESSION["userID"] . "<br><br><br>" .  $uuid . "<br><br><br>" .  $processedJSON . "<br><br><br>" .  $videoThumbnail . "<br><br><br>";
-
-$stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail) values (?,?,?,?)");
-$stmt->bind_param("ssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail);
+include "db_connect.php";
+$stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail,vid_projectData) values (?,?,?,?,?)");
+$stmt->bind_param("sssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail,$projectData);
 $stmt->execute();
+// if (!$stmt->execute()) {
+//     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+// }else{
+//     echo"Success?";
+// }
 $stmt->close();
 $conn->close();
 
@@ -37,4 +44,4 @@ $conn->close();
 
 header("Location: edit.php?id=$uuid");
 ?>
-<a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically redirected to the forums page</a>
+<a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically</a>
