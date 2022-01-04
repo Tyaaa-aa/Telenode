@@ -791,7 +791,7 @@ a:hover {
 
 /* ========== PROJECTS ========== */
 .video_cards {
-    background-color: var(--mainColor);
+    /* background-color: var(--mainColor); */
     border-radius: var(--globalRadius);
     padding: 10px;
     margin: 10px;
@@ -844,7 +844,7 @@ a:hover {
 .video_author {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    /* margin-top: 5px; */
     text-decoration: none;
     color: var(--secondaryColor);
     max-width: max-content;
@@ -856,6 +856,13 @@ a:hover {
     border-radius: var(--globalRadius);
     margin-right: 5px;
 }
+
+.upload_date {
+    margin-top: 5px;
+}
+
+
+
 
 .edit_btn {
     position: absolute;

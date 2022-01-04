@@ -8,7 +8,7 @@
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
     <section class="main_body">
-            <!-- ===== TeleNode Content Dynamically Updated ===== -->
+        <!-- ===== TeleNode Content Dynamically Updated ===== -->
         <div class="main_content">
         </div>
         <?php include "footer.php" ?>
