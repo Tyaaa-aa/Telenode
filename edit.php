@@ -35,7 +35,7 @@
                 </button>
 
                 <div class="more_options_container">
-                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options">
+                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options" target="_blank">
                         <span class="material-icons">
                             play_circle_outline
                         </span>
@@ -52,7 +52,7 @@
                             import_export
                         </span>
                         Import
-                        <!--  Project --> (undone)
+                        <input id="importJSON" type="file" accept="application/json" title="" />
                     </span>
                     <span class="more_options options_delete">
                         <span class="material-icons">
@@ -124,7 +124,7 @@
 
                             <div class="block_video block_box">
                                 <div class="video_cards_container">
-                                    <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                    <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                     <div class="video_cards">
                                         <div class="thumbnail-box">
                                             <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -135,7 +135,7 @@
                                 <div class="input_container">
                                     <input type="text" placeholder="Question/Prompt" class="input_field question_title">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="" tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -150,7 +150,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -160,7 +160,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -172,7 +172,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -182,7 +182,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -194,7 +194,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -204,7 +204,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -334,8 +334,8 @@
     <script>
         collapseSidebar()
 
-        listYTVideos($(".projects_box"), true)
-        populateProjectData($(".projects_box"))
+        listVideos($(".projects_box").data("getvid_urls"), true)
+        populateProjectData($(".projects_box").attr("data-getVid_ProjectData"))
 
         // $(".publish_btn").click()
     </script>

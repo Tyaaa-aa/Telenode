@@ -373,11 +373,12 @@ function extractVidId(url) {
 // List Populating function 
 // container = container to be populated with data provided
 // isYT = is this a youtube link or local project link, true = youtube & false = local
-async function listYTVideos(container, isYT) {
-    if (container.data("getvid_urls") != undefined) {
+async function listVideos(vidURLS) {
+    if (vidURLS != undefined) {
+        $(".projects_box .video_cards").remove()
         // loadingText()
         // Get video list from data "data-getVid_URLS"
-        const videoData = Object.values(container.data("getvid_urls"))
+        const videoData = Object.values(vidURLS)
         // console.log(videoData)
         for (let i = 0; i < videoData.length; i++) {
             const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
@@ -386,10 +387,7 @@ async function listYTVideos(container, isYT) {
             const thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
             const title = JSON.parse(result).title;
             // console.log(JSON.parse(result).title)
-            let listHTML;
-            if (isYT) {
-                // Youtube video card
-                listHTML = /* HTML */ `
+            let listHTML = /* HTML */ `
                 <div class="video_cards">
                     <a href="https://youtu.be/${videoID}" class="grabbing" target="_blank" onclick="openInNewTab()" data-videoid="${videoID}">
                         <div class="thumbnail-box">
@@ -400,29 +398,11 @@ async function listYTVideos(container, isYT) {
                     <span class="material-icons delete_vid delete_vid_hidden" title="Remove video">
                         clear
                     </span>
-                </div>`;
-                // listMenu = /* HTML */ `
-                // <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
-                // $(listMenu).appendTo(".dropdown_content")
-                // $(container).find(".vid_counter").text(" (" + videoData.length + " Videos)")
-            } else {
-                // Local project video card
-                listHTML = /* HTML */ `
-                <div class="video_cards" onclick="playThisVid('${videoID}')">
-                    <div class="thumbnail-box">
-                        <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-                    </div>
-                    <h4>
-                        ${title}
-                    </h4>
                 </div>`
-            }
-            $(listHTML).appendTo(container)
-        }
-        if (isYT) {
-            updateListMenu(container.data("getvid_urls"))
-        }
 
+            $(listHTML).appendTo($(".projects_box"))
+        }
+        updateListMenu(vidURLS)
     } else {
         alert("An Error Occured. Project has been removed or the link is invalid.")
         window.location.href = "home.php";
@@ -830,7 +810,7 @@ async function updateBlocks() {
     
                 <div class="block_video block_box">
                     <div class="video_cards_container">
-                        <!-- <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field"> -->
+                        <!-- <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field"> -->
                         <div class="video_cards">
                             <div class="thumbnail-box">
                                 <img class="thumbnail" src="https://i.ytimg.com/vi/${optionVideoid}/hqdefault.jpg" alt="Thumbnail">
@@ -841,7 +821,7 @@ async function updateBlocks() {
                     <div class="input_container">
                         <input type="text" placeholder="Question/Prompt" class="input_field question_title">
                         <div class="dropbtn_container">
-                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${optionVideoid}" style="display:none">
+                            <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${optionVideoid}" style="display:none">
                         </div>
                     </div>
                 </div>
@@ -850,7 +830,7 @@ async function updateBlocks() {
                     <div class="block_questions block_box">
                         <input type="text" placeholder="Option 1" class="input_field options_field">
                         <div class="dropbtn_container">
-                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                             <span class="material-icons">
                                 expand_more
                             </span>
@@ -860,7 +840,7 @@ async function updateBlocks() {
                         </div>
     
                         <div class="video_cards_container">
-                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                             <div class="video_cards">
                                 <div class="thumbnail-box">
                                     <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -872,7 +852,7 @@ async function updateBlocks() {
                     <div class="block_questions block_box">
                         <input type="text" placeholder="Option 1" class="input_field options_field">
                         <div class="dropbtn_container">
-                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                             <span class="material-icons">
                                 expand_more
                             </span>
@@ -882,7 +862,7 @@ async function updateBlocks() {
                         </div>
     
                         <div class="video_cards_container">
-                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                             <div class="video_cards">
                                 <div class="thumbnail-box">
                                     <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -894,7 +874,7 @@ async function updateBlocks() {
                     <div class="block_questions block_box">
                         <input type="text" placeholder="Option 1" class="input_field options_field">
                         <div class="dropbtn_container">
-                            <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                            <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                             <span class="material-icons">
                                 expand_more
                             </span>
@@ -904,7 +884,7 @@ async function updateBlocks() {
                         </div>
     
                         <div class="video_cards_container">
-                            <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                            <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                             <div class="video_cards">
                                 <div class="thumbnail-box">
                                     <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -1036,15 +1016,17 @@ function getUrlParameter(name) {
 }
 
 // Populate data on load 
-async function populateProjectData(container) {
-    if (!container.attr("data-getVid_ProjectData")) {
+async function populateProjectData(projectData) {
+    if (!projectData) {
         loadedText()
         return
     }
     console.log("Loading Data...");
     // loadingText()
-    let projectData = JSON.parse(container.attr("data-getVid_ProjectData"))
-    // console.log(projectData);
+    if (typeof projectData === 'string') {
+        projectData = JSON.parse(projectData)
+    }
+    console.log(projectData);
     // Update starter block
     let starterBlockData = projectData[0]
     let starterTitle = starterBlockData.questionTitle
@@ -1103,7 +1085,7 @@ async function populateProjectData(container) {
 
                             <div class="block_video block_box">
                                 <div class="video_cards_container">
-                                    <!-- <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field"> -->
+                                    <!-- <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field"> -->
                                     <div class="video_cards">
                                         <div class="thumbnail-box">
                                             <img class="thumbnail" src="https://i.ytimg.com/vi/${thisVideo}/hqdefault.jpg" alt="Thumbnail">
@@ -1114,7 +1096,7 @@ async function populateProjectData(container) {
                                 <div class="input_container">
                                     <input type="text" placeholder="Question/Prompt" class="input_field question_title" value="${thisTitle}">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${thisVideo}" style="display:none">
+                                        <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="${thisVideo}" style="display:none">
                                     </div>
                                 </div>
                             </div>
@@ -1123,7 +1105,7 @@ async function populateProjectData(container) {
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -1133,7 +1115,7 @@ async function populateProjectData(container) {
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -1145,7 +1127,7 @@ async function populateProjectData(container) {
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -1155,7 +1137,7 @@ async function populateProjectData(container) {
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -1167,7 +1149,7 @@ async function populateProjectData(container) {
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text"  class="input_field dropbtn" tabindex="-1"placeholder="Choose a video" onkeypress="return false;" readonly>
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -1177,7 +1159,7 @@ async function populateProjectData(container) {
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" tabindex="-1" class="input_field question_field">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -1283,6 +1265,57 @@ function activatePublishBtn() {
         saveProjectData(true)
     })
 
+    // Import data from another projectt
+    $(".options_import").click(function (e) {
+        // populateProjectData()
+        if(!confirm("Importing will delete all current project data. Continue?")) e.preventDefault()
+        console.log("Import Project")
+    })
+
+    document.getElementById('importJSON').onchange = function (evt) {
+        try {
+            let files = evt.target.files;
+            if (!files.length) {
+                alert('No file selected!');
+                return;
+            }
+            let file = files[0];
+            let reader = new FileReader();
+            const self = this;
+            reader.onload = (event) => {
+                let data = JSON.parse(event.target.result)
+                let projectData = data.videoData
+                let videoURLS = data.videoList
+
+
+                console.log('FILE CONTENT\n', data)
+                populateProjectData(projectData)
+
+                let projectID = $('.projects_box').attr("data-getVid_UID")
+                // console.log(vidArray)
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        'videos': JSON.stringify(videoURLS),
+                        'projectID': projectID
+                    },
+                    url: "updateProjectVideos_backend.php",
+                    cache: false,
+                    success: function (response) {
+                        console.log("Video Added! ✅")
+                        let updatedVideoURLS = JSON.parse(response)
+                        // console.log(vidArray)
+                        listVideos(updatedVideoURLS)
+                        updateListMenu(updatedVideoURLS)
+                    }
+                })
+            };
+            reader.readAsText(file);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     // Delete project
     $(".options_delete").click(function () {
         if (window.confirm("Are you sure you want to permanently delete this project? \nThis action cannot be undone!")) {
@@ -1312,7 +1345,6 @@ function activatePublishBtn() {
             })
         }
     })
-
 }
 
 $(".publish_form").submit(function (e) {

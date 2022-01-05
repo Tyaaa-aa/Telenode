@@ -1,31 +1,3 @@
-// ===== Video controls =====
-
-// Store user adjusted volume into localstorage and use that next time
-// Default volume of player (Value range from: 0 - 1)
-let defaultVolume = 0.1
-// Load video on page load. Leave on by default. Mostly used for development
-let vidOnLoad = true
-// Autoplay video
-let autoPlay = true
-// If watched at least 30 seconds or 15% of the video add to view count
-let minWatchTimeSec = 30 // Minimum time in seconds
-let minWatchTimePercent = 15 // Minimum time as a percentage
-
-
-
-// Initialize video player
-const myPlayer = videojs('my-video', {
-    // aspectRatio: '16:9',
-    // muted: true,
-    // autoplay: true,
-    responsive: true,
-    controlBar: {
-        'pictureInPictureToggle': false
-    }
-})
-
-myPlayer.volume(defaultVolume)
-
 // SHOW AUTHOR ON VIDEO CARDS ✅
 // NEED TO IMPLEMENT END OF VIDEO CATCHING ✅
 // UPGRADE API TO GRAB HD VERSION OF VIDEOS ✅
@@ -35,17 +7,74 @@ myPlayer.volume(defaultVolume)
 // NEED TO IMPLEMENT BACK BUTTON ✅
 // IMPLEMENT TAGS FOR VIDEO VISIBILITY STATUS ✅
 // PROVIDE VIEW BUTTON IN EDIT PAGE (EITHER POP UP IFRAME OR JUST SIMPLE REDIRECT) ✅
-// WHEN ON BLOCK TAB KEY SHOULD GO TO NEXT FIELD (TABINDEX = "-1" MAYBE)
-// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER **
+// WHEN ON BLOCK TAB KEY SHOULD GO TO NEXT FIELD (TABINDEX = "-1" MAYBE) ✅
+// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER ✅
+// ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS) ✅
+// ADD ABILITY TO IMPORT PROJECTS ✅
+// NEED TO IMPLEMENT LOCAL STORAGE SAVE AUDIO LEVEL ✅
 // NEED TO IMPLEMENT IDENTIFICATION COLOURED DOTS *****
 // NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING **
-// ADD ABILITY TO IMPORT PROJECTS **
-// ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS) **
-// NEED TO IMPLEMENT LOCAL STORAGE SAVE AUDIO LEVEL AND ETC
 // IMPLEMENT META TAGS FOR SOCIAL SHARING
-// ADD LIKES AND COMMENTS
 // IMPLEMENT 360 VIDEOS
+// ADD LIKES AND COMMENTS
 
+// ===== VIDEO PLAYER SETTINGS =====
+
+// Store user adjusted volume into localstorage and use that next time
+// Default volume of player (Value range from: 0 - 1)
+let defaultVolume = 0.5
+// Load video on page load. Leave on by default. Mostly used for development
+let vidOnLoad = true
+// Autoplay video
+let autoPlay = true
+// If watched at least 30 seconds or 15% of the video add to view count
+let minWatchTimeSec = 30 // Minimum time in seconds
+let minWatchTimePercent = 15 // Minimum time as a percentage
+
+// Initialize video player
+const myPlayer = videojs('my-video', {
+    // aspectRatio: '16:9',
+    // muted: true,
+    autoplay: true,
+    responsive: true,
+    controlBar: {
+        'pictureInPictureToggle': false
+    }
+})
+
+myPlayer.on('volumechange', () => { // Store volume to save user preference
+    let currentVolume = parseFloat(myPlayer.volume().toFixed(2))
+    localStorage.setItem('userVolume', currentVolume)
+})
+
+// Set volume to previous user selected volume on load
+const userVolume = localStorage.getItem('userVolume')
+if (userVolume == null || userVolume == undefined || userVolume == "") {
+    myPlayer.volume(defaultVolume) // Set volume to predefined default volume
+} else {
+    myPlayer.volume(userVolume) // Set volume to user last set volume
+}
+
+// Attach hotkeys to video player
+videojs('my-video').ready(function () {
+    this.hotkeys({
+        volumeStep: 0.05,
+        seekStep: 5,
+        enableModifiersForNumbers: false
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+// ====== LOGIC FOR PLAYING PROJECT DATA ======
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
 projectData = JSON.parse(projectData)
@@ -53,16 +82,11 @@ let projectName = $(".project_data").attr("data-getVid_Name")
 let maxOptionCount = 3; // Maximum amount of options
 // console.log();
 let firstVid = Object.values(projectData)
+let optionsBlocks // Global to be accessible and set anywhere
+let firstBlock = projectData[0] // First block of the project (Starting Question)
+let hash = document.location.hash // Current hash in url (can start project from any point)
 
-
-let optionsBlocks
-
-let firstBlock = projectData[0]
-
-
-let hash = document.location.hash
-// console.log(hash);
-// console.log(firstBlock.videoID)
+// Catch undone projects (If question title or video is not set)
 if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
     setTimeout(() => {
         if (vidOnLoad) {
@@ -76,11 +100,19 @@ if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined
 } else {
     alert("Project is unpublished or undone")
     history.back()
-    window.location.replace('home.php#dashboard')
+    window.location.replace('home.php#dashboard') // Fallback
 }
 
+// If error (might be bad get video link) just retry current block to grab a new link
+let errorCounter = 0
 myPlayer.on("error", function () {
-    playBlock(firstBlock)
+    errorCounter++
+    if (errorCounter >= 3) { // Redirect user to home if error more than 3 times 
+        alert("Something went wrong! Try again later!")
+        window.location.replace('home.php#dashboard')
+    } else {
+        playBlock(firstBlock)
+    }
 })
 
 $(window).on('hashchange', function (e) {
@@ -98,8 +130,7 @@ function playFromHash() {
 }
 
 function playBlock(block) {
-    // console.log(projectData)
-
+    // console.log(block)
     let currentVideoid = extractVidId(block.videoID)
     let currentVideoOptions = block.options
     let currentVideoTitle = block.questionTitle
@@ -135,6 +166,7 @@ function playBlock(block) {
             </div>
         </div>`
     } else {
+        // Show end of video card
         optionsBlocks = /* HTML */ `
         <div class='modal'>
             <div class="video_end">
@@ -167,8 +199,6 @@ function playBlock(block) {
             </div>
             </div>
         </div>`
-
-
     }
     // console.log(currentVideoOptions.length)
     // Play first video (Add false 2nd parameter to disable autoplay)
@@ -176,10 +206,8 @@ function playBlock(block) {
     changeVid(currentVideoid, autoPlay)
 }
 
-
-
 // Main video playing function Add true 2nd parameter to disable autoplay
-function changeVid(videoid, noautoplay) {
+function changeVid(videoid, disableautoplay) {
     let videoLinks = extractVidId(videoid)
     let vidUrl = getVidData(videoLinks)
     // await async function
@@ -190,38 +218,38 @@ function changeVid(videoid, noautoplay) {
             type: 'video/mp4',
             src: vidLink
         })
-        if (!noautoplay) return
+        if (!disableautoplay) return
         myPlayer.ready(function () {
             myPlayer.play()
         })
     })
 }
 
-// myPlayer.on("ended", function() {
-//     // Do this when video ends
-//     console.log("Video Ended");
-// })
-
-
+// Initialize end of video modal pop ups
 var ModalDialog = videojs.getComponent('ModalDialog');
-
 var modal = new ModalDialog(myPlayer, {
-    //  content:'test content',
     temporary: false
-    //closeable:true
-});
-
+})
+// Attach modal to video player
 myPlayer.addChild(modal);
-
+// Show modal when video ends
 myPlayer.on('ended', function () {
     // console.log("Video Ended")
     modal.open()
-});
-
+})
+// Set content of modal to show available options or end of video card
 modal.on('modalopen', function () {
     // console.log('modalopen')
-    modal.contentEl().innerHTML = optionsBlocks
-});
+    // modal.contentEl().style.opacity = 0
+    modal.contentEl().style.transition = "none"
+    modal.contentEl().style.transform = "scale(0) "
+    modal.contentEl().style.overflow = "hidden "
+    modal.contentEl().innerHTML = optionsBlocks // Set content of modal
+    setTimeout(() => {
+        modal.contentEl().style.transition = "all 0.5s"
+        modal.contentEl().style.transform = "scale(1) "
+    }, 10);
+})
 
 // Click on options
 $("#watch_body").on("click", ".video_options", function () {
@@ -234,7 +262,7 @@ $("#watch_body").on("click", ".video_options", function () {
     modal.close()
     playBlock(nextBlock)
 })
-
+// Find block id
 const filter = (array, value, key) => {
     return array.filter(
         key ?
@@ -273,6 +301,9 @@ let viewTimer = setInterval(() => {
                 url: "update_viewcount.php",
                 cache: false,
                 success: function (response) {
+                    if (response == 1) $(".video_info .view_count").text(response + " View")
+                    else $(".video_info .view_count").text(response + " Views")
+
                     // console.log("Added View! ✅")
                     // console.log("New view count: "+response)
                 }
