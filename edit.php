@@ -35,7 +35,7 @@
                 </button>
 
                 <div class="more_options_container">
-                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options" target="_blank">
+                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options options_watch" target="_blank">
                         <span class="material-icons">
                             play_circle_outline
                         </span>

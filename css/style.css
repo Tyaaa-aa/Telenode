@@ -859,13 +859,15 @@ a:hover {
 
 .published_projects_container,
 #dashboard-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 10px;
     /* justify-content: space-between; */
 }
 
 .unpublished_projects_container {
     margin-bottom: 40px;
+    position: relative;
 }
 
 .unpublished_projects_container::after {
@@ -875,6 +877,8 @@ a:hover {
     background-color: var(--thirdTextColor);
     opacity: 0.1;
     margin-top: 20px;
+    position: absolute;
+    bottom: -15px;
 }
 
 .no_projects_container>* {
@@ -894,9 +898,9 @@ a:hover {
 
 #projects-container .video_cards,
 #dashboard-container .video_cards {
-    width: 24%;
+    /* width: 24%; */
     box-shadow: none;
-    margin-right: 1%;
+    /* margin-right: 1%; */
 }
 
 .video_author {
@@ -1127,6 +1131,10 @@ a:hover {
     margin-right: 5px;
 }
 
+.options_watch:hover {
+    color: var(--playerTheme);
+}
+
 .options_import {
     position: relative;
 }
@@ -1151,6 +1159,14 @@ a:hover {
 input[type=file] {
     cursor: pointer;
 }
+
+.options_delete,
+.options_delete:hover {
+    color: #f85959;
+}
+
+
+
 
 .save_msg {
     position: absolute;
@@ -2138,6 +2154,7 @@ input[type=file] {
 
 #watch_body #dashboard-container {
     width: 20%;
+    grid-template-columns: none;
 }
 
 .video_container .author_image {

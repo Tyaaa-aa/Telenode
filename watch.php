@@ -88,7 +88,7 @@ if ($result->num_rows > 0) {
 
     <!--  Non-Essential, But Recommended -->
     <meta property="og:description" content="<?= $getVid_Description ?>">
-    <meta property="og:site_name" content="Telenode">
+    <meta property="og:site_name" content="<?= $getVid_Name ?>">
     <meta name="twitter:image:alt" content="<?= $getVid_Name ?>">
 
     <!-- Twitter META Tags -->

@@ -1027,6 +1027,13 @@ async function populateProjectData(projectData) {
         projectData = JSON.parse(projectData)
     }
     console.log(projectData);
+    // Delete all other blocks first
+    $(document).find(".project_blocks").slice(1).remove()
+    $(".project_blocks_starter").find("input").val("")
+    $(".project_blocks_starter").find("input").attr("data-videoid", "")
+    $(".project_blocks_starter").find(".video_title").text("")
+    $(".project_blocks_starter").find(".thumbnail").attr("src", "img/empty_thumbnail.png")
+
     // Update starter block
     let starterBlockData = projectData[0]
     let starterTitle = starterBlockData.questionTitle
@@ -1063,6 +1070,7 @@ async function populateProjectData(projectData) {
             }
 
         }
+
         // Populate other data
 
         for (let i = 1; i < projectData.length; i++) {
@@ -1217,6 +1225,7 @@ const saveJson = (filename, dataObjToWrite) => {
 
 // ======= PUBLISH SECTION ==========
 function activatePublishBtn() {
+    $(".settings_btn, .more_options, #importJSON").unbind()
     let publishScrollPos
     $(".publish_btn").click(function () {
         // $(".main_content")
@@ -1266,32 +1275,32 @@ function activatePublishBtn() {
     })
 
     // Import data from another projectt
-    $(".options_import").click(function (e) {
+    $(document).on("click", ".options_import", function (e) {
         // populateProjectData()
-        if(!confirm("Importing will delete all current project data. Continue?")) e.preventDefault()
+        if (!confirm("Importing will delete all current project data. Continue?")) e.preventDefault()
         console.log("Import Project")
     })
 
-    document.getElementById('importJSON').onchange = function (evt) {
+    $("#importJSON").change(function (evt) {
         try {
             let files = evt.target.files;
             if (!files.length) {
-                alert('No file selected!');
+                // alert('No file selected!');
                 return;
             }
             let file = files[0];
             let reader = new FileReader();
             const self = this;
             reader.onload = (event) => {
+                loadingText()
                 let data = JSON.parse(event.target.result)
                 let projectData = data.videoData
                 let videoURLS = data.videoList
-
+                let projectID = $('.projects_box').attr("data-getVid_UID")
 
                 console.log('FILE CONTENT\n', data)
                 populateProjectData(projectData)
 
-                let projectID = $('.projects_box').attr("data-getVid_UID")
                 // console.log(vidArray)
                 $.ajax({
                     type: "POST",
@@ -1306,15 +1315,17 @@ function activatePublishBtn() {
                         let updatedVideoURLS = JSON.parse(response)
                         // console.log(vidArray)
                         listVideos(updatedVideoURLS)
-                        updateListMenu(updatedVideoURLS)
+                        // updateListMenu(updatedVideoURLS)
                     }
                 })
             };
             reader.readAsText(file);
         } catch (err) {
             console.error(err);
+            loadedText()
         }
-    }
+    })
+
 
     // Delete project
     $(".options_delete").click(function () {
@@ -1346,6 +1357,7 @@ function activatePublishBtn() {
         }
     })
 }
+
 
 $(".publish_form").submit(function (e) {
     e.preventDefault() // avoid to execute the actual submit of the form.
