@@ -1,3 +1,4 @@
+<title>TeleNode</title>
 <img src="img/loader.png" id="preloader" alt="preloader">
 <header>
     <nav>

@@ -73,6 +73,14 @@ if ($result->num_rows > 0) {
 
     $absolute_url = full_url($_SERVER);
     // $absolute_url = str_replace("edit", "watch", $absolute_url);
+
+    $metaThumbnail;
+    if (strpos($getVid_Thumbnail, 'ytimg.com') !== false) {
+        $metaThumbnail = $getVid_Thumbnail;
+    } else {
+        $baseURL = str_replace("/watch?id=$getVid_UID", "", $absolute_url);
+        $metaThumbnail = $baseURL . "/" . $getVid_Thumbnail;
+    }
 ?>
     <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
     <!-- Video.js base CSS -->
@@ -81,20 +89,23 @@ if ($result->num_rows > 0) {
     <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet" />
 
     <!--  Essential META Tags -->
+    <title><?= $getVid_Name ?></title>
     <meta property="og:title" content="<?= $getVid_Name ?>">
     <meta property="og:type" content="video.movie" />
-    <meta property="og:image" content="<?= $getVid_Thumbnail ?>">
+
+    <meta property="og:image" content="<?= $metaThumbnail ?>">
     <meta property="og:url" content="<?= $absolute_url ?>">
 
     <!--  Non-Essential, But Recommended -->
     <meta property="og:description" content="<?= $getVid_Description ?>">
+    <meta name="description" content="<?= $getVid_Description ?>">
     <meta property="og:site_name" content="<?= $getVid_Name ?>">
     <meta name="twitter:image:alt" content="<?= $getVid_Name ?>">
 
     <!-- Twitter META Tags -->
     <meta name="twitter:title" content="<?= $getVid_Name ?>">
     <meta name="twitter:description" content="<?= $getVid_Description ?>">
-    <meta name="twitter:image" content=" <?= $getVid_Thumbnail ?>">
+    <meta name="twitter:image" content=" <?= $metaThumbnail ?>">
     <meta name="twitter:card" content="summary_large_image">
 
     <body id="watch_body">

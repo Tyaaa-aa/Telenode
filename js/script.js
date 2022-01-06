@@ -1225,7 +1225,7 @@ const saveJson = (filename, dataObjToWrite) => {
 
 // ======= PUBLISH SECTION ==========
 function activatePublishBtn() {
-    $(".settings_btn, .more_options, #importJSON").unbind()
+    $(".settings_btn, .more_options, #importJSON, .publish_btn").unbind()
     let publishScrollPos
     $(".publish_btn").click(function () {
         // $(".main_content")
