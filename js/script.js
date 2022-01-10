@@ -440,39 +440,66 @@ function extractVidId(url) {
 // container = container to be populated with data provided
 // isYT = is this a youtube link or local project link, true = youtube & false = local
 async function listVideos(vidURLS) {
-    if (vidURLS != undefined) {
-        $(".projects_box .video_cards").remove()
-        // loadingText()
-        // Get video list from data "data-getVid_URLS"
-        const videoData = Object.values(vidURLS)
-        // console.log(videoData)
-        for (let i = 0; i < videoData.length; i++) {
-            const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
-            // let videoID = VideoDataArray[i];
-            let result = await getVidInfo(videoID) // call function to get returned Promise (calls async function sequentially)
-            const thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
-            const title = JSON.parse(result).title;
-            // console.log(JSON.parse(result).title)
-            let listHTML = /* HTML */ `
-                <div class="video_cards">
-                    <a href="https://youtu.be/${videoID}" class="grabbing" target="_blank" onclick="openInNewTab()" data-videoid="${videoID}">
-                        <div class="thumbnail-box">
-                            <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
-                        </div>
-                        <h4>${title}</h4>
-                    </a>
-                    <span class="material-icons delete_vid delete_vid_hidden" title="Remove video">
-                        clear
-                    </span>
-                </div>`
+    try {
+        if (vidURLS != undefined) {
+            $(".projects_box .video_cards").remove()
+            // loadingText()
+            // Get video list from data "data-getVid_URLS"
+            const videoData = Object.values(vidURLS)
+            // console.log(videoData)
+            for (let i = 0; i < videoData.length; i++) {
+                const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
+                // let videoID = VideoDataArray[i];
+                let result = await getVidInfo(videoID) // call function to get returned Promise (calls async function sequentially)
+                const thumbnail = "https://i.ytimg.com/vi/" + videoID + "/hqdefault.jpg";
+                const title = JSON.parse(result).title;
+                // console.log(JSON.parse(result).title)
+                let listHTML = /* HTML */ `
+                    <div class="video_cards">
+                        <a href="https://youtu.be/${videoID}" class="grabbing" target="_blank" onclick="openInNewTab()" data-videoid="${videoID}">
+                            <div class="thumbnail-box">
+                                <img class="thumbnail" src="${thumbnail}" alt="Thumbnail">
+                            </div>
+                            <h4>${title}</h4>
+                        </a>
+                        <span class="material-icons delete_vid delete_vid_hidden" title="Remove video">
+                            clear
+                        </span>
+                    </div>`
 
-            $(listHTML).appendTo($(".projects_box"))
+                $(listHTML).appendTo($(".projects_box"))
+            }
+            updateListMenu(vidURLS)
+        } else {
+            alert("An Error Occured. Project has been removed or the link is invalid.")
+            window.location.href = "home.php";
         }
-        updateListMenu(vidURLS)
-    } else {
-        alert("An Error Occured. Project has been removed or the link is invalid.")
-        window.location.href = "home.php";
+    } catch (error) {
+        let projectID = $('.projects_box').attr("data-getVid_UID");
+        // Reset vidlist if unsupported video id in vid list
+        let resetVidArray = `{}`
+        // console.log(resetVidArray);
+        $.ajax({
+            type: "POST",
+            data: {
+                'videos': resetVidArray,
+                'projectID': projectID
+            },
+            url: "updateProjectVideos_backend.php",
+            cache: false,
+            success: function (response) {
+                console.log("Auto Corrupted Video Reset!")
+                resetVidArray = JSON.parse(response)
+                // console.log(vidArray)
+                // updateListMenu(resetVidArray)
+            }
+        })
+        alert("Project is deleted or corrupted! Attempting to fix by auto resetting videos!")
+        location.reload();
+        // history.back()
+        // window.location.replace('home.php#projects')
     }
+
 }
 
 function openInNewTab(e) {
@@ -619,8 +646,19 @@ $(".edit_videos_btn").click(function (e) {
 
 // Delete video from project repository
 let vidArray
-if ($(".projects_box").attr("data-getvid_urls") != undefined) {
-    vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+try {
+    if ($(".projects_box").attr("data-getvid_urls") != undefined) {
+        vidArray = $(".projects_box").attr("data-getvid_urls")
+        if (typeof vidArray === 'string') {
+            if (!(vidArray == "")) {
+                vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+            }
+        }
+    }
+} catch (error) {
+    alert("Project is deleted or corrupted!")
+    history.back()
+    window.location.replace('home.php#projects')
 }
 $(".projects_box").on("click", ".delete_vid", function () {
     if (window.confirm("Delete Video?")) {

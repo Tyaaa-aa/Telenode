@@ -80,14 +80,11 @@ videojs('my-video').ready(function () {
 })
 
 $(".share_btn").click(function () {
-    console.log("ASPASOD");
     if ($(".share_social_container").hasClass("share_social_container_expanded")) {
         $(".share_social_container").removeClass("share_social_container_expanded")
-        console.log("EXPANDING");
     } else {
         setTimeout(() => {
             $(".share_social_container").addClass("share_social_container_expanded")
-            console.log("Collapsing");
         }, 10);
     }
 })
@@ -107,7 +104,11 @@ $(document).click(function () {
 // ====== LOGIC FOR PLAYING PROJECT DATA ======
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
-projectData = JSON.parse(projectData)
+if (typeof projectData === 'string') {
+    if (!(projectData == "")) {
+        projectData = JSON.parse(projectData)
+    }
+}
 let projectName = $(".project_data").attr("data-getVid_Name")
 let maxOptionCount = 3; // Maximum amount of options
 // console.log();
@@ -117,21 +118,29 @@ let firstBlock = projectData[0] // First block of the project (Starting Question
 let hash = document.location.hash // Current hash in url (can start project from any point)
 
 // Catch undone projects (If question title or video is not set)
-if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
-    setTimeout(() => {
-        if (vidOnLoad) {
-            if (hash != "") {
-                playFromHash()
-            } else {
-                playBlock(firstBlock)
+try {
+    if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
+        setTimeout(() => {
+            if (vidOnLoad) {
+                if (hash != "") {
+                    playFromHash()
+                } else {
+                    playBlock(firstBlock)
+                }
+                viewCount()
             }
-        }
-    }, 10);
-} else {
+        }, 10);
+    } else {
+        alert("Project is undone! Make sure to include at least one video and title first!")
+        history.back()
+        window.location.replace('home.php#dashboard') // Fallback
+    }
+} catch (err) {
     alert("Project is undone! Make sure to include at least one video and title first!")
     history.back()
-    window.location.replace('home.php#dashboard') // Fallback
+    window.location.replace('home.php#dashboard')
 }
+
 
 // If error (might be bad get video link) just retry current block to grab a new link
 let errorCounter = 0
@@ -304,40 +313,41 @@ const filter = (array, value, key) => {
     )
 }
 
-
 // ===== VIEW COUNTER =====
 // Add timeout before view count is updated. Maybe 10% || 30 seconds of first video
-let projectViews = $(".project_data").attr("data-getVid_Views")
-let projectUID = $(".project_data").attr("data-getVid_UID")
-// console.log(projectViews)
-let viewcounter = 0
-let viewTimer = setInterval(() => {
-    viewcounter++
-    // console.log("Iteration: " + viewcounter)
-    let currentTime = Math.floor(myPlayer.currentTime())
-    let durationTime = Math.floor(myPlayer.duration())
-    if (durationTime != undefined && !isNaN(durationTime)) {
-        // console.log(currentTime + "/" + durationTime)
-        let vidPercent = ((currentTime / durationTime) * 100).toFixed(2)
-        // console.log(vidPercent + `% / ${minWatchTimePercent}%`)
-        if (currentTime >= minWatchTimeSec || vidPercent >= minWatchTimePercent) {
-            // console.log(`Adding View Count to ${projectUID}!`);
-            clearInterval(viewTimer)
-            $.ajax({
-                type: "POST",
-                data: {
-                    'projectUID': projectUID
-                },
-                url: "update_viewcount.php",
-                cache: false,
-                success: function (response) {
-                    if (response == 1) $(".video_info .view_count").text(response + " View")
-                    else $(".video_info .view_count").text(response + " Views")
+function viewCount() {
+    let projectViews = $(".project_data").attr("data-getVid_Views")
+    let projectUID = $(".project_data").attr("data-getVid_UID")
+    // console.log(projectViews)
+    let viewcounter = 0
+    let viewTimer = setInterval(() => {
+        viewcounter++
+        // console.log("Iteration: " + viewcounter)
+        let currentTime = Math.floor(myPlayer.currentTime())
+        let durationTime = Math.floor(myPlayer.duration())
+        if (durationTime != undefined && !isNaN(durationTime)) {
+            // console.log(currentTime + "/" + durationTime)
+            let vidPercent = ((currentTime / durationTime) * 100).toFixed(2)
+            // console.log(vidPercent + `% / ${minWatchTimePercent}%`)
+            if (currentTime >= minWatchTimeSec || vidPercent >= minWatchTimePercent) {
+                // console.log(`Adding View Count to ${projectUID}!`);
+                clearInterval(viewTimer)
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        'projectUID': projectUID
+                    },
+                    url: "update_viewcount.php",
+                    cache: false,
+                    success: function (response) {
+                        if (response == 1) $(".video_info .view_count").text(response + " View")
+                        else $(".video_info .view_count").text(response + " Views")
 
-                    // console.log("Added View! ✅")
-                    // console.log("New view count: "+response)
-                }
-            })
+                        // console.log("Added View! ✅")
+                        // console.log("New view count: "+response)
+                    }
+                })
+            }
         }
-    }
-}, 1000);
+    }, 1000);
+}

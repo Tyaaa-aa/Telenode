@@ -176,12 +176,6 @@ if ($result->num_rows > 0) {
                             more_horiz
                         </span>
                     </div>
-                    <!-- <div class="edit_menu">
-                        <span class="edit_menu_options">Edit</span>
-                        <span class="edit_menu_options">Share</span>
-                        <span class="edit_menu_options">Download</span>
-                        <span class="edit_menu_options">Delete</span>
-                    </div> -->
                     <div class="more_options_container ">
                         <a href="edit.php?id=<?= $getVid_UID ?>" class="more_options projectoptions_edit">
                             <span class="material-icons">

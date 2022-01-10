@@ -46,13 +46,13 @@ if ($result->num_rows > 0) {
     }
 
     if (isset($_GET["status"])) {
-        $status = $_GET["status"];
-        if (($status == "unpublished") && ($getVid_userID == $_SESSION["userID"])) {
+        // $status = $_GET["status"];
+        if (($getVid_Status == "unpublished") && ($getVid_userID == $_SESSION["userID"])) {
             // echo "<script type='text/javascript'>alert('Project is unpublished! You are the owner!');</script>";
 ?>
             <script>
                 $(document).ready(function() {
-                    $(".video_info h2").append(`<span class="material-icons visibility_icon" style="right:50px;" title="Project is unpublished">unpublished</span>`)
+                    $(".video_info h2").append(`<span class="material-icons visibility_icon" style="right:15px;" title="Project is unpublished">unpublished</span>`)
                 });
             </script>
     <?php
@@ -164,7 +164,7 @@ if ($result->num_rows > 0) {
                         <p class="upload_day"><?= date("M jS, Y", strtotime($getVid_UploadTime)); ?></p>
                         <p class="view_count"><?= $views ?></p>
                         <div class="share_container">
-                            <span class="material-icons share_btn">
+                            <span class="material-icons share_btn" title="Share this project">
                                 share
                             </span>
                             <div class="share_social_container ">
