@@ -272,6 +272,7 @@ function loadingBarAnimation() {
 // }
 
 // ======= CREATE PAGE ========
+$(".submit_btn").hide()
 $(document).on("keyup input change", ".upload_input_field", function () {
     // console.log("ASDASD");
     let lastInput = $(".upload_input_field").last();
@@ -282,7 +283,7 @@ $(document).on("keyup input change", ".upload_input_field", function () {
         console.log("Adding field");
         let vidNum = $(".upload_input_field").length;
         $("#videoLength").val(vidNum)
-        $(".upload_field_box").append(`
+        $(".submit_btn").before(`
         <div class="field_text">
             <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
             <div class="thumbnailPreview-box">
@@ -296,6 +297,7 @@ $(document).on("keyup input change", ".upload_input_field", function () {
         $(".field_text").last().fadeOut(300, function () {
             $(".field_text").last().remove()
         });
+        $(".submit_btn").fadeOut()
     }
     console.log(($(".upload_input_field").length));
 })

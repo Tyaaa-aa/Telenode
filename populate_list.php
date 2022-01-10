@@ -164,11 +164,44 @@ if ($result->num_rows > 0) {
             if (isset($_SESSION["userID"])) {
                 if ($getVid_userID == $_SESSION["userID"]) {
             ?>
-                    <a href="edit.php?id=<?= $getVid_UID ?>" class="edit_btn" data-vid="<?= $getVid_UID ?>">
+                    <div href="edit.php?id=<?= $getVid_UID ?>" class="edit_btn" data-vid="<?= $getVid_UID ?>">
                         <span class="material-icons">
                             edit
                         </span>
-                    </a>
+                    </div>
+                    <!-- <div class="edit_menu">
+                        <span class="edit_menu_options">Edit</span>
+                        <span class="edit_menu_options">Share</span>
+                        <span class="edit_menu_options">Download</span>
+                        <span class="edit_menu_options">Delete</span>
+                    </div> -->
+                    <div class="more_options_container">
+                        <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options options_watch" target="_blank">
+                            <span class="material-icons">
+                                play_circle_outline
+                            </span>
+                            Watch Video
+                        </a>
+                        <span class="more_options options_download">
+                            <span class="material-icons">
+                                save_alt
+                            </span>
+                            Download Data
+                        </span>
+                        <span class="more_options options_import">
+                            <span class="material-icons">
+                                import_export
+                            </span>
+                            Import
+                            <input id="importJSON" type="file" accept="application/json" title="" />
+                        </span>
+                        <span class="more_options options_delete">
+                            <span class="material-icons">
+                                delete_forever
+                            </span>
+                            Delete Project
+                        </span>
+                    </div>
             <?php
                 }
             }

@@ -1295,8 +1295,14 @@ input[type=file] {
 }
 
 .upload_field_box .submit_btn {
-    bottom: -30px;
-    left: 40px;
+    /* bottom: -30px;
+    left: 40px; */
+    position: relative;
+    margin: 20px 0;
+}
+
+.upload_field_box .submit_btn:hover {
+    color: #FFF;
 }
 
 .upload_input_field {
@@ -2388,6 +2394,11 @@ input[type=file] {
 .vjs-control-bar:hover .vjs-progress-holder {
     height: 8px !important;
     margin-top: -8px !important;
+}
+
+.vjs-theme-city .vjs-progress-control {
+    width: 95% !important;
+    margin: auto !important;
 }
 
 /* .vjs-user-inactive .vjs-play-progress::after {
