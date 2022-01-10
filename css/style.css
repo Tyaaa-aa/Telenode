@@ -987,6 +987,21 @@ a:hover {
     cursor: default;
 }
 
+#projects-container .more_options_container,
+#dashboard-container .more_options_container {
+    top: 4%;
+    right: 9px;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1034,6 +1049,7 @@ a:hover {
     align-items: center;
     opacity: 0;
     transition: all 0.3s;
+    z-index: 51;
 }
 
 .edit_btn:hover {
@@ -1046,6 +1062,10 @@ a:hover {
 
 .video_cards:hover .edit_btn,
 .video_cards:hover .edit_btn {
+    opacity: 1;
+}
+
+.edit_btn:active {
     opacity: 1;
 }
 
@@ -1169,7 +1189,9 @@ input[type=file] {
 }
 
 .options_delete,
-.options_delete:hover {
+.options_delete:hover,
+.projectoptions_delete,
+.projectoptions_delete:hover {
     color: #f85959;
 }
 

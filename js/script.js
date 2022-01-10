@@ -237,7 +237,51 @@ function loadingBarAnimation() {
         $(".loading_bar").css("opacity", "0%")
     }, 200)
 }
+// ======= PROJECTS PAGE ========
+$(document).on("click", ".edit_btn", function () {
+    setTimeout(() => {
+        let parent = $(this).parent()
+        parent.find(".more_options_container").addClass("more_options_container_expanded")
+        // console.log(parent);
+        // console.log("CLICKED!")
+    }, 10)
+})
 
+$(document).on("click", ".projectoptions_delete", function (e) {
+    // populateProjectData()
+    let userid = $(this).data("userid")
+    let authorid = $(this).data("vidauthor")
+    let vidid = $(this).data("vid")
+    if (userid === authorid) {
+        if (window.confirm("Are you sure you want to permanently delete this project? \nThis action cannot be undone!")) {
+            $.ajax({
+                type: "POST",
+                url: "deleteProject_backend.php",
+                data: {
+                    "projectID": vidid,
+                    "userID": userid
+                },
+                success: function (response) {
+                    let result = JSON.parse(response).message
+                    // alert(result)
+                    // let result = response
+                    // console.log(result)
+                    if (result == "success") {
+                        // If successfully deleted
+                        alert("Project has been deleted!")
+                        window.location = 'home.php#projects';
+                    } else {
+                        // If error received alert error message
+                        alert(result)
+                    }
+                }
+            })
+        }
+    } else {
+        alert("Something went wrong. Log out and log back in to try again!")
+    }
+
+})
 // function playVideo(vidURL) {
 //     // showPreloader()
 

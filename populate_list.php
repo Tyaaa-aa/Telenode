@@ -164,9 +164,9 @@ if ($result->num_rows > 0) {
             if (isset($_SESSION["userID"])) {
                 if ($getVid_userID == $_SESSION["userID"]) {
             ?>
-                    <div href="edit.php?id=<?= $getVid_UID ?>" class="edit_btn" data-vid="<?= $getVid_UID ?>">
+                    <div class="edit_btn" data-vid="<?= $getVid_UID ?>">
                         <span class="material-icons">
-                            edit
+                            more_horiz
                         </span>
                     </div>
                     <!-- <div class="edit_menu">
@@ -175,12 +175,12 @@ if ($result->num_rows > 0) {
                         <span class="edit_menu_options">Download</span>
                         <span class="edit_menu_options">Delete</span>
                     </div> -->
-                    <div class="more_options_container">
-                        <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options options_watch" target="_blank">
+                    <div class="more_options_container ">
+                        <a href="edit.php?id=<?= $getVid_UID ?>" class="more_options options_watch">
                             <span class="material-icons">
-                                play_circle_outline
+                                edit
                             </span>
-                            Watch Video
+                            Edit Video
                         </a>
                         <span class="more_options options_download">
                             <span class="material-icons">
@@ -188,14 +188,7 @@ if ($result->num_rows > 0) {
                             </span>
                             Download Data
                         </span>
-                        <span class="more_options options_import">
-                            <span class="material-icons">
-                                import_export
-                            </span>
-                            Import
-                            <input id="importJSON" type="file" accept="application/json" title="" />
-                        </span>
-                        <span class="more_options options_delete">
+                        <span class="more_options projectoptions_delete" data-vid="<?= $getVid_UID ?>" data-userid="<?= $_SESSION["userID"] ?>" data-vidauthor="<?= $getVid_userID ?>">
                             <span class="material-icons">
                                 delete_forever
                             </span>
