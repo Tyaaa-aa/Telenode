@@ -26,8 +26,20 @@ $(function () {
         evt.stopPropagation()
     })
 
-}) // END OF DOCUMENT READY FUNCTION
+    $(window).resize(function () {
+        if (window.matchMedia("only screen and (max-width: 1000px)").matches) {
+            // $("#sidebar").show()
 
+            collapseSidebar()
+
+            let sidebar = $("#sidebar").detach()
+
+            $("nav").append(sidebar)
+        }
+    })
+    $(window).resize()
+
+}) // END OF DOCUMENT READY FUNCTION
 // ======== Preloader animations =======
 let usePreloader = false
 
@@ -51,13 +63,13 @@ $(".loginForm-btn").click(function () {
 })
 
 function showLogin() {
-    $(".login-box").show()
-    $(".register-box").hide()
+    $("#login-container .login-box").show()
+    $("#login-container .register-box").hide()
 }
 
 function showRegister() {
-    $(".login-box").hide()
-    $(".register-box").show()
+    $("#login-container .login-box").hide()
+    $("#login-container .register-box").show()
 }
 
 // Show password
@@ -192,8 +204,8 @@ function collapseSidebar() {
 function expandSidebar() {
     // Collapse body content
     $(".main_body").css({
-        "width": "80%",
-        "margin-left": "20%"
+        "width": "85%",
+        "margin-left": "15%"
     })
     // Expand Sidebar
     $("#sidebar").removeClass("sidebar_collapsed")

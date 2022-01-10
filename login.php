@@ -100,8 +100,9 @@ if (isset($_SESSION["userID"])) {
     if (window.location.hash == "#signup") {
         showRegister();
     }
+    collapseSidebar()
 
-    $("#sidebar").css("display", "none");
+    // $("#sidebar").css("display", "none");
 </script>
 
 </html>

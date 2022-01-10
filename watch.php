@@ -36,9 +36,9 @@ if ($result->num_rows > 0) {
         if ($getVid_Views == 0) {
             $views = "No Views";
         } else if ($getVid_Views == 1) {
-            $views = $getVid_Views . " View";
+            $views = number_format($getVid_Views) . " View";
         } else {
-            $views = $getVid_Views . " Views";
+            $views = number_format($getVid_Views) . " Views";
         }
 
         $profileImg = $row['profileImg'];
@@ -115,7 +115,8 @@ if ($result->num_rows > 0) {
         <section class="main_body">
             <!-- ===== TeleNode Content Dynamically Updated ===== -->
             <div class="main_content">
-                <div class="project_data" data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_Views='<?= $getVid_Views ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'></div>
+                <div class="project_data" data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_Views='<?= $getVid_Views ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
+                </div>
             <?php
         } else {
             $URL = "home.php#dashboard";
@@ -157,7 +158,7 @@ if ($result->num_rows > 0) {
                 // $sql = "SELECT * from tb_videos where vid_visibility = 'public' ORDER BY RAND ()";
                 $uuid = $_GET["id"];
 
-                $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' AND v.vid_UID != '$uuid' ORDER BY RAND ()";
+                $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' AND v.vid_UID != '$uuid' AND v.vid_status = 'published' ORDER BY RAND ()";
 
                 include "populate_list.php";
                 ?>

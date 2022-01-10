@@ -37,7 +37,7 @@ if ($result->num_rows > 0) {
         if ($getVid_Views == 0) {
             $views = "No Views";
         } else {
-            $views = $getVid_Views . " Views";
+            $views = number_format($getVid_Views) . " Views";
         }
 
         if (isset($row['userName'])) {
