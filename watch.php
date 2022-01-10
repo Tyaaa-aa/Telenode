@@ -45,24 +45,24 @@ if ($result->num_rows > 0) {
         $getUsernames = $row['userName'];
     }
 
-    if (isset($_GET["status"])) {
-        // $status = $_GET["status"];
-        if (($getVid_Status == "unpublished") && ($getVid_userID == $_SESSION["userID"])) {
-            // echo "<script type='text/javascript'>alert('Project is unpublished! You are the owner!');</script>";
+    // if (isset($_GET["status"])) {
+    // $status = $_GET["status"];
+    if (($getVid_Status == "unpublished") && ($getVid_userID == $_SESSION["userID"])) {
+        // echo "<script type='text/javascript'>alert('Project is unpublished! You are the owner!');</script>";
 ?>
-            <script>
-                $(document).ready(function() {
-                    $(".video_info h2").append(`<span class="material-icons visibility_icon" style="right:15px;" title="Project is unpublished">unpublished</span>`)
-                });
-            </script>
+        <script>
+            $(document).ready(function() {
+                $(".video_info h2").append(`<span class="material-icons visibility_icon" style="right:15px;" title="Project is unpublished">unpublished</span>`)
+            });
+        </script>
     <?php
-        } else {
-            // Redirect if user is not author
-            $URL = "home.php#projects";
-            echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
-            echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
-        }
+    } else if (($getVid_Status == "unpublished") && ($getVid_userID != $_SESSION["userID"])){
+        // Redirect if user is not author
+        $URL = "home.php#projects";
+        echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+        echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
     }
+    // }
 
     if ($getVid_Visibility == "private" && $getVid_userID != $getUserID) {
         $URL = "home.php#dashboard";

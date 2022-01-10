@@ -324,34 +324,118 @@ $(document).on("click", ".projectoptions_download", function (e) {
 // }
 
 // ======= CREATE PAGE ========
+function validateYouTubeUrl() {
+    var url = $('#youTubeUrl').val();
+    if (url != undefined || url != '') {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            // Do anything for being valid
+            // if need to change the url to embed url then use below line
+            $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
+        } else {
+            // Do anything for not being valid
+        }
+    }
+}
+// Validate at least first video before being able to create project (Could be improved)
 $(".submit_btn").hide()
 $(document).on("keyup input change", ".upload_input_field", function () {
     // console.log("ASDASD");
-    let lastInput = $(".upload_input_field").last();
-    let thumbnail = extractVidId($(this).val());
-    $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
-    if (lastInput.val() != "") {
-        // Add Fields
-        console.log("Adding field");
-        let vidNum = $(".upload_input_field").length;
-        $("#videoLength").val(vidNum)
-        $(".submit_btn").before(`
-        <div class="field_text">
-            <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
-            <div class="thumbnailPreview-box">
-                <img src="" class="thumbnailPreview" alt="">
-            </div>
-        </div>`);
-        $(".submit_btn").fadeIn();
-    } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
-        // Delete empty field
-        console.log("Deleting field");
-        $(".field_text").last().fadeOut(300, function () {
-            $(".field_text").last().remove()
-        });
-        $(".submit_btn").fadeOut()
+    let lastInput = $(".upload_input_field").last()
+    let firstInput = $(".field_text").first().find("img").attr("src")
+    let url = $(".field_text").first().find(".input_field ").val();
+    console.log(url);
+    url = extractVidId(url);
+    if (url != undefined || url != '') {
+        if (url.length == 11) {
+            // Do anything for being valid
+            // if need to change the url to embed url then use below line
+            // $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
+            console.log("VALID URL");
+            $(".submit_btn").fadeIn();
+            console.log(firstInput);
+            try {
+                let thumbnail = extractVidId($(this).val());
+                $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
+                if (lastInput.val() != "") {
+                    // Add Fields
+                    console.log("Adding field");
+                    let vidNum = $(".upload_input_field").length;
+                    $("#videoLength").val(vidNum)
+                    $(".submit_btn").before(`
+                    <div class="field_text">
+                        <input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${vidNum}">
+                        <div class="thumbnailPreview-box">
+                            <img src="" class="thumbnailPreview" alt="">
+                        </div>
+                    </div>`);
+                } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
+                    // Delete empty field
+                    console.log("Deleting field");
+                    $(".field_text").last().fadeOut(300, function () {
+                        $(".field_text").last().remove()
+                    })
+                    if ($(".upload_input_field").val() == "") {
+                        $(".submit_btn").fadeOut()
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+                $(".submit_btn").fadeOut();
+                $(this).attr('readonly', true)
+                $(this).parent().find(".thumbnailPreview").attr("src", ``);
+                $(this).val("Invalid Link!")
+                setTimeout(() => {
+                    $(this).attr('readonly', false)
+                    $(this).val("")
+                }, 1000);
+            }
+            console.log(($(".upload_input_field").length));
+        } else {
+            // Do anything for not being valid
+            console.log("WRONG WRONG WRONG URL");
+            $(".submit_btn").fadeOut();
+            $(".field_text").eq(1).remove()
+            let firstUploadInput = $(".field_text").first().find(".input_field ")
+            firstUploadInput.attr('readonly', true)
+            firstUploadInput.parent().find(".thumbnailPreview").attr("src", ``);
+            firstUploadInput.val("Invalid Link!")
+            setTimeout(() => {
+                firstUploadInput.attr('readonly', false)
+                firstUploadInput.val("")
+            }, 1000);
+        }
     }
-    console.log(($(".upload_input_field").length));
+    // console.log(firstInput);
+    // firstInput.load(firstInput.attr("src"), function (response, status, xhr) {
+    //     if (status == "error")
+    //         $(this).attr('src', 'images/DEFAULT.JPG');
+    //     else
+    //         $(this).attr('src', firstInput.attr("src"));
+    // });
+    // if (firstInput == 11) {
+    //     $(".submit_btn").fadeIn();
+    // }
+    // $.ajax({
+    //     url: firstInput,
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     },
+    //     type: 'HEAD',
+    //     error: function (response, status) {
+    //         //do something depressing
+    //         $(".submit_btn").fadeOut();
+    //         console.log(response, status);
+    //     },
+    //     success: function (response, status) {
+    //         //do something cheerful :)
+    //         $(".submit_btn").fadeIn();
+    //         // console.log("ADDING BTN");
+    //         console.log(response, status);
+    //     }
+    // })
+
 })
 
 $(".upload_field_box").submit(function (e) {
@@ -427,12 +511,16 @@ async function getVidInfo(videoID) {
 }
 
 function extractVidId(url) {
-    let re = /(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
-    if (url.length > 11) {
-        let id = url.match(re)[7];
-        return id;
-    } else {
-        return url;
+    try {
+        let re = /(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i;
+        if (url.length > 11) {
+            let id = url.match(re)[7];
+            return id;
+        } else {
+            return url;
+        }
+    } catch (error) {
+        return "invalid";
     }
 }
 
@@ -871,12 +959,21 @@ $(document).bind("keydown", function (e) {
 
 $(window).scroll(function () {
     let scrollPos = $(window).scrollTop()
-    // console.log(scrollPos);
+    console.log(scrollPos);
     if (scrollPos == 0) {
+        // $(".create_container").css("padding-top", "20px")
         $(".edit_page .steps_bar").removeClass("collapse_bar")
+        // setTimeout(() => {
+
+        // }, 4000);
     } else {
         $(".edit_page .steps_bar").addClass("collapse_bar")
+        // $(".create_container").css("padding-top", "120px")
     }
+    // if (scrollPos <= 35) {
+    //     $(".create_container").css("padding-top", `calc(20px+${scrollPos})`)
+    // }
+
 })
 // if($(window).scrollTop() == 0){
 
