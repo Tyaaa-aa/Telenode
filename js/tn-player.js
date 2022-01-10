@@ -17,11 +17,11 @@
 // PADDING ON THE TIMELINE/SEEKER ✅
 // FIX CREATE PAGE BUTTON ✅
 // HYPERLINK TO YOUTUBE ON CREATE PAGE ✅
-// CHANGE EDIT BUTTON TO 3 DOTS WITH MENU FOR DELETE/EDIT/SHARE/DOWNLOAD
+// CHANGE UPLOAD THUMBNAIL ICON COLOR (MAKE IT MORE OBVIOUS THAT IT CAN BE CHANGED) ✅
+// UNPUBLISHED SHOULD BE VIEWABLE BY CREATOR ✅
+// CHANGE EDIT BUTTON TO 3 DOTS WITH MENU FOR DELETE/EDIT/SHARE/DOWNLOAD 
 // CHANGE WATCH GUIDE WHEN COMPLETED
-// UNPUBLISHED SHOULD BE VIEWABLE BY CREATOR
 // EDIT PAGE FIX SCROLL ANIMATION
-// CHANGE UPLOAD THUMBNAIL ICON COLOR (MAKE IT MORE OBVIOUS THAT IT CAN BE CHANGED)
 // ADD SHARE BUTTON BELOW VIDEO
 // MOVE PLAY BUTTON TO THE LEFT
 // UNPUBLISHED CLICK TO GO TO EDIT PAGE
@@ -79,7 +79,22 @@ videojs('my-video').ready(function () {
     })
 })
 
+$(".share_btn").click(function () {
+    console.log("ASPASOD");
+    if ($(".share_social_container").hasClass("share_social_container_expanded")) {
+        $(".share_social_container").removeClass("share_social_container_expanded")
+        console.log("EXPANDING");
+    } else {
+        setTimeout(() => {
+            $(".share_social_container").addClass("share_social_container_expanded")
+            console.log("Collapsing");
+        }, 10);
+    }
+})
 
+$(document).click(function () {
+    $(".share_social_container").removeClass("share_social_container_expanded")
+})
 
 
 
@@ -113,7 +128,7 @@ if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined
         }
     }, 10);
 } else {
-    alert("Project is unpublished or undone")
+    alert("Project is undone! Make sure to include at least one video and title first!")
     history.back()
     window.location.replace('home.php#dashboard') // Fallback
 }

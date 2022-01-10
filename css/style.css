@@ -963,6 +963,7 @@ a:hover {
 
 .video_details {
     display: flex;
+    position: relative;
 }
 
 .video_info h2 {
@@ -972,10 +973,48 @@ a:hover {
 .visibility_icon {
     color: var(--thirdTextColor);
     position: absolute;
-    top: 75%;
-    margin-top: 15px;
+    bottom: 15px;
     right: 15px;
 }
+
+.share_btn {
+    cursor: pointer;
+}
+
+.share_container {
+    position: absolute;
+    right: 20px;
+    transform: translateY(-100%);
+}
+
+.share_container .share_social_container {
+    position: absolute;
+    display: flex;
+    right: 0;
+    background-color: var(--secondTextColor);
+    padding: 0px;
+    z-index: 50;
+    border-radius: var(--globalRadius);
+    top: 0;
+    margin: 0;
+    max-height: 0px;
+    max-width: 0px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.share_container .share_social_container_expanded {
+    max-width: 200px;
+    max-height: 80px;
+    padding: 10px 20px;
+}
+
+
+
+
+
+
+
 
 #dashboard-container .visibility_icon {
     display: none;

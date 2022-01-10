@@ -26,6 +26,12 @@ if ($result->num_rows > 0) {
         $getVid_UploadTime = $row['vid_uploadTime'];
         $getVid_Views = $row['vid_views'];
         $getVid_Visibility = $row['vid_visibility'];
+        $getVid_Status = $row['vid_status'];
+        if($getVid_Status == "unpublished"){
+            $statusLink = "&status=unpublished";
+        }else{
+            $statusLink = "";
+        }
 
         if ($getVid_Visibility == "private") {
             $visibility_icon = "<span class='material-icons visibility_icon' title='Private Video'>lock</span>";
@@ -120,7 +126,7 @@ if ($result->num_rows > 0) {
         }
 ?>
         <div class="video_cards">
-            <a href="watch.php?id=<?= $getVid_UID ?>" class="video_link">
+            <a href="watch.php?id=<?= $getVid_UID ?><?= $statusLink ?>" class="video_link">
                 <div class="thumbnail-box">
                     <img class="thumbnail" src="<?= $getVid_Thumbnail ?>" alt="Thumbnail">
                 </div>
