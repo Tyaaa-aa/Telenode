@@ -1195,6 +1195,9 @@ input[type=file] {
     color: #f85959;
 }
 
+.projectoptions_edit {
+    color: var(--mainColor)
+}
 
 
 

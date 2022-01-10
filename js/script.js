@@ -282,6 +282,14 @@ $(document).on("click", ".projectoptions_delete", function (e) {
     }
 
 })
+
+$(document).on("click", ".projectoptions_download", function (e) {
+    // populateProjectData()
+    let projectID = $(this).data("vid")
+    let downloadData = $(this).data("projectdata")
+    saveJson('tn_' + projectID + '.json', downloadData)
+
+})
 // function playVideo(vidURL) {
 //     // showPreloader()
 

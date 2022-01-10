@@ -20,6 +20,7 @@ if ($result->num_rows > 0) {
         $getVid_id = $row['vid_id'];
         $getVid_UID = $row['vid_UID'];
         $getVid_userID = $row['vid_userID'];
+        $getVid_ProjectData = $row['vid_projectData'];
         $getVid_Name = $row['vid_name'];
         $getVid_Thumbnail = $row['vid_thumbnail'];
         $getVid_UploadTime = $row['vid_uploadTime'];
@@ -176,13 +177,13 @@ if ($result->num_rows > 0) {
                         <span class="edit_menu_options">Delete</span>
                     </div> -->
                     <div class="more_options_container ">
-                        <a href="edit.php?id=<?= $getVid_UID ?>" class="more_options options_watch">
+                        <a href="edit.php?id=<?= $getVid_UID ?>" class="more_options projectoptions_edit">
                             <span class="material-icons">
                                 edit
                             </span>
                             Edit Video
                         </a>
-                        <span class="more_options options_download">
+                        <span class="more_options projectoptions_download" data-vid="<?= $getVid_UID ?>" data-projectdata='<?= $getVid_ProjectData ?>'>
                             <span class="material-icons">
                                 save_alt
                             </span>
