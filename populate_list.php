@@ -9,7 +9,6 @@ if ($result->num_rows > 0) {
         // $getVid_id = $row['vid_id'];
         // $getVid_UID = $row['vid_UID'];
         // $getVid_userID = $row['vid_userID'];
-        // $getVid_URLS = $row['vid_URLS'];
         // $getVid_Name = $row['vid_name'];
         // $getVid_Description = $row['vid_description'];
         // $getVid_Thumbnail = $row['vid_thumbnail'];
@@ -20,6 +19,7 @@ if ($result->num_rows > 0) {
         $getVid_id = $row['vid_id'];
         $getVid_UID = $row['vid_UID'];
         $getVid_userID = $row['vid_userID'];
+        $getVid_URLS = $row['vid_URLS'];
         $getVid_ProjectData = $row['vid_projectData'];
         $getVid_Name = $row['vid_name'];
         $getVid_Thumbnail = $row['vid_thumbnail'];
@@ -207,7 +207,7 @@ if ($result->num_rows > 0) {
                 if (isset($_SESSION["userID"])) {
                     if ($getVid_userID == $_SESSION["userID"]) {
                         ?>
-                        <span class="more_options projectoptions_download" data-vid="<?= $getVid_UID ?>" data-projectdata='<?= $getVid_ProjectData ?>'>
+                        <span class="more_options projectoptions_download" data-vid="<?= $getVid_UID ?>" data-projectdata='<?= $getVid_ProjectData ?>' data-projectvideos='<?= $getVid_URLS ?>'>
                             <span class="material-icons">
                                 save_alt
                             </span>

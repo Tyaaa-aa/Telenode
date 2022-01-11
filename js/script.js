@@ -268,7 +268,7 @@ $(document).on("click", ".projectoptions_delete", function (e) {
                     // console.log(result)
                     if (result == "success") {
                         // If successfully deleted
-                        alert("Project has been deleted!")
+                        // alert("Project has been deleted!")
                         window.location = 'home.php#projects';
                     } else {
                         // If error received alert error message
@@ -284,11 +284,14 @@ $(document).on("click", ".projectoptions_delete", function (e) {
 })
 
 $(document).on("click", ".projectoptions_download", function (e) {
-    // populateProjectData()
     let projectID = $(this).data("vid")
-    let downloadData = $(this).data("projectdata")
-    saveJson('tn_' + projectID + '.json', downloadData)
+    let projectData = $(this).data("projectdata")
+    let videoData = $(this).data("projectvideos")
 
+    let downloadData = new Object()
+    downloadData.videoList = videoData
+    downloadData.videoData = projectData
+    saveJson('tn_' + projectID + '.json', downloadData)
 })
 // function playVideo(vidURL) {
 //     // showPreloader()
@@ -407,35 +410,6 @@ $(document).on("keyup input change", ".upload_input_field", function () {
             }, 1000);
         }
     }
-    // console.log(firstInput);
-    // firstInput.load(firstInput.attr("src"), function (response, status, xhr) {
-    //     if (status == "error")
-    //         $(this).attr('src', 'images/DEFAULT.JPG');
-    //     else
-    //         $(this).attr('src', firstInput.attr("src"));
-    // });
-    // if (firstInput == 11) {
-    //     $(".submit_btn").fadeIn();
-    // }
-    // $.ajax({
-    //     url: firstInput,
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded'
-    //     },
-    //     type: 'HEAD',
-    //     error: function (response, status) {
-    //         //do something depressing
-    //         $(".submit_btn").fadeOut();
-    //         console.log(response, status);
-    //     },
-    //     success: function (response, status) {
-    //         //do something cheerful :)
-    //         $(".submit_btn").fadeIn();
-    //         // console.log("ADDING BTN");
-    //         console.log(response, status);
-    //     }
-    // })
-
 })
 
 $(".upload_field_box").submit(function (e) {
@@ -448,9 +422,7 @@ $(".upload_field_box").submit(function (e) {
     }
 })
 
-
 // ========= API FUNCTIONS =========
-
 function ajaxVidData(scriptUrl) {
     showPreloader()
     return $.ajax({
@@ -527,10 +499,12 @@ function extractVidId(url) {
 // List Populating function 
 // container = container to be populated with data provided
 // isYT = is this a youtube link or local project link, true = youtube & false = local
+let vidBin
 async function listVideos(vidURLS) {
     try {
         if (vidURLS != undefined) {
             $(".projects_box .video_cards").remove()
+            vidBin = vidURLS
             // loadingText()
             // Get video list from data "data-getVid_URLS"
             const videoData = Object.values(vidURLS)
@@ -557,7 +531,7 @@ async function listVideos(vidURLS) {
 
                 $(listHTML).appendTo($(".projects_box"))
             }
-            updateListMenu(vidURLS)
+            updateListMenu(vidBin)
         } else {
             alert("An Error Occured. Project has been removed or the link is invalid.")
             window.location.href = "home.php";
@@ -587,7 +561,6 @@ async function listVideos(vidURLS) {
         // history.back()
         // window.location.replace('home.php#projects')
     }
-
 }
 
 function openInNewTab(e) {
@@ -598,7 +571,6 @@ function openInNewTab(e) {
         event.preventDefault()
     }
 }
-
 hidePreloader()
 
 // ======== EDIT PAGE =========
@@ -631,15 +603,6 @@ $(".edit_projects").on("input click ", ".question_field", async function (e) {
     }
 })
 
-// $(".edit_projects").on("keyup", ".question_title, .options_field", function (event) {
-//     console.log("TEST");
-//     $(this).val($(this).val().replace(/[~`!@#$%\^&*()+=\-\[\]\\';,/{}|\\":<>\?]/g, ''));
-// })
-
-// function isValid(str) {
-//     return !/[`#\^&=\-;,/\\:\?]/g.test(str);
-// }
-
 // Dropdown menu dismiss on click anywhere
 $(document).on("click", function () {
     if ($(".dropdown_content").hasClass("dropped")) {
@@ -667,18 +630,39 @@ $(".edit_projects").on("click", ".dropbtn", function () {
 $(".edit_projects").on("click", ".dropdown_option", function () {
     let title = $(this).data("title")
     let videoid = $(this).data("videoid")
-    // console.log(videoid)
-    // console.log(title)
+    console.log(videoid)
+    console.log(title)
+    let parentOption = $(this).closest(".block_box")
+    if (videoid == "" && title == "") {
+        deleteOption(parentOption)
+    } else {
+        // Update value inside dropdown menu
+        console.log("Updatng option")
+        let dropbtn = parentOption.find(".dropbtn")
+        dropbtn.val(title)
+        dropbtn.attr("data-videoid", videoid)
 
-    // Update value inside dropdown menu
-    let dropbtn = $(this).closest(".block_box").find(".dropbtn")
-    dropbtn.val(title)
-    dropbtn.attr("data-videoid", videoid)
-
-    // Update thumbnail and title using input eventlistener function $(".edit_projects") defined above 
-    let question_field = $(this).closest(".block_box").find(".question_field")
-    question_field.val(videoid).trigger('input')
+        // Update thumbnail and title using input eventlistener function $(".edit_projects") defined above 
+        let question_field = parentOption.find(".question_field")
+        question_field.val(videoid).trigger('input')
+    }
 })
+
+function deleteOption(option) {
+    console.log("deleting option")
+    option.find(".dropbtn").val("")
+    option.find(".dropbtn").attr("data-videoid", "")
+    option.find(".video_title").text("")
+    option.find(".thumbnail").attr("src", "img/empty_thumbnail.png")
+
+    // let blockid = option.find(".options_field").val()
+    // console.log(blockid);
+
+    option.find(".options_field").val("")
+    updateBlocks()
+
+    // $(".input_field").change()
+}
 
 // Change video repository view to list view
 $(".list_view_btn").click(function () {
@@ -773,9 +757,10 @@ $(".projects_box").on("click", ".delete_vid", function () {
             cache: false,
             success: function (response) {
                 console.log("Video Deleted! ✅")
-                vidArray = JSON.parse(response)
+                // vidArray = JSON.parse(response)
+                vidBin = JSON.parse(response)
                 // console.log(vidArray)
-                updateListMenu(vidArray)
+                updateListMenu(vidBin)
             }
         })
     }
@@ -839,10 +824,10 @@ $(".add_btn_submit").click(async function () {
             cache: false,
             success: function (response) {
                 console.log("Video Added! ✅")
-                vidArray = JSON.parse(response)
+                vidBin = JSON.parse(response)
                 $(".add_video_input").val('')
                 // console.log(vidArray)
-                updateListMenu(vidArray)
+                updateListMenu(vidBin)
             }
         })
 
@@ -860,6 +845,9 @@ async function updateListMenu(array) {
     // console.log(array)
     // console.log(Object.keys(vidArray).length);
     $(".dropdown_content ").html('')
+    listMenu = /* HTML */ `
+    <div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`;
+    $(listMenu).appendTo(".dropdown_content")
     const videoData = Object.values(array)
     for (let i = 0; i < Object.keys(array).length; i++) {
         const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
@@ -882,12 +870,14 @@ loadingText() // Show loading text on load
 
 let timer;
 // Update and arrange blocks after user finish typing or clicking on input fields
-$(".edit_projects").on("input click change", ".input_field, .question_field, .dropbtn, .dropdown_option", function () {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-        arrangeBlocks()
-        updateBlocks()
-    }, 500);
+$(".edit_projects").on("input click change", ".input_field, .question_field, .dropdown_option", function () {
+    if (!$(this).hasClass("dropbtn")) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            arrangeBlocks()
+            updateBlocks()
+        }, 500);
+    }
 })
 
 // $(".edit_projects").on("change input", ".thumbnail", function () {
@@ -1113,13 +1103,18 @@ async function updateBlocks() {
                 // console.log(`\nCreated instance of project_blocks_${i}`)
                 $(".edit_projects").append(newBlock)
             }
+        } else {
+            // Remove block if no data selected
+            $(`.project_blocks_${i}`).remove()
         }
 
     }
+    updateListMenu(vidBin)
     console.log("Updating blocks")
     // Autosave after action feature
     // saveProjectData()
 
+    // Show publish form again if blocks updated
     if ($(".publish_form").has("success_form")) {
         $(".publish_form").removeClass("success_form") //FOR DEVELOPMENT ONLY
     }
@@ -1275,16 +1270,17 @@ async function populateProjectData(projectData) {
         // Populate other data
 
         for (let i = 1; i < projectData.length; i++) {
-            // console.log(projectData[i]);
-            let thisBlockData = projectData[i]
-            let thisTitle = thisBlockData.questionTitle
-            let thisBlockID = thisBlockData.blockID
-            let thisVideo = thisBlockData.videoID
-            videoData = await getVidInfo(thisVideo)
-            videoDataTitle = JSON.parse(videoData).title
+            try {
+                // console.log(projectData[i]);
+                let thisBlockData = projectData[i]
+                let thisTitle = thisBlockData.questionTitle
+                let thisBlockID = thisBlockData.blockID
+                let thisVideo = thisBlockData.videoID
+                videoData = await getVidInfo(thisVideo)
+                videoDataTitle = JSON.parse(videoData).title
 
-            // ===== CREATE NEW BLOCK =====
-            let newBlock = /* HTML */ `
+                // ===== CREATE NEW BLOCK =====
+                let newBlock = /* HTML */ `
                         <div class="project_blocks project_blocks_${i-1}" id="${i-1}">
                             <span class="parent_indicator">
                                 <div class="pi_dot ">
@@ -1379,24 +1375,26 @@ async function populateProjectData(projectData) {
                                 </div>
                             </div>
                         </div>`
-            $(".edit_projects").append(newBlock)
-            for (let x = 0; x < 3; x++) {
-                blockData = projectData[i].options[x]
-                optionTitle = blockData.title
-                optionVideo = blockData.videoID
+                $(".edit_projects").append(newBlock)
+                for (let x = 0; x < 3; x++) {
+                    blockData = projectData[i].options[x]
+                    optionTitle = blockData.title
+                    optionVideo = blockData.videoID
 
-                if (optionVideo && optionVideo.length !== 0) {
-                    videoData = await getVidInfo(optionVideo)
-                    videoDataTitle = JSON.parse(videoData).title
-                    blockEL = $(`.project_blocks_${i-1} .block_questions`).eq(x)
-                    // console.log(blockEL.find("p").text());
-                    blockEL.find(".options_field").val(optionTitle)
-                    blockEL.find(".dropbtn").val(videoDataTitle)
-                    blockEL.find(".dropbtn").attr("data-videoid", optionVideo)
-                    blockEL.find(".video_title").text(videoDataTitle)
-                    blockEL.find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${optionVideo}/hqdefault.jpg`)
+                    if (optionVideo && optionVideo.length !== 0 && optionVideo !== undefined) {
+                        videoData = await getVidInfo(optionVideo)
+                        videoDataTitle = JSON.parse(videoData).title
+                        blockEL = $(`.project_blocks_${i-1} .block_questions`).eq(x)
+                        // console.log(blockEL.find("p").text());
+                        blockEL.find(".options_field").val(optionTitle)
+                        blockEL.find(".dropbtn").val(videoDataTitle)
+                        blockEL.find(".dropbtn").attr("data-videoid", optionVideo)
+                        blockEL.find(".video_title").text(videoDataTitle)
+                        blockEL.find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${optionVideo}/hqdefault.jpg`)
+                    }
                 }
-
+            } catch (error) {
+                console.log(error);
             }
         }
     }
@@ -1513,9 +1511,9 @@ function activatePublishBtn() {
                     cache: false,
                     success: function (response) {
                         console.log("Video Added! ✅")
-                        let updatedVideoURLS = JSON.parse(response)
+                        let vidBin = JSON.parse(response)
                         // console.log(vidArray)
-                        listVideos(updatedVideoURLS)
+                        listVideos(vidBin)
                         // updateListMenu(updatedVideoURLS)
                     }
                 })

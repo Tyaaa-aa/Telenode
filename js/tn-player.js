@@ -25,9 +25,9 @@
 // ✅ ADD SHARE BUTTON BELOW VIDEO
 // ✅ MOVE PLAY BUTTON TO THE LEFT
 // ✅ UNPUBLISHED CLICK TO GO TO EDIT PAGE
-// EDIT ACCOUNT IMPLEMENT CONFIRM PASSWORD
-// IMPLEMENT SEARCH PAGE **
+// ✅ IMPLEMENT SEARCH PAGE **
 // NEED TO IMPLEMENT IDENTIFICATION COLOURED DOTS *****
+// EDIT ACCOUNT IMPLEMENT CONFIRM PASSWORD
 // NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING **
 // IMPLEMENT USER ROLES (STUDENTS CANNOT CREATE, USER GROUPS ONLY ACCESS TO CERTAIN CREATORS/GROUP CONTENT)
 // IMPLEMENT 360 VIDEOS
@@ -169,8 +169,10 @@ function playFromHash() {
 }
 
 function playBlock(block) {
+    // console.log(hash)
     // console.log(block)
     let currentVideoid = extractVidId(block.videoID)
+    // console.log(currentVideoid);
     let currentVideoOptions = block.options
     let currentVideoTitle = block.questionTitle
     optionsBlocks = $("<div class='modal'></div>")
@@ -179,17 +181,17 @@ function playBlock(block) {
     for (let i = 0; i < currentVideoOptions.length; i++) {
         // console.log(currentVideoOptions[i].title);
         let thisTitle = currentVideoOptions[i].title
+        let thisVideoID = currentVideoOptions[i].videoID
         let optionVideoBlock = thisTitle
-        if (!thisTitle == "" || !thisTitle == undefined) {
+        if (thisTitle != "" && thisTitle != undefined && thisVideoID != "" && thisVideoID != undefined) {
             optionsBlocks.append(`
-                    <a href="#${encodeURI(optionVideoBlock)}" class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
-                        ${thisTitle}
-                    </a>`)
+                <a href="#${encodeURI(optionVideoBlock)}" class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
+                    ${thisTitle}
+                </a>`)
         } else {
             counter++
             // console.log("COUNTER: " + counter);
-            if (counter == maxOptionCount) {
-                // No options left
+            if (counter == maxOptionCount) { // No options left
                 lastBlock = true
             }
         }
@@ -204,8 +206,8 @@ function playBlock(block) {
                 </div>
             </div>
         </div>`
-    } else {
-        // Show end of video card
+    } else { // Show end of video card
+
         optionsBlocks = /* HTML */ `
         <div class='modal'>
             <div class="video_end">
