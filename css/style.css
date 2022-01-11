@@ -1006,21 +1006,25 @@ a:hover {
 }
 
 .video_cards .share_social_container {
-    padding: 0 !important;
-    top: 112px;
+    /* top: 109px; */
     right: auto;
     left: 50%;
-    /* max-width: 200px; */
-    max-height: 80px;
+    max-width: 100%;
+    max-height: 100%;
     transform: translateX(60%);
-    max-width: 200px;
+    /* max-width: 200px; */
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    background-color: var(--mainColor);
 }
 
 .projectoptions_share:hover .share_social_container {
     transform: translateX(-50%);
-    max-height: 80px;
+    /* max-height: 80px; */
     padding: 0 !important;
-    max-width: 200px;
+    /* max-width: 200px; */
+    background-color: var(--secondTextColor);
 }
 
 .share_container .share_social_container_expanded {
@@ -1208,12 +1212,12 @@ a:hover {
     color: var(--secondaryColor);
     padding: 15px 20px;
     text-decoration: none;
-    display: block;
     cursor: pointer;
     transition: all 0.2s;
     border-radius: var(--globalRadius);
-    display: flex;
+    display: flex !important;
     align-items: center;
+    position: relative;
 }
 
 .more_options:hover {
@@ -1761,11 +1765,15 @@ input[type=file] {
 
 .share_social_container {
     margin-top: 15px;
+    display: flex;
 }
 
 .share_btns {
     text-decoration: none;
     margin: 5px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
 }
 
 .share_btns svg {
