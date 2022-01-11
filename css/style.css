@@ -1200,7 +1200,7 @@ a:hover {
 }
 
 .more_options_container_expanded {
-    top: 70%;
+    top: 100%;
     max-height: 220px;
 }
 
@@ -1451,6 +1451,7 @@ input[type=file] {
     transition: all 0.3s;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 9999;
 }
 
 .edit_page .steps_container {
@@ -1462,7 +1463,6 @@ input[type=file] {
 .collapse_bar {
     /* max-height: 0px !important; */
     position: fixed !important;
-    z-index: 9999;
     padding: 15px;
     background-color: var(--mainColor);
     /* top: 77px; */
@@ -1497,7 +1497,8 @@ input[type=file] {
     /* max-height: 0px;
     padding-top: 0px; */
 }
-.steps_container span{
+
+.steps_container span {
     transition: all 0.3s;
 }
 
@@ -2387,7 +2388,10 @@ input[type=file] {
     justify-content: space-between;
     bottom: -1px !important;
     background-image: linear-gradient(0deg, rgb(0 0 0 / 50%), transparent) !important;
+    padding: 20px !important;
     transition: all 0.3s !important;
+    /* overflow: hidden !important; */
+    max-height: 70px !important;
 }
 
 .vjs-user-inactive .vjs-control-bar {
@@ -2423,6 +2427,10 @@ input[type=file] {
 .video-js .vjs-play-control:hover {
     color: var(--playerTheme) !important;
 } */
+.vjs-theme-city .vjs-play-control {
+    position: absolute !important;
+    left: 20px !important;
+}
 
 /* VIDEO VOLUME SLIDER */
 .video-js .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-hover,
@@ -2430,7 +2438,7 @@ input[type=file] {
 .video-js .vjs-volume-panel.vjs-volume-panel-horizontal {
     width: 50px !important;
     position: absolute;
-    left: 150px;
+    left: 220px;
 }
 
 /* Hover volume color */
@@ -2452,9 +2460,14 @@ input[type=file] {
     font-size: 16px !important;
 }
 
+.video-js .vjs-time-control {
+    position: absolute;
+    left: 60px;
+}
+
 .vjs-theme-city .vjs-duration {
     position: absolute !important;
-    left: 70px !important;
+    left: 145px !important;
 }
 
 .vjs-theme-city .vjs-duration::after {
@@ -2462,6 +2475,11 @@ input[type=file] {
     position: absolute;
     left: -5px;
     transform: translateX(50%);
+}
+
+.video-js .vjs-fullscreen-control {
+    position: absolute !important;
+    right: 20px !important;
 }
 
 /* VIDEO SEEKER AND PROGRESS BAR */
