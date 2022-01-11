@@ -1833,6 +1833,7 @@ input[type=file] {
     max-width: 100%;
     /* overflow: hidden; */
     position: relative;
+    margin-top: 10px;
 }
 
 .edit_container .projects_box .video_cards:hover {
