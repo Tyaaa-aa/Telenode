@@ -272,13 +272,23 @@ if ($result->num_rows > 0) {
     <?php
     }
 } else {
+    if (isset($_GET['q'])) {
     ?>
-    <div class="no_projects_container">
-        <h3>You have no projects yet :(</h3>
-        <p>Create your first interactive video now!</p>
-        <a href="create.php" class="signup_btn btn">Start Now</a>
-    </div>
+        <div class="no_projects_container">
+            <h3>No results for "<?= $_GET['q'] ?>"</h3>
+            <p>Try searching for something else or creating your own project</p>
+            <a href="create.php" class="signup_btn btn">Create</a>
+        </div>
+    <?php
+    } else {
+    ?>
+        <div class="no_projects_container">
+            <h3>You have no projects yet :(</h3>
+            <p>Create your first interactive video now!</p>
+            <a href="create.php" class="signup_btn btn">Start Now</a>
+        </div>
 <?php
+    }
 }
 $conn->close();
 ?>

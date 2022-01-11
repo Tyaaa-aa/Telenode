@@ -959,7 +959,7 @@ $(document).bind("keydown", function (e) {
 
 $(window).scroll(function () {
     let scrollPos = $(window).scrollTop()
-    console.log(scrollPos);
+    // console.log(scrollPos);
     if (scrollPos == 0) {
         // $(".create_container").css("padding-top", "20px")
         $(".edit_page .steps_bar").removeClass("collapse_bar")

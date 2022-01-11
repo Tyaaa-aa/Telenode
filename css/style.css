@@ -870,7 +870,7 @@ a:hover {
 }
 
 #dashboard-container {
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 .unpublished_projects_container {
@@ -1310,7 +1310,7 @@ input[type=file] {
 .create_container {
     /* padding-top: 20px; */
     padding-top: 120px;
-    /* transition: all 0.3s; */
+    transition: all 0.3s;
     /* height: 2000px; */
 }
 
@@ -2567,6 +2567,7 @@ input[type=file] {
     padding: 20px;
     border-radius: var(--globalRadius);
     max-width: 800px;
+    min-width: 400px;
 }
 
 .modal_content h1 {
