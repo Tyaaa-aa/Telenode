@@ -539,21 +539,21 @@ async function listVideos(vidURLS) {
     } catch (error) {
         let projectID = $('.projects_box').attr("data-getVid_UID");
         // Reset vidlist if unsupported video id in vid list
-        let resetVidArray = `{}`
-        // console.log(resetVidArray);
+        let resetvidBin = `{}`
+        // console.log(resetvidBin);
         $.ajax({
             type: "POST",
             data: {
-                'videos': resetVidArray,
+                'videos': resetvidBin,
                 'projectID': projectID
             },
             url: "updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
                 console.log("Auto Corrupted Video Reset!")
-                resetVidArray = JSON.parse(response)
-                // console.log(vidArray)
-                // updateListMenu(resetVidArray)
+                resetvidBin = JSON.parse(response)
+                // console.log(vidBin)
+                // updateListMenu(resetvidBin)
             }
         })
         alert("Project is deleted or corrupted! Attempting to fix by auto resetting videos!")
@@ -717,13 +717,13 @@ $(".edit_videos_btn").click(function (e) {
 })
 
 // Delete video from project repository
-let vidArray
+// let vidBin
 try {
     if ($(".projects_box").attr("data-getvid_urls") != undefined) {
-        vidArray = $(".projects_box").attr("data-getvid_urls")
-        if (typeof vidArray === 'string') {
-            if (!(vidArray == "")) {
-                vidArray = JSON.parse($(".projects_box").attr("data-getvid_urls"))
+        vidBin = $(".projects_box").attr("data-getvid_urls")
+        if (typeof vidBin === 'string') {
+            if (!(vidBin == "")) {
+                vidBin = JSON.parse($(".projects_box").attr("data-getvid_urls"))
             }
         }
     }
@@ -736,30 +736,30 @@ $(".projects_box").on("click", ".delete_vid", function () {
     if (window.confirm("Delete Video?")) {
 
         // console.log("Delete Video");
-        // console.log(vidArray);
+        // console.log(vidBin);
         // console.log($(this).parent().index()-2);
         let thisVid = $(this).parent()
         let selectedIndex = thisVid.index() - 2
         // console.log(selectedIndex);
-        delete vidArray[Object.keys(vidArray)[selectedIndex]]
+        delete vidBin[Object.keys(vidBin)[selectedIndex]]
         $(thisVid).remove()
 
         let projectID = $('.projects_box').attr("data-getVid_UID");
-        vidArray = JSON.stringify(vidArray)
-        // console.log(vidArray);
+        vidBin = JSON.stringify(vidBin)
+        // console.log(vidBin);
         $.ajax({
             type: "POST",
             data: {
-                'videos': vidArray,
+                'videos': vidBin,
                 'projectID': projectID
             },
             url: "updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
                 console.log("Video Deleted! ✅")
-                // vidArray = JSON.parse(response)
+                // vidBin = JSON.parse(response)
                 vidBin = JSON.parse(response)
-                // console.log(vidArray)
+                // console.log(vidBin)
                 updateListMenu(vidBin)
             }
         })
@@ -784,15 +784,15 @@ $(".add_video_container").click(function (e) {
 })
 
 $(".add_btn_submit").click(async function () {
-    // console.log(vidArray)
+    // console.log(vidBin)
     let inputAdd = $(".add_video_input").val()
     inputAdd = extractVidId(inputAdd)
     if (inputAdd.length == 11) {
         // console.log(inputAdd)
         let thisIndex = $(".projects_box").find(".video_cards").length + 1
         // console.log(thisIndex)
-        vidArray[`video_${thisIndex}`] = inputAdd
-        // console.log(vidArray)
+        vidBin[`video_${thisIndex}`] = inputAdd
+        // console.log(vidBin)
 
         let result = await getVidInfo(inputAdd) // call function to get returned Promise (calls async function sequentially)
         let title = JSON.parse(result).title;
@@ -812,12 +812,12 @@ $(".add_btn_submit").click(async function () {
         $(".projects_box").append(listHTML)
 
         let projectID = $('.projects_box').attr("data-getVid_UID");
-        vidArray = JSON.stringify(vidArray)
-        // console.log(vidArray);
+        vidBin = JSON.stringify(vidBin)
+        // console.log(vidBin);
         $.ajax({
             type: "POST",
             data: {
-                'videos': vidArray,
+                'videos': vidBin,
                 'projectID': projectID
             },
             url: "updateProjectVideos_backend.php",
@@ -826,8 +826,8 @@ $(".add_btn_submit").click(async function () {
                 console.log("Video Added! ✅")
                 vidBin = JSON.parse(response)
                 $(".add_video_input").val('')
-                // console.log(vidArray)
-                updateListMenu(vidBin)
+                // console.log(vidBin)
+                // updateListMenu(vidBin)
             }
         })
 
@@ -843,7 +843,7 @@ $(".add_btn_submit").click(async function () {
 // Updates list menus with available imported videos
 async function updateListMenu(array) {
     // console.log(array)
-    // console.log(Object.keys(vidArray).length);
+    // console.log(Object.keys(vidBin).length);
     $(".dropdown_content ").html('')
     listMenu = /* HTML */ `
     <div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`;
@@ -1192,7 +1192,7 @@ function saveProjectData(download) {
             dataSaved()
             if (download == true) {
                 let downloadData = new Object()
-                downloadData.videoList = vidArray
+                downloadData.videoList = vidBin
                 downloadData.videoData = projectDataArray
                 // console.log(downloadData)
                 // console.log(projectDataArray)
@@ -1500,7 +1500,7 @@ function activatePublishBtn() {
                 console.log('FILE CONTENT\n', data)
                 populateProjectData(projectData)
 
-                // console.log(vidArray)
+                // console.log(vidBin)
                 $.ajax({
                     type: "POST",
                     data: {
@@ -1512,7 +1512,7 @@ function activatePublishBtn() {
                     success: function (response) {
                         console.log("Video Added! ✅")
                         let vidBin = JSON.parse(response)
-                        // console.log(vidArray)
+                        // console.log(vidBin)
                         listVideos(vidBin)
                         // updateListMenu(updatedVideoURLS)
                     }
