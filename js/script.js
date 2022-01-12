@@ -531,7 +531,7 @@ async function listVideos(vidURLS) {
 
                 $(listHTML).appendTo($(".projects_box"))
             }
-            updateListMenu(vidBin)
+            // updateListMenu(vidBin) // Fix Listing error bug
         } else {
             alert("An Error Occured. Project has been removed or the link is invalid.")
             window.location.href = "home.php";
@@ -827,7 +827,7 @@ $(".add_btn_submit").click(async function () {
                 vidBin = JSON.parse(response)
                 $(".add_video_input").val('')
                 // console.log(vidBin)
-                // updateListMenu(vidBin)
+                updateListMenu(vidBin)
             }
         })
 
@@ -840,14 +840,14 @@ $(".add_btn_submit").click(async function () {
     // listYTVideos($(".projects_box"), true)
 })
 
-// Updates list menus with available imported videos
+// Updates list menus dropdowns with available imported videos
 async function updateListMenu(array) {
     // console.log(array)
     // console.log(Object.keys(vidBin).length);
     $(".dropdown_content ").html('')
-    listMenu = /* HTML */ `
-    <div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`;
-    $(listMenu).appendTo(".dropdown_content")
+    // listMenu = /* HTML */ `    <div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`;
+    // $(listMenu).appendTo(".dropdown_content")
+    $(".dropdown_content").append(`<div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`)
     const videoData = Object.values(array)
     for (let i = 0; i < Object.keys(array).length; i++) {
         const videoID = extractVidId(videoData[i]) // Strip videoID from rawArray
