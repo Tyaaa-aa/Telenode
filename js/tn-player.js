@@ -126,11 +126,7 @@ try {
     if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
         setTimeout(() => {
             if (vidOnLoad) {
-                if (hash != "") {
-                    playFromHash()
-                } else {
-                    playBlock(firstBlock)
-                }
+                playCurrentBlock()
                 viewCount()
             }
         }, 10);
@@ -145,16 +141,32 @@ try {
     window.location.replace('home.php#dashboard')
 }
 
+function playCurrentBlock() {
+    if (hash != "") {
+        playFromHash()
+    } else {
+        playBlock(firstBlock)
+    }
+}
 
 // If error (might be bad get video link) just retry current block to grab a new link
 let errorCounter = 0
+let fallback = false
 myPlayer.on("error", function () {
-    errorCounter++
-    if (errorCounter >= 3) { // Redirect user to home if error more than 3 times 
-        alert("Something went wrong! Try again later!")
-        window.location.replace('home.php#dashboard')
+    console.log(myPlayer.error().code);
+    if (myPlayer.error().code > 0) {
+        // USE FALLBACK API (LIMITED TO 480p)
+        fallback = true
+        scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url="
+        playCurrentBlock()
     } else {
-        playBlock(firstBlock)
+        errorCounter++
+        if (errorCounter >= 2) { // Redirect user to home if error more than 3 times 
+            alert("Something went wrong! Try again later!")
+            window.location.replace('home.php#dashboard') // DISABLED FOR DEVELOPMENT PURPOSES
+        } else {
+            playCurrentBlock()
+        }
     }
 })
 
@@ -251,22 +263,64 @@ function playBlock(block) {
     changeVid(currentVideoid, autoPlay)
 }
 
+
+// ========= API FUNCTIONS =========
+function ajaxVidData(scriptUrl) {
+    showPreloader()
+
+}
+let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
+
+function getVidData(videoID) {
+    // Convert any valid youtube url to its video id
+    videoID = extractVidId(videoID)
+    // Get the video URL
+    // OLD LOW QUALITY API
+    // let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
+    // 720p VIDEO API
+    // let result = await ajaxVidData(scriptUrl)
+    return $.ajax({
+        url: scriptUrl + videoID,
+        type: 'get',
+        dataType: 'JSON',
+        success: function (data) {
+            // videoData = {
+            //     "video": data.links
+            // }
+        }
+    })
+    // console.log(result)
+    // result = JSON.parse(result)
+    // hidePreloader()
+    // return result;
+}
+
 // Main video playing function Add true 2nd parameter to disable autoplay
-function changeVid(videoid, disableautoplay) {
-    let videoLinks = extractVidId(videoid)
-    let vidUrl = getVidData(videoLinks)
+async function changeVid(videoid, disableautoplay) {
+    let vidUrl = await getVidData(videoid)
+    console.log(videoid);
+    // vidUrl = JSON.parse(vidUrl)
+
     // await async function
-    vidUrl.then(function (result) {
-        let vidLink = result.links
-        // console.log(vidLink);
-        myPlayer.src({
-            type: 'video/mp4',
-            src: vidLink
-        })
-        if (!disableautoplay) return
-        myPlayer.ready(function () {
-            myPlayer.play()
-        })
+    // vidUrl.then(function (result) {
+    // console.log(vidLink);
+    // })
+    let vidLink
+    if (!fallback) {
+        vidLink = vidUrl.links
+    } else {
+        vidLink = vidUrl.links[0]
+    }
+
+    console.log(vidLink)
+    myPlayer.src({
+        type: 'video/mp4',
+        src: vidLink
+    })
+
+    if (!disableautoplay) return
+    myPlayer.ready(function () {
+        myPlayer.play()
     })
 }
 
@@ -280,6 +334,11 @@ myPlayer.addChild(modal);
 // Show modal when video ends
 myPlayer.on('ended', function () {
     // console.log("Video Ended")
+    if (fallback) { // Reset fallback after video end if fallback was used
+        console.log("Resetting fallback");
+        scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
+        fallback = false
+    }
     modal.open()
 })
 // Set content of modal to show available options or end of video card

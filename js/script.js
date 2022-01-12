@@ -422,37 +422,6 @@ $(".upload_field_box").submit(function (e) {
     }
 })
 
-// ========= API FUNCTIONS =========
-function ajaxVidData(scriptUrl) {
-    showPreloader()
-    return $.ajax({
-        url: scriptUrl,
-        type: 'get',
-        dataType: 'text',
-        success: function (data) {
-            const videoURL_parsed = JSON.parse(JSON.stringify(data))
-            videoURL = videoURL_parsed.links
-            videoData = {
-                "video": videoURL,
-            }
-        }
-    })
-}
-
-async function getVidData(videoID) {
-    // Convert any valid youtube url to its video id
-    videoID = extractVidId(videoID)
-    // Get the video URL
-    // OLD LOW QUALITY API
-    // let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
-    // 720p VIDEO API
-    let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url=" + videoID;
-    let result = await ajaxVidData(scriptUrl)
-    // console.log(result)
-    result = JSON.parse(result)
-    hidePreloader()
-    return result;
-}
 
 function ajaxVidInfo(scriptUrlData) {
     return $.ajax({
