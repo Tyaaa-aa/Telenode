@@ -149,27 +149,6 @@ function playCurrentBlock() {
     }
 }
 
-// If error (might be bad get video link) just retry current block to grab a new link
-let errorCounter = 0
-let fallback = false
-myPlayer.on("error", function () {
-    console.log(myPlayer.error().code);
-    if (myPlayer.error().code > 0) {
-        // USE FALLBACK API (LIMITED TO 480p)
-        fallback = true
-        scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url="
-        playCurrentBlock()
-    } else {
-        errorCounter++
-        if (errorCounter >= 2) { // Redirect user to home if error more than 3 times 
-            alert("Something went wrong! Try again later!")
-            window.location.replace('home.php#dashboard') // DISABLED FOR DEVELOPMENT PURPOSES
-        } else {
-            playCurrentBlock()
-        }
-    }
-})
-
 $(window).on('hashchange', function (e) {
     playFromHash()
     // console.log(hashBlock)
@@ -269,16 +248,14 @@ function ajaxVidData(scriptUrl) {
     showPreloader()
 
 }
+
+// Default API grabs 720p quality video
 let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
 
 function getVidData(videoID) {
     // Convert any valid youtube url to its video id
     videoID = extractVidId(videoID)
     // Get the video URL
-    // OLD LOW QUALITY API
-    // let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
-    // 720p VIDEO API
-    // let result = await ajaxVidData(scriptUrl)
     return $.ajax({
         url: scriptUrl + videoID,
         type: 'get',
@@ -289,22 +266,34 @@ function getVidData(videoID) {
             // }
         }
     })
-    // console.log(result)
-    // result = JSON.parse(result)
-    // hidePreloader()
-    // return result;
 }
+
+// If error (might be bad get video link) just retry current block to grab a new link
+let errorCounter = 0
+let fallback = false
+myPlayer.on("error", function () {
+    console.log(myPlayer.error().code);
+    if (myPlayer.error().code > 0) {
+        // USE FALLBACK API (LIMITED TO 480p)
+        fallback = true
+        // Fallback API grabs 480p quality video
+        scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url="
+        playCurrentBlock()
+    } else {
+        errorCounter++
+        if (errorCounter >= 2) { // Redirect user to home if error more than 3 times 
+            alert("Something went wrong! Try again later!")
+            window.location.replace('home.php#dashboard') // DISABLED FOR DEVELOPMENT PURPOSES
+        } else {
+            playCurrentBlock()
+        }
+    }
+})
 
 // Main video playing function Add true 2nd parameter to disable autoplay
 async function changeVid(videoid, disableautoplay) {
     let vidUrl = await getVidData(videoid)
-    console.log(videoid);
-    // vidUrl = JSON.parse(vidUrl)
-
-    // await async function
-    // vidUrl.then(function (result) {
-    // console.log(vidLink);
-    // })
+    // console.log(videoid)
     let vidLink
     if (!fallback) {
         vidLink = vidUrl.links
@@ -312,7 +301,7 @@ async function changeVid(videoid, disableautoplay) {
         vidLink = vidUrl.links[0]
     }
 
-    console.log(vidLink)
+    // console.log(vidLink)
     myPlayer.src({
         type: 'video/mp4',
         src: vidLink
@@ -336,6 +325,7 @@ myPlayer.on('ended', function () {
     // console.log("Video Ended")
     if (fallback) { // Reset fallback after video end if fallback was used
         console.log("Resetting fallback");
+        // Default API grabs 720p quality video
         scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
         fallback = false
     }
