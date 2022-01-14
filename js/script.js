@@ -12,7 +12,7 @@ $(function () {
 
     $(".showPassword").click(function () {
         showpassword()
-        console.log("Show Password")
+        // console.log("Show Password")
     })
 
 
@@ -119,23 +119,23 @@ $(".edit_account_btn").click(function () {
         setTimeout(() => {
             $(this).attr("type", "submit")
             $(this).text("Save")
-        }, 10);
+        }, 10)
     }
 })
 
 $("#toggleAll").click(function () {
     if ($("#toggleAll").is(":checked")) {
-        // console.log("dark");
+        // console.log("dark")
         updateTheme("dark")
     } else {
-        // console.log("light");
+        // console.log("light")
         updateTheme("light")
     }
 })
 
 $("#upload-img").change(function () {
     $(".account_pic").submit()
-});
+})
 
 // ========= HEADER CODE ==========
 $(".profile_box").click(function () {
@@ -242,7 +242,7 @@ $(document).on("click", ".edit_btn", function () {
     setTimeout(() => {
         let parent = $(this).parent()
         parent.find(".more_options_container").addClass("more_options_container_expanded")
-        // console.log(parent);
+        // console.log(parent)
         // console.log("CLICKED!")
     }, 10)
 })
@@ -328,43 +328,43 @@ $(document).on("click", ".projectoptions_download", function (e) {
 
 // ======= CREATE PAGE ========
 function validateYouTubeUrl() {
-    var url = $('#youTubeUrl').val();
+    var url = $('#youTubeUrl').val()
     if (url != undefined || url != '') {
         var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-        var match = url.match(regExp);
+        var match = url.match(regExp)
         if (match && match[2].length == 11) {
             // Do anything for being valid
             // if need to change the url to embed url then use below line
-            $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
+            $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0')
         } else {
             // Do anything for not being valid
         }
     }
 }
-// Validate at least first video before being able to create project (Could be improved)
+// Validate at least first video before being able to create project 
+// 🟨 (Could be improved)
 $(".submit_btn").hide()
 $(document).on("keyup input change", ".upload_input_field", function () {
-    // console.log("ASDASD");
     let lastInput = $(".upload_input_field").last()
     let firstInput = $(".field_text").first().find("img").attr("src")
-    let url = $(".field_text").first().find(".input_field ").val();
-    console.log(url);
-    url = extractVidId(url);
+    let url = $(".field_text").first().find(".input_field ").val()
+    // console.log(url)
+    url = extractVidId(url)
     if (url != undefined || url != '') {
         if (url.length == 11) {
             // Do anything for being valid
             // if need to change the url to embed url then use below line
-            // $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
-            console.log("VALID URL");
-            $(".submit_btn").fadeIn();
-            console.log(firstInput);
+            // $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0')
+            // console.log("VALID URL")
+            $(".submit_btn").fadeIn()
+            // console.log(firstInput)
             try {
-                let thumbnail = extractVidId($(this).val());
-                $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`);
+                let thumbnail = extractVidId($(this).val())
+                $(this).parent().find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${thumbnail}/mqdefault.jpg`)
                 if (lastInput.val() != "") {
                     // Add Fields
-                    console.log("Adding field");
-                    let vidNum = $(".upload_input_field").length;
+                    // console.log("Adding field")
+                    let vidNum = $(".upload_input_field").length
                     $("#videoLength").val(vidNum)
                     $(".submit_btn").before(`
                     <div class="field_text">
@@ -372,10 +372,10 @@ $(document).on("keyup input change", ".upload_input_field", function () {
                         <div class="thumbnailPreview-box">
                             <img src="" class="thumbnailPreview" alt="">
                         </div>
-                    </div>`);
+                    </div>`)
                 } else if (lastInput.parent().prev().find(".upload_input_field").val() == "") {
                     // Delete empty field
-                    console.log("Deleting field");
+                    // console.log("Deleting field")
                     $(".field_text").last().fadeOut(300, function () {
                         $(".field_text").last().remove()
                     })
@@ -384,30 +384,30 @@ $(document).on("keyup input change", ".upload_input_field", function () {
                     }
                 }
             } catch (error) {
-                console.log(error);
-                $(".submit_btn").fadeOut();
+                console.log(error)
+                $(".submit_btn").fadeOut()
                 $(this).attr('readonly', true)
-                $(this).parent().find(".thumbnailPreview").attr("src", ``);
+                $(this).parent().find(".thumbnailPreview").attr("src", ``)
                 $(this).val("Invalid Link!")
                 setTimeout(() => {
                     $(this).attr('readonly', false)
                     $(this).val("")
-                }, 1000);
+                }, 1000)
             }
-            console.log(($(".upload_input_field").length));
+            // console.log(($(".upload_input_field").length))
         } else {
             // Do anything for not being valid
-            console.log("WRONG WRONG WRONG URL");
-            $(".submit_btn").fadeOut();
+            // console.log("WRONG WRONG WRONG URL")
+            $(".submit_btn").fadeOut()
             $(".field_text").eq(1).remove()
             let firstUploadInput = $(".field_text").first().find(".input_field ")
             firstUploadInput.attr('readonly', true)
-            firstUploadInput.parent().find(".thumbnailPreview").attr("src", ``);
+            firstUploadInput.parent().find(".thumbnailPreview").attr("src", ``)
             firstUploadInput.val("Invalid Link!")
             setTimeout(() => {
                 firstUploadInput.attr('readonly', false)
                 firstUploadInput.val("")
-            }, 1000);
+            }, 1000)
         }
     }
 })
@@ -422,33 +422,14 @@ $(".upload_field_box").submit(function (e) {
     }
 })
 
-
-function ajaxVidInfo(scriptUrlData) {
-    return $.ajax({
-        url: scriptUrlData,
-        type: 'get',
-        dataType: 'text',
-        success: function (data) {
-            const videoData_parsed = JSON.parse(data)
-            videoData = {
-                "title": videoData_parsed.title,
-                "thumbnail": videoData_parsed.thumbnail_url
-            }
-        }
-    })
-}
-
 // Get Video Info Without MP4 URL
 async function getVidInfo(videoID) {
-    // Convert any valid youtube url to its video id
-    videoID = extractVidId(videoID)
-    let videoData = null;
-    let scriptUrlData = "https://www.youtube.com/oembed?url=youtube.com/watch?v=" + videoID + "&format=json";
-
-    let result = await ajaxVidInfo(scriptUrlData)
-    // console.log(x)
     hidePreloader()
-    return await result;
+    return $.ajax({
+        url: "https://www.youtube.com/oembed?url=youtube.com/watch?v=" + extractVidId(videoID) + "&format=json",
+        type: 'get',
+        dataType: 'text'
+    })
 }
 
 function extractVidId(url) {
@@ -506,10 +487,10 @@ async function listVideos(vidURLS) {
             window.location.href = "home.php";
         }
     } catch (error) {
-        let projectID = $('.projects_box').attr("data-getVid_UID");
+        let projectID = $('.projects_box').attr("data-getVid_UID")
         // Reset vidlist if unsupported video id in vid list
         let resetvidBin = `{}`
-        // console.log(resetvidBin);
+        // console.log(resetvidBin)
         $.ajax({
             type: "POST",
             data: {
@@ -526,7 +507,7 @@ async function listVideos(vidURLS) {
             }
         })
         alert("Project is deleted or corrupted! Attempting to fix by auto resetting videos!")
-        location.reload();
+        location.reload()
         // history.back()
         // window.location.replace('home.php#projects')
     }
@@ -550,7 +531,7 @@ hidePreloader()
 $(".edit_projects").on("input click ", ".question_field", async function (e) {
     // $(this).val(extractVidId($(this).val()))
     $(this).blur()
-    console.log("BLURRING");
+    // console.log("BLURRING")
     // console.log(e.handleObj.type)
     const videoID = extractVidId($(this).val())
     if (videoID.length == 11) {
@@ -599,14 +580,14 @@ $(".edit_projects").on("click", ".dropbtn", function () {
 $(".edit_projects").on("click", ".dropdown_option", function () {
     let title = $(this).data("title")
     let videoid = $(this).data("videoid")
-    console.log(videoid)
-    console.log(title)
+    // console.log(videoid)
+    // console.log(title)
     let parentOption = $(this).closest(".block_box")
     if (videoid == "" && title == "") {
         deleteOption(parentOption)
     } else {
         // Update value inside dropdown menu
-        console.log("Updatng option")
+        // console.log("Updatng option")
         let dropbtn = parentOption.find(".dropbtn")
         dropbtn.val(title)
         dropbtn.attr("data-videoid", videoid)
@@ -618,14 +599,14 @@ $(".edit_projects").on("click", ".dropdown_option", function () {
 })
 
 function deleteOption(option) {
-    console.log("deleting option")
+    // console.log("deleting option")
     option.find(".dropbtn").val("")
     option.find(".dropbtn").attr("data-videoid", "")
     option.find(".video_title").text("")
     option.find(".thumbnail").attr("src", "img/empty_thumbnail.png")
 
     // let blockid = option.find(".options_field").val()
-    // console.log(blockid);
+    // console.log(blockid)
 
     option.find(".options_field").val("")
     updateBlocks()
@@ -651,7 +632,7 @@ $(".card_view_btn").click(function () {
 $(".edit_container .search_input").keyup(function () {
     let input = $(this).val().toUpperCase()
     let vids = $(".projects_box .video_cards")
-    console.log(input);
+    // console.log(input)
     for (i = 0; i < vids.length; i++) {
         let thisVidTitle = vids.eq(i).find("h4").text().toUpperCase()
         // console.log(thisVidTitle)
@@ -704,18 +685,18 @@ try {
 $(".projects_box").on("click", ".delete_vid", function () {
     if (window.confirm("Delete Video?")) {
 
-        // console.log("Delete Video");
-        // console.log(vidBin);
-        // console.log($(this).parent().index()-2);
+        // console.log("Delete Video")
+        // console.log(vidBin)
+        // console.log($(this).parent().index()-2)
         let thisVid = $(this).parent()
         let selectedIndex = thisVid.index() - 2
-        // console.log(selectedIndex);
+        // console.log(selectedIndex)
         delete vidBin[Object.keys(vidBin)[selectedIndex]]
         $(thisVid).remove()
 
-        let projectID = $('.projects_box').attr("data-getVid_UID");
+        let projectID = $('.projects_box').attr("data-getVid_UID")
         vidBin = JSON.stringify(vidBin)
-        // console.log(vidBin);
+        // console.log(vidBin)
         $.ajax({
             type: "POST",
             data: {
@@ -725,7 +706,7 @@ $(".projects_box").on("click", ".delete_vid", function () {
             url: "updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
-                console.log("Video Deleted! ✅")
+                // console.log("Video Deleted! ✅")
                 // vidBin = JSON.parse(response)
                 vidBin = JSON.parse(response)
                 // console.log(vidBin)
@@ -780,9 +761,9 @@ $(".add_btn_submit").click(async function () {
         </div>`;
         $(".projects_box").append(listHTML)
 
-        let projectID = $('.projects_box').attr("data-getVid_UID");
+        let projectID = $('.projects_box').attr("data-getVid_UID")
         vidBin = JSON.stringify(vidBin)
-        // console.log(vidBin);
+        // console.log(vidBin)
         $.ajax({
             type: "POST",
             data: {
@@ -792,7 +773,7 @@ $(".add_btn_submit").click(async function () {
             url: "updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
-                console.log("Video Added! ✅")
+                // console.log("Video Added! ✅")
                 vidBin = JSON.parse(response)
                 $(".add_video_input").val('')
                 // console.log(vidBin)
@@ -812,7 +793,7 @@ $(".add_btn_submit").click(async function () {
 // Updates list menus dropdowns with available imported videos
 async function updateListMenu(array) {
     // console.log(array)
-    // console.log(Object.keys(vidBin).length);
+    // console.log(Object.keys(vidBin).length)
     $(".dropdown_content ").html('')
     // listMenu = /* HTML */ `    <div class="dropdown_option" data-title="" data-videoid="">--Select an option--</div>`;
     // $(listMenu).appendTo(".dropdown_content")
@@ -837,7 +818,7 @@ let autoSave = 60000; // Autosave every 60 seconds by default
 loadingText() // Show loading text on load
 // updateBlocks() // Update blocks on load
 
-let timer;
+let timer
 // Update and arrange blocks after user finish typing or clicking on input fields
 $(".edit_projects").on("input click change", ".input_field, .question_field, .dropdown_option", function () {
     if (!$(this).hasClass("dropbtn")) {
@@ -845,14 +826,13 @@ $(".edit_projects").on("input click change", ".input_field, .question_field, .dr
         timer = setTimeout(() => {
             arrangeBlocks()
             updateBlocks()
-        }, 500);
+        }, 500)
     }
 })
 
 // $(".edit_projects").on("change input", ".thumbnail", function () {
 //     updateBlocks()
 // })
-
 
 // Event for while saving data
 function savingData() {
@@ -867,7 +847,7 @@ function dataSaved() {
     $(".save_msg .project_loader").fadeOut()
     setTimeout(() => {
         $(".save_msg").addClass("save_msg_closed")
-    }, 2000);
+    }, 2000)
 }
 
 // Event for loading data
@@ -879,20 +859,20 @@ function loadingText() {
 
 // Event for successful data loaded
 function loadedText() {
-    console.log("Done Loading!✅")
+    // console.log("Done Loading!✅")
     updateBlocks()
     $(".save_msg").text("Done!")
     $(".save_msg .project_loader").fadeOut()
     setTimeout(() => {
         $(".save_msg").addClass("save_msg_closed")
-    }, 1000);
+    }, 1000)
 
     // Set after loading data so doesnt save over existing data before data fully loaded
     // AutoSave every 1 minute 
     setInterval(() => {
-        console.log("Auto saving...");
+        // console.log("Auto saving...")
         saveProjectData()
-    }, autoSave);
+    }, autoSave)
 
     // Ctrl + S to save data
     $(document).bind("keydown", function (e) {
@@ -901,7 +881,7 @@ function loadedText() {
             clearTimeout(timer)
             timer = setTimeout(() => {
                 saveProjectData()
-            }, 100);
+            }, 100)
         }
     })
     // Click save button to save data
@@ -918,13 +898,13 @@ $(document).bind("keydown", function (e) {
 
 $(window).scroll(function () {
     let scrollPos = $(window).scrollTop()
-    // console.log(scrollPos);
+    // console.log(scrollPos)
     if (scrollPos == 0) {
         // $(".create_container").css("padding-top", "20px")
         $(".edit_page .steps_bar").removeClass("collapse_bar")
         // setTimeout(() => {
 
-        // }, 4000);
+        // }, 4000)
     } else {
         $(".edit_page .steps_bar").addClass("collapse_bar")
         // $(".create_container").css("padding-top", "120px")
@@ -1079,10 +1059,6 @@ async function updateBlocks() {
 
     }
     updateListMenu(vidBin)
-    console.log("Updating blocks")
-    // Autosave after action feature
-    // saveProjectData()
-
     // Show publish form again if blocks updated
     if ($(".publish_form").has("success_form")) {
         $(".publish_form").removeClass("success_form") //FOR DEVELOPMENT ONLY
@@ -1091,21 +1067,21 @@ async function updateBlocks() {
 
 
 function arrangeBlocks() {
-    console.log("Arranging Blocks");
+    // console.log("Arranging Blocks")
     let currentFocused = $(document.activeElement)
     $(".edit_projects .project_blocks").sort(function (a, b) {
-        return parseInt(a.id) - parseInt(b.id);
+        return parseInt(a.id) - parseInt(b.id)
     }).each(function () {
-        var elem = $(this);
-        elem.remove();
-        $(elem).appendTo(".edit_projects");
-    });
+        var elem = $(this)
+        elem.remove()
+        $(elem).appendTo(".edit_projects")
+    })
     currentFocused.focus()
 }
 
 // Creates JSON save based on user provided data
 function saveProjectData(download) {
-    console.log("Saving Data...");
+    // console.log("Saving Data...")
     savingData()
     // Create main container array to store all project data
     let projectDataArray = []
@@ -1144,7 +1120,7 @@ function saveProjectData(download) {
     // console.log(projectDataArray)
     // console.log(projectDataArray[0].options)
 
-    let projectID = $('.projects_box').attr("data-getVid_UID");
+    let projectID = $('.projects_box').attr("data-getVid_UID")
     let processedData = JSON.stringify(projectDataArray)
     $.ajax({
         type: "POST",
@@ -1155,9 +1131,9 @@ function saveProjectData(download) {
         url: "updateProjectData_backend.php",
         cache: false,
         success: function (response) {
-            console.log("Data Saved! ✅");
-            // console.log("Returned DATA:");
-            // console.log(JSON.parse(response));
+            // console.log("Data Saved! ✅")
+            // console.log("Returned DATA:")
+            // console.log(JSON.parse(response))
             dataSaved()
             if (download == true) {
                 let downloadData = new Object()
@@ -1172,26 +1148,18 @@ function saveProjectData(download) {
     })
 }
 
-
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.href);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, '    '));
-}
-
 // Populate data on load 
 async function populateProjectData(projectData) {
     if (!projectData) {
         loadedText()
         return
     }
-    console.log("Loading Data...");
+    // console.log("Loading Data...")
     // loadingText()
     if (typeof projectData === 'string') {
         projectData = JSON.parse(projectData)
     }
-    console.log(projectData);
+    // console.log(projectData)
     // Delete all other blocks first
     $(document).find(".project_blocks").slice(1).remove()
     $(".project_blocks_starter").find("input").val("")
@@ -1208,7 +1176,7 @@ async function populateProjectData(projectData) {
         // Populate Starter Block Data
         videoData = await getVidInfo(starterVideo)
         videoDataTitle = JSON.parse(videoData).title
-        // console.log(starterTitle);
+        // console.log(starterTitle)
         let startBlockEL = $(".project_blocks_starter .block_video")
         startBlockEL.find(".question_title").val(starterTitle)
         startBlockEL.find(".dropbtn").val(videoDataTitle)
@@ -1240,7 +1208,7 @@ async function populateProjectData(projectData) {
 
         for (let i = 1; i < projectData.length; i++) {
             try {
-                // console.log(projectData[i]);
+                // console.log(projectData[i])
                 let thisBlockData = projectData[i]
                 let thisTitle = thisBlockData.questionTitle
                 let thisBlockID = thisBlockData.blockID
@@ -1354,7 +1322,7 @@ async function populateProjectData(projectData) {
                         videoData = await getVidInfo(optionVideo)
                         videoDataTitle = JSON.parse(videoData).title
                         blockEL = $(`.project_blocks_${i-1} .block_questions`).eq(x)
-                        // console.log(blockEL.find("p").text());
+                        // console.log(blockEL.find("p").text())
                         blockEL.find(".options_field").val(optionTitle)
                         blockEL.find(".dropbtn").val(videoDataTitle)
                         blockEL.find(".dropbtn").attr("data-videoid", optionVideo)
@@ -1363,31 +1331,31 @@ async function populateProjectData(projectData) {
                     }
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
         }
     }
     loadedText()
 }
 
-// Save the file ==== FOR DEBUGGING PURPOSES ONLY ====
+// Save the file 
 const saveJson = (filename, dataObjToWrite) => {
     const blob = new Blob([JSON.stringify(dataObjToWrite)], {
         type: "text/json"
-    });
-    const link = document.createElement("a");
+    })
+    const link = document.createElement("a")
 
     link.download = filename;
-    link.href = window.URL.createObjectURL(blob);
-    link.dataset.downloadurl = ["text/json", link.download, link.href].join(":");
+    link.href = window.URL.createObjectURL(blob)
+    link.dataset.downloadurl = ["text/json", link.download, link.href].join(":")
 
     const evt = new MouseEvent("click", {
         view: window,
         bubbles: true,
         cancelable: true,
-    });
+    })
 
-    link.dispatchEvent(evt);
+    link.dispatchEvent(evt)
     link.remove()
 }
 
@@ -1396,7 +1364,6 @@ function activatePublishBtn() {
     $(".settings_btn, .more_options, #importJSON, .publish_btn").unbind()
     let publishScrollPos
     $(".publish_btn").click(function () {
-        // $(".main_content")
         if ($(".main_content").hasClass("view_form")) {
             // HIDE PULISH FORM 
             $(this).find(".publish_btn_label").text("Publish")
@@ -1404,12 +1371,6 @@ function activatePublishBtn() {
             $(".main_content").removeClass("view_form")
             $(".steps_three").removeClass("steps_number_active")
             $(window).scrollTop(publishScrollPos)
-
-            // $(this).find(".material-icons").text("publish")
-            // $(".edit_page .steps_bar").addClass("collapse_bar")
-            // $('html').css({
-            //     'overflow-y': 'auto'
-            // })
         } else {
             // SHOW PULISH FORM 
             $(this).addClass("publish_btn_active")
@@ -1418,46 +1379,30 @@ function activatePublishBtn() {
             $(this).find(".publish_btn_label").text("Go Back")
             publishScrollPos = $(window).scrollTop()
             $(window).scrollTop(0)
-
-            // $(this).find(".material-icons").text("arrow_upward")
-            // $(".edit_page .steps_bar").removeClass("collapse_bar")
-            // saveProjectData()
-            // $('html').css({
-            //     'overflow-y': 'hidden'
-            // })
         }
     })
-    // $(".publish_btn").click()
-
-
     // ====== Project Settings Section ======
     $(".settings_btn").click(function () {
         setTimeout(() => {
             $(".more_options_container").addClass("more_options_container_expanded")
         }, 0)
     })
-
     // Save and download data
     $(".options_download").click(function () {
         saveProjectData(true)
     })
-
-    // Import data from another projectt
+    // Prompt user to import data
     $(document).on("click", ".options_import", function (e) {
-        // populateProjectData()
         if (!confirm("Importing will delete all current project data. Continue?")) e.preventDefault()
-        console.log("Import Project")
+        // console.log("Import Project")
     })
-
+    // Get JSON uploaded by user and call populate function to parse the data
     $("#importJSON").change(function (evt) {
         try {
             let files = evt.target.files;
-            if (!files.length) {
-                // alert('No file selected!');
-                return;
-            }
+            if (!files.length) return
             let file = files[0];
-            let reader = new FileReader();
+            let reader = new FileReader()
             const self = this;
             reader.onload = (event) => {
                 loadingText()
@@ -1466,7 +1411,7 @@ function activatePublishBtn() {
                 let videoURLS = data.videoList
                 let projectID = $('.projects_box').attr("data-getVid_UID")
 
-                console.log('FILE CONTENT\n', data)
+                // console.log('FILE CONTENT\n', data)
                 populateProjectData(projectData)
 
                 // console.log(vidBin)
@@ -1479,7 +1424,7 @@ function activatePublishBtn() {
                     url: "updateProjectVideos_backend.php",
                     cache: false,
                     success: function (response) {
-                        console.log("Video Added! ✅")
+                        // console.log("Video Added! ✅")
                         let vidBin = JSON.parse(response)
                         // console.log(vidBin)
                         listVideos(vidBin)
@@ -1487,19 +1432,18 @@ function activatePublishBtn() {
                     }
                 })
             };
-            reader.readAsText(file);
+            reader.readAsText(file)
         } catch (err) {
-            console.error(err);
+            console.error(err)
             loadedText()
         }
     })
 
-
     // Delete project
     $(".options_delete").click(function () {
         if (window.confirm("Are you sure you want to permanently delete this project? \nThis action cannot be undone!")) {
-            let projectID = $('.projects_box').attr("data-getVid_UID");
-            let userID = $('.projects_box').attr("data-getVid_userID");
+            let projectID = $('.projects_box').attr("data-getVid_UID")
+            let userID = $('.projects_box').attr("data-getVid_userID")
             $.ajax({
                 type: "POST",
                 url: "deleteProject_backend.php",
@@ -1511,7 +1455,7 @@ function activatePublishBtn() {
                     let result = JSON.parse(response).message
                     // alert(result)
                     // let result = response
-                    console.log(result)
+                    // console.log(result)
                     if (result == "success") {
                         // If successfully deleted
                         alert("Project has been deleted!")
@@ -1525,7 +1469,6 @@ function activatePublishBtn() {
         }
     })
 }
-
 
 $(".publish_form").submit(function (e) {
     e.preventDefault() // avoid to execute the actual submit of the form.
@@ -1543,7 +1486,7 @@ $(".publish_form").submit(function (e) {
         success: function (response) {
             let result = JSON.parse(response).message
             // alert(result)
-            console.log(result)
+            // console.log(result)
             if (result == "success") {
                 // If successfully updated
                 $(".publish_form").addClass("success_form")
@@ -1562,9 +1505,9 @@ $(".publish_form").submit(function (e) {
     })
 })
 
-// UPDATE THUMBNAIL IMAGE FOR PUBLISHING (NOT DONE YET)
-function readURL(input) {
-    if (input.files && input.files[0]) {
+// UPDATE THUMBNAIL IMAGE FOR PUBLISHING
+$("#upload-img").change(function () {
+    if (this.files && this.files[0]) {
         var reader = new FileReader()
 
         reader.onload = function (e) {
@@ -1573,14 +1516,9 @@ function readURL(input) {
             $(".thumbnail_upload_image").attr("src", filepath)
         }
 
-        reader.readAsDataURL(input.files[0]) // convert to base64 string
+        reader.readAsDataURL(this.files[0]) // convert to base64 string
     }
-}
-
-// Image Trigger
-$("#upload-img").change(function () {
-    readURL(this)
-});
+})
 
 // Copy to clipboard 
 $("body").on("click", ".copy_link_btn", function () {
@@ -1598,5 +1536,5 @@ $("body").on("click", ".copy_link_btn", function () {
             alert('Opps! Your browser does not support the Clipboard API')
         }
     )
-    console.log("Copied!");
+    // console.log("Copied!")
 })

@@ -26,7 +26,7 @@
 // 🟩 MOVE PLAY BUTTON TO THE LEFT
 // 🟩 UNPUBLISHED CLICK TO GO TO EDIT PAGE
 // 🟩 IMPLEMENT SEARCH PAGE **
-// 🟨 API APPEARS TO NOT WORK FOR VIDEOS MARKED FOR KIDS AND UNLISTED VIDEOS. NEEDS     FURTHER TESTING!!!!!! **** /* BROKEN YOUTUBE LINKS: https://youtu.be/xkBzOuawCws, https://www.youtube.com/watch?v=oZoUoF1Vg7g */
+// 🟨 (OBSCURE VIDEOS BUG) API APPEARS TO NOT WORK FOR SOME VIDEOS MARKED FOR KIDS AND UNLISTED VIDEOS. NEEDS     FURTHER TESTING!!!!!! **** /* BROKEN YOUTUBE LINKS: https://youtu.be/xkBzOuawCws, https://www.youtube.com/watch?v=oZoUoF1Vg7g */
 // 🟨 FIX MENU LISTING OF VIDEOS (".dropbtn")
 // ADD OPTION TO DOWNLOAD EITHER JUST VIDEOS OR ALL PROJECT DATA
 // 🟥 NEED TO IMPLEMENT IDENTIFICATION COLOURED DOTS *****
@@ -149,6 +149,7 @@ function playCurrentBlock() {
 }
 
 $(window).on('hashchange', function (e) {
+    resetFallback()
     playFromHash()
     // console.log(hashBlock)
 })
@@ -271,23 +272,27 @@ function getVidData(videoID) {
 let errorCounter = 0
 let fallback = false
 myPlayer.on("error", function () {
-    console.log(myPlayer.error().code);
+    // console.log(myPlayer.error().code)
     if (myPlayer.error().code > 0) {
         // USE FALLBACK API (LIMITED TO 480p)
+        console.log("Using Fallback API");
         fallback = true
         // Fallback API grabs 480p quality video
         scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url="
         playCurrentBlock()
-    } else {
-        errorCounter++
-        if (errorCounter >= 2) { // Redirect user to home if error more than 3 times 
-            alert("Something went wrong! Try again later!")
-            window.location.replace('home.php#dashboard') // DISABLED FOR DEVELOPMENT PURPOSES
-        } else {
-            playCurrentBlock()
-        }
     }
+    // else {
+    errorCounter++
+    if (errorCounter >= 3) { // Redirect user to home if error more than 3 times 
+        alert("Something went wrong! Please check that your video does not use any copyrighted music!")
+        window.location = 'home.php#dashboard' // DISABLED FOR DEVELOPMENT PURPOSES
+    }
+    // }
 })
+// myPlayer.on('play', () => {
+//     console.log("Playing Successful")
+//     errorCounter = 0
+// })
 
 // Main video playing function Add true 2nd parameter to disable autoplay
 async function changeVid(videoid, disableautoplay) {
@@ -322,14 +327,19 @@ myPlayer.addChild(modal);
 // Show modal when video ends
 myPlayer.on('ended', function () {
     // console.log("Video Ended")
+    resetFallback()
+    modal.open()
+})
+
+function resetFallback() {
     if (fallback) { // Reset fallback after video end if fallback was used
         console.log("Resetting fallback");
+        errorCounter = 0
         // Default API grabs 720p quality video
         scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
         fallback = false
     }
-    modal.open()
-})
+}
 // Set content of modal to show available options or end of video card
 modal.on('modalopen', function () {
     // console.log('modalopen')
