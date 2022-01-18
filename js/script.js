@@ -474,8 +474,11 @@ async function listVideos(vidURLS) {
                             </div>
                             <h4>${title}</h4>
                         </a>
-                        <span class="material-icons delete_vid delete_vid_hidden" title="Remove video">
+                        <span class="material-icons repo_vid_icons repo_vid_icons_hidden delete_vid" title="Remove video">
                             clear
+                        </span>
+                        <span class="material-icons repo_vid_icons repo_vid_icons_hidden replace_vid" title="Replace Video">
+                            restart_alt
                         </span>
                     </div>`
 
@@ -645,7 +648,7 @@ $(".edit_container .search_input").keyup(function () {
 })
 
 // Edit video repository function
-$(".edit_videos_btn").click(function (e) {
+$(".edit_repo_btn").click(function (e) {
     // $(".toolbar_btns").removeClass("toolbar_btns_active")
     if ($(this).hasClass("edit_mode")) {
         // HIDE EDIT MODE
@@ -653,7 +656,7 @@ $(".edit_videos_btn").click(function (e) {
         $(this).css("color", "var(--secondaryColor)")
         $(".edit_projects").removeClass("edit_projects_collapsed")
         $(".projects_box").removeClass("projects_box_expanded")
-        $(".delete_vid").addClass("delete_vid_hidden")
+        $(".repo_vid_icons").addClass("repo_vid_icons_hidden")
         $(".add_videos_btn").addClass("add_videos_btn_hidden")
     } else {
         // SHOW EDIT MODE
@@ -661,7 +664,7 @@ $(".edit_videos_btn").click(function (e) {
         $(this).addClass("edit_mode")
         $(".edit_projects").addClass("edit_projects_collapsed")
         $(".projects_box").addClass("projects_box_expanded")
-        $(".delete_vid").removeClass("delete_vid_hidden")
+        $(".repo_vid_icons").removeClass("repo_vid_icons_hidden")
         $(".add_videos_btn").removeClass("add_videos_btn_hidden")
     }
 })
@@ -682,21 +685,101 @@ try {
     history.back()
     window.location.replace('home.php#projects')
 }
-$(".projects_box").on("click", ".delete_vid", function () {
-    if (window.confirm("Delete Video?")) {
 
-        // console.log("Delete Video")
-        // console.log(vidBin)
+$(".projects_box").on("click", ".delete_vid, .replace_vid", function () {
+    if ($(this).hasClass("delete_vid")) {
+        // if (!confirm('Removing video will delete them from your projects as well!')) return
+        // Delete video from repo list
+        console.log("Delete Video")
+        console.log(vidBin)
+        // Code to delete video from repo
         // console.log($(this).parent().index()-2)
         let thisVid = $(this).parent()
         let selectedIndex = thisVid.index() - 2
         // console.log(selectedIndex)
         delete vidBin[Object.keys(vidBin)[selectedIndex]]
         $(thisVid).remove()
+        updateRepo()
+    } else if ($(this).hasClass("replace_vid")) {
+        // Replace a video from repo list
+        console.log("Replace Video")
+        let replaceVidHTML = /* HTML */ `
+            <div class="replace_video_container">
+                <input type="text" placeholder="Add Videos" class="replace_video_input input_field">
+                <button type="button" value="Submit" class="search_btn replace_btn_submit">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+        `
+        if ($(this).hasClass("replace_vid_expanded")) {
+            $(this).removeClass("replace_vid_expanded")
+            $(this).parents(".video_cards").find(".replace_video_container").remove()
+            $(this).parents(".video_cards").find(".replace_btn_submit").unbind()
+        } else {
+            $(this).addClass("replace_vid_expanded")
+            $(this).parents(".video_cards").append(replaceVidHTML)
+            $(this).parents(".video_cards").find(".replace_btn_submit").on("click", async function () {
+                let inputAdd = $(this).parents(".video_cards").find(".replace_video_input").val()
+                inputAdd = extractVidId(inputAdd)
+                if (inputAdd.length == 11) {
+                    let oldVideo = extractVidId($(this).parents(".video_cards").find("a").attr("href"))
+                    // Execute replace video code if valid link provided
+                    let selectedIndex = $(this).parents(".video_cards").index() - 2
+                    vidBin[Object.keys(vidBin)[selectedIndex]] = inputAdd
+                    console.log(`Replaced Video: ${vidBin[Object.keys(vidBin)[selectedIndex]]}`)
 
+                    // delete vidBin[Object.keys(vidBin)[selectedIndex]]
+                    // vidBin[`video_${thisIndex}`] = inputAdd
+                    // // console.log(vidBin)
+
+                    let result = await getVidInfo(inputAdd) // Get new video title
+                    let title = JSON.parse(result).title
+                    $(this).parents(".video_cards").find("h4").text(title)
+                    $(this).parents(".video_cards").find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${inputAdd}/hqdefault.jpg`)
+                    $(this).parents(".video_cards").find("a").attr("href", `https://youtu.be/${inputAdd}`)
+                    // $(this).parents(".video_cards").find(".thumbnail").
+                    // $(this).parents(".video_cards").find(".thumbnail").
+
+                    let projectDataArray = getProjectData()
+
+                    // console.log(projectDataArray, oldVideo, inputAdd);
+
+                    // populateProjectData(projectDataArray)
+                    // console.log(oldVideo);
+                    // projectDataArray.find(v => v.videoID == oldVideo).videoID = inputAdd
+
+                    for (let i = 0; i < projectDataArray.length; i++) {
+                        if (projectDataArray[i].videoID == oldVideo) {
+                            console.log("Main BLock" + projectDataArray[i].videoID)
+                            projectDataArray[i].videoID = inputAdd
+                        }
+                        for (let x = 0; x < projectDataArray[i].options.length; x++) {
+                            if (projectDataArray[i].options[x].videoID == oldVideo) {
+                                console.log("Option Block" + projectDataArray[i].options[x].videoID)
+                                projectDataArray[i].options[x].videoID = inputAdd
+                            }
+                        }
+                    }
+                    // console.log(projectDataArray, oldVideo, inputAdd);
+                    populateProjectData(projectDataArray)
+                    $(this).parents(".video_cards").find(".replace_video_container").remove()
+                    updateRepo()
+                } else {
+                    alert("Please enter a valid link!")
+                }
+            })
+        }
+    }
+
+
+    // console.log(vidBin)
+
+    function updateRepo() {
+        // return // FOR DEVELOPMENT
+        console.log("UPDATE REPO")
         let projectID = $('.projects_box').attr("data-getVid_UID")
         vidBin = JSON.stringify(vidBin)
-        // console.log(vidBin)
+
         $.ajax({
             type: "POST",
             data: {
@@ -724,6 +807,7 @@ $(".add_videos_btn").click(function () {
         $(this).css("color", "var(--secondaryColor)")
     } else {
         $(".add_videos_btn").addClass("add_video_container_expanded")
+        $(".add_video_input ").focus()
         // Show add input
         $(this).css("color", "#d3773a")
     }
@@ -755,8 +839,11 @@ $(".add_btn_submit").click(async function () {
                 </div>
                 <h4>${title}</h4>
             </a>
-            <span class="material-icons delete_vid" title="Remove video">
+            <span class="material-icons repo_vid_icons delete_vid" title="Remove video">
                 clear
+            </span>
+            <span class="material-icons repo_vid_icons replace_vid" title="Replace Video">
+                restart_alt
             </span>
         </div>`;
         $(".projects_box").append(listHTML)
@@ -809,7 +896,7 @@ async function updateListMenu(array) {
         listMenu = /* HTML */ `
         <div class="dropdown_option" data-title="${title}" data-videoid="${videoID}">${title}</div>`;
         $(listMenu).appendTo(".dropdown_content")
-        $(".projects_box").find(".vid_counter").text(" (" + videoData.length + " Videos)")
+        $(".projects_box").find(".vid_counter").text(" \n(" + videoData.length + " Videos)")
     }
 }
 
@@ -1084,37 +1171,7 @@ function saveProjectData(download) {
     // console.log("Saving Data...")
     savingData()
     // Create main container array to store all project data
-    let projectDataArray = []
-    for (let i = 0; i < $(".project_blocks").length; i++) {
-        // Create objects for each project block and store in main array
-        let projectData = new Object()
-        let projectBlock = $(".project_blocks").eq(i)
-        // Get block question title and video ID
-        let thisBlockID = projectBlock.find("p").text()
-        let thisQuestionTitle = projectBlock.find(".question_title").val()
-        let thisQuestionVideoid = projectBlock.find(".dropbtn").attr("data-videoid")
-        // Store values into data object
-        projectData.blockID = thisBlockID
-        projectData.questionTitle = thisQuestionTitle
-        projectData.videoID = thisQuestionVideoid
-        // Create array to store options objects 
-        let projectOptionsArray = []
-        let projectOptions = $(".project_blocks").eq(i).find(".block_questions")
-        for (let i = 0; i < projectOptions.length; i++) {
-            // Get options title and video ID
-            let thisOptionsVideoid = projectOptions.eq(i).find(".dropbtn").attr("data-videoid")
-            let thisOptionsTitle = projectOptions.eq(i).find(".options_field").val()
-            // Create objects for each option within project block
-            let thisProjectOptionsData = new Object()
-            // Store values into data object
-            thisProjectOptionsData.title = thisOptionsTitle
-            thisProjectOptionsData.videoID = thisOptionsVideoid
-            // Store values into data object
-            projectOptionsArray.push(thisProjectOptionsData)
-        }
-        projectData.options = projectOptionsArray
-        projectDataArray.push(projectData)
-    }
+    let projectDataArray = getProjectData()
 
     // console.table(projectDataArray)
     // console.log(projectDataArray)
@@ -1146,6 +1203,41 @@ function saveProjectData(download) {
             }
         }
     })
+}
+
+function getProjectData() {
+    let projectDataArray = []
+    for (let i = 0; i < $(".project_blocks").length; i++) {
+        // Create objects for each project block and store in main array
+        let projectData = new Object()
+        let projectBlock = $(".project_blocks").eq(i)
+        // Get block question title and video ID
+        let thisBlockID = projectBlock.find("p").text()
+        let thisQuestionTitle = projectBlock.find(".question_title").val()
+        let thisQuestionVideoid = projectBlock.find(".dropbtn").attr("data-videoid")
+        // Store values into data object
+        projectData.blockID = thisBlockID
+        projectData.questionTitle = thisQuestionTitle
+        projectData.videoID = thisQuestionVideoid
+        // Create array to store options objects 
+        let projectOptionsArray = []
+        let projectOptions = $(".project_blocks").eq(i).find(".block_questions")
+        for (let i = 0; i < projectOptions.length; i++) {
+            // Get options title and video ID
+            let thisOptionsVideoid = projectOptions.eq(i).find(".dropbtn").attr("data-videoid")
+            let thisOptionsTitle = projectOptions.eq(i).find(".options_field").val()
+            // Create objects for each option within project block
+            let thisProjectOptionsData = new Object()
+            // Store values into data object
+            thisProjectOptionsData.title = thisOptionsTitle
+            thisProjectOptionsData.videoID = thisOptionsVideoid
+            // Store values into data object
+            projectOptionsArray.push(thisProjectOptionsData)
+        }
+        projectData.options = projectOptionsArray
+        projectDataArray.push(projectData)
+    }
+    return projectDataArray
 }
 
 // Populate data on load 
