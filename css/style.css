@@ -1544,7 +1544,7 @@ input[type=file] {
     width: 50%;
 }
 
-#projects_box_title{
+#projects_box_title {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1695,7 +1695,7 @@ input[type=file] {
 
 .replace_video_input {
     width: 100%;
-} 
+}
 
 .projects_box_expanded .video_cards h4 {
     width: 70%;
@@ -2720,6 +2720,24 @@ input[type=file] {
     .login-form .field-box {
         width: 100%;
     }
+
+
+
+    
+
+    .steps_bar {
+        margin-top: 20px;
+    }
+
+    .upload_container,
+    .upload_field_box {
+        width: 100%;
+    }
+
+    .upload_splash_box {
+        display: none;
+    }
+
 
 
 
