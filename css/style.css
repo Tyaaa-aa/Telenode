@@ -1406,6 +1406,10 @@ input[type=file] {
     /* margin-right: 20px; */
 }
 
+.upload_field_box .upload_input_field {
+    border: 1px solid transparent;
+}
+
 .upload_input_field:last-child {
     margin-bottom: 50px;
 }
@@ -1414,6 +1418,7 @@ input[type=file] {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    position: relative;
 }
 
 .thumbnailPreview {
@@ -2723,7 +2728,7 @@ input[type=file] {
 
 
 
-    
+
 
     .steps_bar {
         margin-top: 20px;

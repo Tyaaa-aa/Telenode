@@ -330,14 +330,15 @@ $(document).on("click", ".projectoptions_download", function (e) {
 function validateYouTubeUrl() {
     var url = $('#youTubeUrl').val()
     if (url != undefined || url != '') {
-        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var regExp = /(https?:\/\/)?((www\.)?(youtube(-nocookie)?|youtube.googleapis)\.com.*(v\/|v=|vi=|vi\/|e\/|embed\/|user\/.*\/u\/\d+\/)|youtu\.be\/)([_0-9a-z-]+)/i
+
         var match = url.match(regExp)
         if (match && match[2].length == 11) {
-            // Do anything for being valid
-            // if need to change the url to embed url then use below line
-            $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0')
+            // If Valid
+            return true
         } else {
             // Do anything for not being valid
+            return false
         }
     }
 }
@@ -421,23 +422,39 @@ $(document).on("keyup input change", ".upload_input_field", function () {
         }
     }
 })
-
-// CHECK IF THERE ALREADY EXISTS THE SAME VIDEO ID 
-let createVidList
-$(document).on("input", ".upload_input_field", function () {
-    console.log("OIAUSDBFIOUASGBFOIUASVB ")
-    createVidList = []
-    for (let i = 0; i < $(".field_text").length; i++) {
-        let vidListItem = extractVidId($(".field_text").eq(i).find(".upload_input_field").val())
-        if (vidListItem != false) {
-            createVidList.push(vidListItem)
-        }
+async function validVideoId(id) {
+    try {
+        const url = "http://img.youtube.com/vi/" + extractVidId(id) + "/mqdefault.jpg"
+        const {
+            status
+        } = await fetch(url)
+        console.log(status)
+        if (status === 404) return false
+        return true
+    } catch (error) {
+        return false
     }
-    let createInputParent = $(this).parents(".field_text")
+}
+// CHECK IF THERE ALREADY EXISTS THE SAME VIDEO ID 
+$(document).on("input", ".upload_input_field", async function () {
+    console.log("OIAUSDBFIOUASGBFOIUASVB ")
+    $(this).css("border-color", "red")
+    let isVideoValid = await validVideoId($(this).val())
+    $(".submit_btn").hide()
+    console.log(isVideoValid);
+    if (!$(this).hasClass("first_upload_input_field") && $(this).val() == '') {
+        $(".submit_btn").show()
+    }
+    if (!isVideoValid) return
+    $(this).css("border-color", "green")
+    $(".submit_btn").show()
+    let thisParent = $(this).parents(".field_text")
     // console.log(extractVidId($(this).val()))
-    
+
     if (($(this).val() == '' || extractVidId($(this).val()) == false) && !$(this).hasClass("first_upload_input_field")) {
-        createInputParent.remove()
+        if (thisParent.next().find(".upload_input_field").val() == '') {
+            thisParent.remove()
+        }
         return
     } else if ($(".first_upload_input_field").val() == '') {
         for (let i = 0; i < $(".field_text").length; i++) {
@@ -447,22 +464,7 @@ $(document).on("input", ".upload_input_field", function () {
         return
     }
 
-    let url = extractVidId($(this).val())
-    console.log(url)
-    if (url != undefined && url != '' && url) {
-        if (url.length == 11) {
-            $(this).val(url)
 
-            // console.log(extractVidId($(this).val()))
-            $(".submit_btn").show()
-
-        } else {
-            // Do for not valid
-            $(".submit_btn").hide()
-        }
-    }
-
-    console.log(createVidList)
     // console.log(extractVidId($(this).val()))
     if (!extractVidId($(this).val()) || $(".upload_input_field").last().val() == '') return
     let vidNum = $(".upload_input_field").length
@@ -485,23 +487,32 @@ $(document).on("click", ".upload_input_field", async function () {
     }
 })
 
-function verifyCreateVideo(url) {
-    try {
-        let blah = "ASD"
-        return blah
-    } catch (error) {
-        console.log(error);
-        return false
-    }
-}
-
 $(".upload_field_box").submit(function (e) {
+    // e.preventDefault()
+    for (let i = 0; i < $(".field_text").length; i++) {
+        let thisInput = $(".field_text").eq(i).find(".upload_input_field")
+        // if (thisInput.val() != '') {
+        thisInput.val(extractVidId(thisInput.val()))
+        // }
+        // thisVid.val(extractVidId(thisVid.val()))
+        // if (s) return
+    }
+
+    var values = $(".upload_input_field").map(function () {
+        if ($(this).val() != 'false') return $(this).val();
+    }).get();
+    console.log(values);
+
+    let uniq = [ ...new Set(values) ];
+    console.log(uniq);
+
     $("#videoThumbnail").val("https://i.ytimg.com/vi/" + extractVidId($(".upload_input_field").first().val()) + "/hqdefault.jpg")
     $(".upload_input_field").last().removeAttr("name")
     for (let i = 0; i < $(".upload_input_field").length; i++) {
         let thisVid = $(".upload_input_field").eq(i)
         thisVid.val(extractVidId(thisVid.val()))
     }
+    // $(this).submit()
 })
 
 // Get Video Info Without MP4 URL
@@ -596,7 +607,7 @@ async function listVideos(vidURLS) {
                 // updateListMenu(resetvidBin)
             }
         })
-        alert("Project is deleted or corrupted! Attempting to fix by auto resetting videos!")
+        alert("One of the videos used is protected by YouTube or your project has been deleted or corrupted! Attempting to fix by  resetting project!")
         location.reload()
         // history.back()
         // window.location.replace('home.php#projects')
