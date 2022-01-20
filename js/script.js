@@ -137,6 +137,36 @@ $("#upload-img").change(function () {
     $(".account_pic").submit()
 })
 
+$(".font_slider").on("input", function () {
+    let input = $(this).val()
+    let style
+
+    if (input == 1) {
+        fontSize = "smaller"
+        style = 0.6
+    } else if (input == 2) {
+        fontSize = "small"
+        style = 0.8
+    } else if (input == 3) {
+        fontSize = "normal"
+        style = 1
+    } else if (input == 4) {
+        fontSize = "big"
+        style = 1.2
+    } else if (input == 5) {
+        fontSize = "bigger"
+        style = 1.4
+    } else {
+        fontSize = "normal"
+        style = 1
+    }
+
+    $("head").find("#fontsize").remove()
+    $("head").append(`<style id="fontsize">html{font-size:${style}em !important;}</style>`)
+    $(".font_size_status").text(fontSize)
+    updateFontSize(fontSize)
+})
+
 // ========= HEADER CODE ==========
 $(".profile_box").click(function () {
     if ($(".profile_popup").hasClass("profile_popup_hidden")) {
@@ -345,7 +375,6 @@ function validateYouTubeUrl() {
 // Validate at least first video before being able to create project 
 // 🟨 (Could be improved)
 
-$(".submit_btn").hide()
 $(document).on("keyup input change", ".upload_input_field", function () {
     return
     let lastInput = $(".upload_input_field").last()
@@ -422,33 +451,39 @@ $(document).on("keyup input change", ".upload_input_field", function () {
         }
     }
 })
+
+$(".submit_btn").hide()
+
 async function validVideoId(id) {
     try {
         const url = "http://img.youtube.com/vi/" + extractVidId(id) + "/mqdefault.jpg"
         const {
             status
         } = await fetch(url)
-        console.log(status)
+        // console.log(status)
         if (status === 404) return false
         return true
     } catch (error) {
         return false
     }
 }
+
 // CHECK IF THERE ALREADY EXISTS THE SAME VIDEO ID 
 $(document).on("input", ".upload_input_field", async function () {
-    console.log("OIAUSDBFIOUASGBFOIUASVB ")
+    console.log("____________________________")
+    let thisParent = $(this).parents(".field_text")
     $(this).css("border-color", "red")
-    let isVideoValid = await validVideoId($(this).val())
     $(".submit_btn").hide()
-    console.log(isVideoValid);
+    thisParent.find(".thumbnailPreview").attr("src", `img/empty_thumbnail.png`)
+    let isVideoValid = await validVideoId($(this).val())
+    console.log(isVideoValid)
     if (!$(this).hasClass("first_upload_input_field") && $(this).val() == '') {
         $(".submit_btn").show()
     }
     if (!isVideoValid) return
     $(this).css("border-color", "green")
     $(".submit_btn").show()
-    let thisParent = $(this).parents(".field_text")
+    thisParent.find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${extractVidId($(this).val())}/mqdefault.jpg`)
     // console.log(extractVidId($(this).val()))
 
     if (($(this).val() == '' || extractVidId($(this).val()) == false) && !$(this).hasClass("first_upload_input_field")) {
@@ -463,7 +498,6 @@ $(document).on("input", ".upload_input_field", async function () {
         $(".submit_btn").hide()
         return
     }
-
 
     // console.log(extractVidId($(this).val()))
     if (!extractVidId($(this).val()) || $(".upload_input_field").last().val() == '') return
@@ -488,31 +522,39 @@ $(document).on("click", ".upload_input_field", async function () {
 })
 
 $(".upload_field_box").submit(function (e) {
-    // e.preventDefault()
+    e.preventDefault()
     for (let i = 0; i < $(".field_text").length; i++) {
         let thisInput = $(".field_text").eq(i).find(".upload_input_field")
-        // if (thisInput.val() != '') {
         thisInput.val(extractVidId(thisInput.val()))
-        // }
-        // thisVid.val(extractVidId(thisVid.val()))
-        // if (s) return
+        console.log(thisInput.css("border-color"))
+
+        if (thisInput.css("border-color") == "rgb(255, 0, 0)" || thisInput.css("border-color") == "rgba(0, 0, 0, 0)") {
+            thisInput.parents(".field_text").addClass("removeInputs")
+        }
+
     }
+
+    $(".removeInputs").remove()
 
     var values = $(".upload_input_field").map(function () {
-        if ($(this).val() != 'false') return $(this).val();
-    }).get();
-    console.log(values);
+        if ($(this).val().length >= 11) return $(this).val()
+    }).get()
 
-    let uniq = [ ...new Set(values) ];
-    console.log(uniq);
+    console.log(values)
+
+    let uniq = [...new Set(values)]
+
+    console.log(uniq)
+
 
     $("#videoThumbnail").val("https://i.ytimg.com/vi/" + extractVidId($(".upload_input_field").first().val()) + "/hqdefault.jpg")
-    $(".upload_input_field").last().removeAttr("name")
-    for (let i = 0; i < $(".upload_input_field").length; i++) {
-        let thisVid = $(".upload_input_field").eq(i)
-        thisVid.val(extractVidId(thisVid.val()))
+    $(".field_text").remove()
+    // $(".upload_input_field").last().removeAttr("name")
+    for (let i = 0; i < uniq.length; i++) {
+        $(".upload_field_box").append(`<input type="text" placeholder="Add video" class="input_field upload_input_field" name="video_${i}" value="${uniq[i]}"></input>`)
     }
     // $(this).submit()
+    e.currentTarget.submit();
 })
 
 // Get Video Info Without MP4 URL

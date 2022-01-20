@@ -27,18 +27,18 @@ $uuid = substr(base64_encode(md5(mt_rand())), 0, 11);
 echo "<br><br><br>";
 echo $processedJSON;
 
-// $id = $_SESSION["userID"];
-// echo $_SESSION["userID"] . "<br><br><br>" .  $uuid . "<br><br><br>" .  $processedJSON . "<br><br><br>" .  $videoThumbnail . "<br><br><br>";
-// include "db_connect.php";
-// $stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail,vid_projectData) values (?,?,?,?,?)");
-// $stmt->bind_param("sssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail,$projectData);
-// $stmt->execute();
+$id = $_SESSION["userID"];
+echo $_SESSION["userID"] . "<br><br><br>" .  $uuid . "<br><br><br>" .  $processedJSON . "<br><br><br>" .  $videoThumbnail . "<br><br><br>";
+include "db_connect.php";
+$stmt = $conn->prepare("INSERT into tb_videos (vid_userID, vid_UID, vid_URLS, vid_thumbnail,vid_projectData) values (?,?,?,?,?)");
+$stmt->bind_param("sssss", $_SESSION["userID"], $uuid, $processedJSON, $videoThumbnail,$projectData);
+$stmt->execute();
 
-// $stmt->close();
-// $conn->close();
+$stmt->close();
+$conn->close();
 
 
 
-// header("Location: edit.php?id=$uuid");
+header("Location: edit.php?id=$uuid");
 ?>
 <a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically</a>

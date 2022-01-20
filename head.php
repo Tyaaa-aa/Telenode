@@ -21,6 +21,20 @@ if (isset($_SESSION["userID"])) {
             $getUserName = $row['userName'];
             $getProfileImg = $row['profileImg'];
             $getUserTheme = $row['theme'];
+            $userFontSize = $row['fontsize'];
+            if ($row['fontsize'] == 'smaller') {
+                $getUserFontsize = '0.6';
+            } else if ($row['fontsize'] == 'small') {
+                $getUserFontsize = '0.8';
+            } else if ($row['fontsize'] == 'normal') {
+                $getUserFontsize = '1';
+            } else if ($row['fontsize'] == 'big') {
+                $getUserFontsize = '1.2';
+            } else if ($row['fontsize'] == 'bigger') {
+                $getUserFontsize = '1.4';
+            } else {
+                $getUserFontsize = '1';
+            }
 ?>
 
 <?php
@@ -31,7 +45,7 @@ if (isset($_SESSION["userID"])) {
     $getUserEmail = false;
     $getUserName = false;
     $getProfileImg = false;
-    $getUserTheme = false;
+    $getUserFontsize = false;
 }
 
 ?>
@@ -46,6 +60,11 @@ if (isset($_SESSION["userID"])) {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="css/style.css?v=<?= time() ?>">
+    <style id="fontsize">
+        html {
+            font-size: <?= $getUserFontsize ?>em !important;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

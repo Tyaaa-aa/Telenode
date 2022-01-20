@@ -788,7 +788,123 @@ a:hover {
     transition: all 0.4s;
 }
 
+.font_slider_container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
 
+.font_slider_container p {
+    margin-bottom: 10px;
+}
+
+.font_size_status {
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.font_slider {
+    width: 100px !important;
+}
+
+input[type=range].slider {
+    width: 100%;
+    margin: 8.5px 0;
+    background-color: transparent;
+    -webkit-appearance: none;
+}
+
+input[type=range].slider:focus {
+    outline: none;
+}
+
+input[type=range].slider::-webkit-slider-runnable-track {
+    background: #c0c0c0;
+    border: 0;
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+}
+
+input[type=range].slider::-webkit-slider-thumb {
+    margin-top: -8.5px;
+    width: 12px;
+    height: 25px;
+    background: rgba(255, 143, 68, 0.93);
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+input[type=range].slider:focus::-webkit-slider-runnable-track {
+    background: #cdcdcd;
+}
+
+input[type=range].slider::-moz-range-track {
+    background: #c0c0c0;
+    border: 0;
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+}
+
+input[type=range].slider::-moz-range-thumb {
+    width: 12px;
+    height: 25px;
+    background: rgba(255, 143, 68, 0.93);
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+input[type=range].slider::-ms-track {
+    background: transparent;
+    border-color: transparent;
+    border-width: 8.5px 0;
+    color: transparent;
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+}
+
+input[type=range].slider::-ms-fill-lower {
+    background: #b3b3b3;
+    border: 0;
+}
+
+input[type=range].slider::-ms-fill-upper {
+    background: #c0c0c0;
+    border: 0;
+}
+
+input[type=range].slider::-ms-thumb {
+    width: 12px;
+    height: 25px;
+    background: rgba(255, 143, 68, 0.93);
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 0px;
+    /*Needed to keep the Edge thumb centred*/
+}
+
+input[type=range].slider:focus::-ms-fill-lower {
+    background: #c0c0c0;
+}
+
+input[type=range].slider:focus::-ms-fill-upper {
+    background: #cdcdcd;
+}
+
+@supports (-ms-ime-align:auto) {
+
+    /* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
+    input[type=range].slider {
+        margin: 0;
+        /*Edge starts the margin from the thumb, not the track as other browsers do*/
+    }
+}
 
 
 
@@ -1383,6 +1499,18 @@ input[type=file] {
 
 .upload_container>* {
     width: 50%;
+}
+
+.upload_splash_box {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.upload_splash_box img {
+    mix-blend-mode: luminosity;
+    width: 70%;
 }
 
 .upload_field_box {
@@ -2357,6 +2485,10 @@ input[type=file] {
     position: relative;
     overflow: hidden;
     margin-bottom: 10px;
+}
+
+#my-video video {
+    transform: scale(1.01) !important;
 }
 
 .video_info {

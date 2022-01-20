@@ -10,6 +10,41 @@ if (!isset($_SESSION["userID"])) {
     </script>
 <?php
 } else {
+    // Check dark mode status
+    if ($getUserTheme == "dark") {
+        $checkedStatus = "checked";
+    } else {
+        $checkedStatus = "";
+    }
+
+    // Check font size status
+    if ($getUserFontsize == '0.6') {
+        $fontSizeStatus = "1";
+    } else if ($getUserFontsize == '0.8') {
+        $fontSizeStatus = "2";
+    } else if ($getUserFontsize == '1') {
+        $fontSizeStatus = "3";
+    } else if ($getUserFontsize == '1.2') {
+        $fontSizeStatus = "4";
+    } else if ($getUserFontsize == '1.4') {
+        $fontSizeStatus = "5";
+    } else {
+        $fontSizeStatus = '3';
+    }
+
+    // if ($row['fontsize'] == 'smaller') {
+    //     $fontSizeStatus = "1";
+    // } else if ($row['fontsize'] == 'small') {
+    //     $fontSizeStatus = "2";
+    // } else if ($row['fontsize'] == 'normal') {
+    //     $fontSizeStatus = "3";
+    // } else if ($row['fontsize'] == 'big') {
+    //     $fontSizeStatus = "4";
+    // } else if ($row['fontsize'] == 'bigger') {
+    //     $fontSizeStatus = "5";
+    // } else {
+    //     $fontSizeStatus = '1';
+    // }
 ?>
 
     <body>
@@ -19,13 +54,6 @@ if (!isset($_SESSION["userID"])) {
 
         <section class="main_body">
             <div class="main_content">
-                <!-- <?=
-                        $getUserID . "<br>" .
-                            $getUserEmail . "<br>" .
-                            $getUserName . "<br>" .
-                            $getProfileImg . "<br>" .
-                            $getUserTheme . "<br><br><br>";
-                        ?> -->
                 <form class="account_pic" action="update_profilepic.php" method="POST" enctype="multipart/form-data">
                     <input type="file" class="upload_prompt" id="upload-img" name="fileUpload" required accept="image/png, image/jpeg" title="Edit Profile Picture">
                     <i class="material-icons">
@@ -46,17 +74,18 @@ if (!isset($_SESSION["userID"])) {
                     </div>
 
                     <div class="dark_mode_label">
-                    <span>Dark Mode: </span>
-                    <div class="switch">
-                        <input type="checkbox" id="toggleAll" name="theme" <?php
-                                                                            if ($getUserTheme == "dark") {
-                                                                                echo "checked";
-                                                                            }
-                                                                            ?>>
-                        <label for="toggleAll"></label>
+                        <span>Dark Mode: </span>
+                        <div class="switch">
+                            <input type="checkbox" id="toggleAll" name="theme" <?= $checkedStatus ?>>
+                            <label for="toggleAll"></label>
+                        </div>
                     </div>
-                </div>
-                <button type="button" class="edit_account_btn btn">Edit</button>
+
+                    <div class="font_slider_container">
+                        <p>Font Size: <span class="font_size_status"><?= $userFontSize ?></span> </p>
+                        <input type="range" min="1" max="5" value="<?= $fontSizeStatus ?>" class="font_slider slider" id="myRange">
+                    </div>
+                    <button type="button" class="edit_account_btn btn">Edit</button>
                 </form>
 
             </div>
@@ -94,6 +123,20 @@ if (!isset($_SESSION["userID"])) {
                 }
                 $("head").find("#theme").remove()
                 $("head").append(style)
+            }
+        })
+    }
+
+    function updateFontSize(fontsize) {
+        console.log(fontsize);
+        $.ajax({
+            type: "POST",
+            data: 'fontsize=' + fontsize,
+            url: "update_fontsize_backend.php",
+            // cache: false,
+            success: function(response) {
+                let fontsize = JSON.parse(response).fontsize
+                console.log(fontsize)
             }
         })
     }
