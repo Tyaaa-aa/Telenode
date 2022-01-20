@@ -69,7 +69,12 @@ if (!isset($_SESSION["userID"])) {
                     <input type="email" placeholder="E-Mail" class="input_field readonly_field" name="email" id="email" value="<?= $getUserEmail ?>" required readonly>
 
                     <div class="account_password">
-                        <label for="password">Password</label>
+                        <label for="current_password">Current Password</label>
+                        <input type="password" placeholder="********" class="input_field readonly_field" name="current_password" id="current_password" required readonly minlength="8">
+                    </div>
+
+                    <div class="account_password">
+                        <label for="password">New Password</label>
                         <input type="password" placeholder="********" class="input_field readonly_field" name="password" id="password" required readonly minlength="8">
                     </div>
 
@@ -85,6 +90,7 @@ if (!isset($_SESSION["userID"])) {
                         <p>Font Size: <span class="font_size_status"><?= $userFontSize ?></span> </p>
                         <input type="range" min="1" max="5" value="<?= $fontSizeStatus ?>" class="font_slider slider" id="myRange">
                     </div>
+                    <p class="status_message"></p>
                     <button type="button" class="edit_account_btn btn">Edit</button>
                 </form>
 
@@ -106,9 +112,63 @@ if (!isset($_SESSION["userID"])) {
     // Collapse sidebar onload for cleaner User Experience
     // collapseSidebar()
 
+    $(".account_form").submit(function(e) {
+        e.preventDefault()
+        $.ajax({
+            type: "POST",
+            data: $('.account_form').serialize(),
+            url: "update_account_backend.php",
+            // cache: false,
+            success: function(response) {
+                let result = JSON.parse(response)
+                console.log(result)
+                let status = result.status
+                let username = result.username
+                let email = result.email
+                if (status == "success") {
+                    $(".account_password").find("input").val('')
+                    $("#username").val(username)
+                    $("#email").val(email)
+                    $(".profile_name").text(username)
+
+                    $(".status_message").text("Account Updated!")
+                    $(".status_message").css({
+                        "color": "green",
+                        "opacity": "1"
+                    })
+
+                    $(".account_form .input_field").attr("readonly", true)
+                    $(".account_form .input_field").addClass("readonly_field")
+                    $(".account_form .account_password").css({
+                        "max-height": "0px",
+                        "opacity": "0"
+                    })
+                    $(".edit_account_btn").attr("type", "button")
+                    $(".edit_account_btn").text("Edit")
+
+                    setTimeout(() => {
+                        $(".status_message").css({
+                            "opacity": "0"
+                        })
+                    }, 5000)
+                } else if (status == "wrong_password") {
+                    $(".status_message").text("Invalid Password! Try Again.")
+                    $(".status_message").css({
+                        "color": "red",
+                        "opacity": "1"
+                    })
+                    setTimeout(() => {
+                        $(".status_message").css({
+                            "opacity": "0"
+                        })
+                    }, 5000)
+                }
+            }
+        })
+    })
 
     function updateTheme(theme) {
-        jQuery.ajax({
+        $.ajax({
             type: "POST",
             data: 'theme=' + theme,
             url: "updateTheme_backend.php",

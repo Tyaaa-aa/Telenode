@@ -113,7 +113,7 @@ $(".edit_account_btn").click(function () {
         $(".account_form .input_field").attr("readonly", false)
         $(".account_form .input_field").removeClass("readonly_field")
         $(".account_form .account_password").css({
-            "max-height": "100px",
+            "max-height": "120px",
             "opacity": "1"
         })
         setTimeout(() => {

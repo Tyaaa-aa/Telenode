@@ -46,6 +46,7 @@ if (isset($_SESSION["userID"])) {
     $getUserName = false;
     $getProfileImg = false;
     $getUserFontsize = false;
+    $getUserTheme = false;
 }
 
 ?>
