@@ -2749,12 +2749,12 @@ input[type=file] {
 .video_options {
     background: var(--playerTheme);
     border-radius: var(--globalRadius);
-    font-size: 20px;
     padding: 1em;
     cursor: pointer;
     margin: 10px;
     color: #FFF;
     text-decoration: none;
+    font-size: 1.5em;
     transition: all 0.3s;
 }
 

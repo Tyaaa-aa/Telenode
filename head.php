@@ -64,6 +64,10 @@ if (isset($_SESSION["userID"])) {
         html {
             font-size: <?= $getUserFontsize ?>em !important;
         }
+
+        .modal {
+            font-size: <?= $getUserFontsize ?>em !important;
+        }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png?v=5">

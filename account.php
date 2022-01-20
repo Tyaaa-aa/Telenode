@@ -128,7 +128,7 @@ if (!isset($_SESSION["userID"])) {
     }
 
     function updateFontSize(fontsize) {
-        console.log(fontsize);
+        // console.log(fontsize)
         $.ajax({
             type: "POST",
             data: 'fontsize=' + fontsize,
@@ -136,7 +136,7 @@ if (!isset($_SESSION["userID"])) {
             // cache: false,
             success: function(response) {
                 let fontsize = JSON.parse(response).fontsize
-                console.log(fontsize)
+                // console.log(fontsize)
             }
         })
     }

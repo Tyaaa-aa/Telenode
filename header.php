@@ -3,6 +3,12 @@
 <header>
     <nav>
         <?php
+        if (isset($_GET["q"])) {
+            $searchValue = $_GET["q"];
+        } else {
+            $searchValue = "";
+        }
+
         if (isset($_SESSION["userID"])) {
             // ================= If Logged In ==================
             $userid = $_SESSION["userID"];
@@ -23,37 +29,37 @@
         ?>
             <!-- IF USER IS LOGGED IN -->
             <form action="search.php" method="GET" id="search-form">
-                <input type="text" placeholder="Search" name="q" class="search_input input_field">
+                <input type="text" placeholder="Search" name="q" class="search_input input_field" value="<?= $searchValue ?>">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
                     <i class='material-icons'>search</i>
                 </button>
             </form>
 
             <div style="display:flex;">
-            <a href="create.php" class="create_btn btn">
-                <i class='material-icons'>video_call</i>
-                Create
-            </a>
+                <a href="create.php" class="create_btn btn">
+                    <i class='material-icons'>video_call</i>
+                    Create
+                </a>
 
-            <div class="profile_container">
-                <div class="profile_popup profile_popup_hidden">
-                    <a href="account.php" class="profile_link">
-                        <i class='material-icons'>person</i>
-                        <span>Account</span>
-                        <!-- <a href="account.php">Account</a> -->
-                    </a>
-                    <a href="logout.php" class="profile_link">
-                        <i class='material-icons'>logout</i>
-                        <span>Logout</span>
-                        <!-- <a href="logout.php">Logout</a> -->
-                    </a>
+                <div class="profile_container">
+                    <div class="profile_popup profile_popup_hidden">
+                        <a href="account.php" class="profile_link">
+                            <i class='material-icons'>person</i>
+                            <span>Account</span>
+                            <!-- <a href="account.php">Account</a> -->
+                        </a>
+                        <a href="logout.php" class="profile_link">
+                            <i class='material-icons'>logout</i>
+                            <span>Logout</span>
+                            <!-- <a href="logout.php">Logout</a> -->
+                        </a>
+                    </div>
+                    <div class="profile_box">
+                        <img class="profile_pic" width="50px" src="<?= $getProfileImg ?>" alt="<?= $getUserName ?>'s Profile Picture">
+                        <h3 class="profile_name"><?= $getUserName ?></h3>
+                        <i class='material-icons down_arrow'>keyboard_arrow_down</i>
+                    </div>
                 </div>
-                <div class="profile_box">
-                    <img class="profile_pic" width="50px" src="<?= $getProfileImg ?>" alt="<?= $getUserName ?>'s Profile Picture">
-                    <h3 class="profile_name"><?= $getUserName ?></h3>
-                    <i class='material-icons down_arrow'>keyboard_arrow_down</i>
-                </div>
-            </div>
             </div>
 
             <section id="sidebar">
@@ -93,7 +99,7 @@
                 <img src="img/logo.png" alt="Header Logo">
             </a> -->
             <form action="search.php" method="GET" id="search-form">
-                <input type="text" placeholder="Search" name="q" class="search_input input_field">
+                <input type="text" placeholder="Search" name="q" class="search_input input_field" value="<?= $searchValue ?>">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
                     <i class='material-icons'>search</i>
                 </button>
