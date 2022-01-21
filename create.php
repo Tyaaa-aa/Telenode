@@ -35,7 +35,7 @@
                     <p>
                         To get started you can watch the <a href="#">guide</a> on how to use TeleNode before starting your own project.
                         <br><br>
-                        <strong>Step 1:</strong> Upload your videos onto <a href="http://youtube.com/">YouTube</a>
+                        <strong>Step 1:</strong> Upload your videos onto <a href="http://youtube.com/" target="_blank">YouTube</a>
                         <br>
                         <!-- <strong>Step 2:</strong> Name the videos accordingly (The video names from YouTube will be used as the title)
                         <br> -->
@@ -46,6 +46,7 @@
                     </p>
                 </div>
                 <form class="upload_field_box" action="start_create_backend.php" method="POST">
+                    <h4>Start adding videos to create your own interactive project!</h4>
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
                     <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">
                     <div class="field_text">

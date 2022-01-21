@@ -15,17 +15,6 @@ $(function () {
         // console.log("Show Password")
     })
 
-
-
-    $("#zoomer").click(function (evt) {
-        $(this).zoomTo({
-            targetsize: 0.75,
-            duration: 600
-        })
-
-        evt.stopPropagation()
-    })
-
     $(window).resize(function () {
         if (window.matchMedia("only screen and (max-width: 1000px)").matches) {
             // $("#sidebar").show()
@@ -54,13 +43,13 @@ function showPreloader() {
 }
 
 // ======== login/signup =======
-showLogin()
 $(".registerForm-btn").click(function () {
     showRegister()
 })
 $(".loginForm-btn").click(function () {
     showLogin()
 })
+showLogin()
 
 function showLogin() {
     $("#login-container .login-box").show()
@@ -164,8 +153,18 @@ $(".font_slider").on("input", function () {
     $("head").find("#fontsize").remove()
     $("head").append(`<style id="fontsize">html{font-size:${style}em !important;}</style>`)
     $(".font_size_status").text(fontSize)
-    updateFontSize(fontSize)
+    
+    $.ajax({
+        type: "POST",
+        data: 'fontsize=' + fontSize,
+        url: "update_fontsize_backend.php",
+        success: function (response) {
+            let fontsize = JSON.parse(response).fontsize
+            // console.log(fontsize)
+        }
+    })
 })
+
 
 // ========= HEADER CODE ==========
 $(".profile_box").click(function () {
