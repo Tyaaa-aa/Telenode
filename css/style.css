@@ -54,6 +54,7 @@ html {
     height: 100%;
     width: 100%;
     color: var(--secondaryColor);
+    line-height: 1.5;
     /* scroll-behavior: smooth; */
 }
 
@@ -1042,6 +1043,7 @@ input[type=range].slider:focus::-ms-fill-upper {
     color: var(--secondaryColor);
     /* min-width: 100%; */
     /* width: ; */
+    max-width: 100%;
     transition: all 0.3s;
 }
 
@@ -1063,6 +1065,7 @@ input[type=range].slider:focus::-ms-fill-upper {
     display: flex !important;
     max-height: 40px;
     max-width: max-content;
+    max-width: 100%;
     margin-top: -50px;
     transition: all 0.3s;
     overflow: hidden;
@@ -1073,7 +1076,7 @@ input[type=range].slider:focus::-ms-fill-upper {
 }
 
 .video_info_container:hover {
-    border-radius: 50px !important;
+    /* border-radius: 50px !important; */
 }
 
 .video_info_container:hover * {
