@@ -1625,7 +1625,7 @@ input[type=file] {
     backdrop-filter: blur(5px);
 }
 
-.collapse_bar::before{
+.collapse_bar::before {
     content: "";
     position: absolute;
     width: 100%;
@@ -1634,7 +1634,7 @@ input[type=file] {
     top: 0;
     left: 0;
     /* z-index: 9998; */
-    background-color: var(--mainColor); 
+    background-color: var(--mainColor);
     opacity: 0.9;
 }
 
@@ -2814,7 +2814,7 @@ input[type=file] {
 
 /* ======= HELP PAGE ========= */
 
-.help_container{
+.help_container {
     width: 50%;
     padding: 20px;
     padding-bottom: 50px;
@@ -2830,9 +2830,18 @@ input[type=file] {
     border-radius: var(--globalRadius);
 }
 
+.help_container ol {
+    padding-left: 1em;
+}
 
+.help_container ol li {
+    padding-left: 0.5em;
 
+}
 
+.help_container ol>li::marker {
+    content: counter(list-item) ")";
+}
 
 
 

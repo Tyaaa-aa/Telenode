@@ -20,15 +20,17 @@
     <h1>Welcome to TeleNode, <?= $name ?>!</h1>
     <h3>TeleNode is an open-source and free interactive video platform.&nbsp;</h3>
     <p><br></p>
-    <p><strong>1)</strong> To be able to create a TeleNode project you will first need to have a YouTube account to <a href="https://www.youtube.com/upload" rel="noopener noreferrer" target="_blank">upload</a> your videos to. You can sign up for an account <a href="https://www.youtube.com/upload" rel="noopener noreferrer" target="_blank">here</a> if you don&apos;t have one already.&nbsp;</p>
-    <p><br></p>
-    <p><strong>2)</strong> TeleNode does not host any videos but rather grabs them directly from YouTube. This allows TeleNode to operate at a minimal cost and therefore allows it to be free and host an unlimited amount of interactive projects. However, this comes at the cost of having to follow YouTube&apos;s copyright rules and thus, copyrighted materials such as music and other copyrighted materials will not be allowed on the platform. *Do note that some videos are not supported in HD as well and will be defaulted to 480p resolution as a result. This will however be fixed in future versions of TeleNode</p>
-    <p><br></p>
-    <p><strong>3)</strong> Alternatively, you could use videos that are already publicly available but be sure to follow copyright rules and do not use content that isn&apos;t free or not yours.</p>
-    <p><br></p>
-    <p><strong>4)</strong> Once you have uploaded your videos onto YouTube, you can copy the video links and paste them in the <a href="create.php">create</a> page and follow the instructions to start a new TeleNode project.&nbsp;</p>
-    <p><br></p>
-    <p><strong>5)</strong> After creating a project you may refer to the video tutorial below to start your first project</p>
+    <ol>
+        <li>To be able to create a TeleNode project you will first need to have a YouTube account to <a href="https://www.youtube.com/upload" rel="noopener noreferrer" target="_blank">upload</a> your videos to. You can sign up for an account <a href="https://www.youtube.com/upload" rel="noopener noreferrer" target="_blank">here</a> if you don&apos;t have one already.&nbsp;</li>
+        <br>
+        <li>TeleNode does not host any videos but rather grabs them directly from YouTube. This allows TeleNode to operate at a minimal cost and therefore allows it to be free and host an unlimited amount of interactive projects. However, this comes at the cost of having to follow YouTube&apos;s copyright rules and thus, copyrighted materials such as music and other copyrighted materials will not be allowed on the platform. *Do note that some videos are not supported in HD as well and will be defaulted to 480p resolution as a result. This will however be fixed in future versions of TeleNode</li>
+        <br>
+        <li>Alternatively, you could use videos that are already publicly available but be sure to follow copyright rules and do not use content that isn&apos;t free or not yours.</li>
+        <br>
+        <li>Once you have uploaded your videos onto YouTube, you can copy the video links and paste them in the <a href="create.php">create</a> page and follow the instructions to start a new TeleNode project.&nbsp;</li>
+        <br>
+        <li>After creating a project you may refer to the video tutorial below to start your first project</li>
+    </ol>
     <br>
     <br>
     <div class="help_video">
