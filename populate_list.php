@@ -283,7 +283,7 @@ if ($result->num_rows > 0) {
     } else {
     ?>
         <div class="no_projects_container">
-            <h3>You have no projects yet :(</h3>
+            <h3>You have no published projects yet :(</h3>
             <p>Create your first interactive video now!</p>
             <a href="create.php" class="signup_btn btn">Start Now</a>
         </div>

@@ -46,7 +46,7 @@
                     </p>
                 </div>
                 <form class="upload_field_box" action="start_create_backend.php" method="POST">
-                    <h4>Start adding videos to create your own interactive project!</h4>
+                    <h4>Add videos to create your own interactive video</h4>
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
                     <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">
                     <div class="field_text">

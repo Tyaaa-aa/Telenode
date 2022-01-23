@@ -80,10 +80,10 @@
                         <i class='material-icons sidebar_icons'>people</i>
                         <span>Community</span>
                     </a> -->
-                    <!-- <a href="home.php#help" class="sidebar_items" rel="no-refresh">
+                    <a href="home.php#help" class="sidebar_items sidebar_help" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
-                    </a> -->
+                    </a>
                     <!-- <div class="login_box">
                         <a href="create.php" class="signup_btn btn">Start Creating</a>
                     </div> -->
@@ -124,10 +124,10 @@
                         <i class='material-icons sidebar_icons'>people</i>
                         <span>Community</span>
                     </a> -->
-                    <!-- <a href="home.php#help" class="sidebar_items" rel="no-refresh">
+                    <a href="home.php#help" class="sidebar_items sidebar_help" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
-                    </a> -->
+                    </a>
                     <div class="login_box create_prompt">
                         <a href="login.php#signup" class="signup_btn btn">Start Creating</a>
                     </div>

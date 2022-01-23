@@ -153,7 +153,7 @@ $(".font_slider").on("input", function () {
     $("head").find("#fontsize").remove()
     $("head").append(`<style id="fontsize">html{font-size:${style}em !important;}</style>`)
     $(".font_size_status").text(fontSize)
-    
+
     $.ajax({
         type: "POST",
         data: 'fontsize=' + fontSize,
@@ -1154,15 +1154,28 @@ $(window).scroll(function () {
 // }
 // Updates and creates/deletes blocks based on user provided data
 async function updateBlocks() {
+    let starterBlockTitle = 'STARTING BLOCK'
+    let updateBlockArray = [starterBlockTitle]
+    let allBlocksArray = []
+    $(".project_blocks").each(function () {
+        let decodedBlockUID = decodeURI($(this).attr("data-blockuid")).replace("TN-", "")
+
+        allBlocksArray.push(decodedBlockUID)
+    })
+    // console.log(allBlocksArray)
+
+
     let elOptions = $(".block_questions").find(".options_field")
     for (let i = 0; i < elOptions.length; i++) {
         let thisBlock = $(".project_blocks .block_questions").eq(i)
         let optionTitle = thisBlock.find(".options_field").val()
+
+        // console.log(updateBlockArray.includes(optionTitle));
         let optionVideoid = thisBlock.find(".dropbtn").attr("data-videoid")
         // Update option placeholder numbering
         elOptions.eq(i).attr(`placeholder`, `Option ${i+1}`)
 
-        if (optionTitle || optionVideoid) {
+        if ((optionTitle || optionVideoid) && (!updateBlockArray.includes(optionTitle.toUpperCase()))) {
             // console.log(optionTitle, optionVideoid)
             let videoData
             let videoDataTitle = "Video Not Selected"
@@ -1173,10 +1186,11 @@ async function updateBlocks() {
                 videoDataTitle = "Video not selected"
             }
             // console.log(videoDataTitle)
+            let blockUniqueId = "TN-" + encodeURI(optionTitle.toUpperCase())
 
             // ===== CREATE NEW BLOCK =====
             let newBlock = /* HTML */ `
-            <div class="project_blocks project_blocks_${i}" id="${i}">
+            <div class="project_blocks project_blocks_${i}" id="${i}" data-blockuid="${blockUniqueId}">
                 <span class="parent_indicator">
                     <div class="pi_dot ">
                         <p>${optionTitle}</p>
@@ -1273,6 +1287,7 @@ async function updateBlocks() {
             if ($(`.edit_projects .project_blocks`).hasClass(`project_blocks_${i}`)) {
                 // Update blocks' values if they already exist
                 // console.log(`Found project_blocks_${i}`)
+                $(`.project_blocks_${i}`).attr("data-blockuid", blockUniqueId)
                 $(`.project_blocks_${i}`).find("p").text(`${optionTitle}`)
                 $(`.project_blocks_${i} .block_video`).find(".video_title").text(`${videoDataTitle}`)
                 let thisThumbnail = $(`.project_blocks_${i} .block_video`).find(".thumbnail")
@@ -1286,13 +1301,60 @@ async function updateBlocks() {
                 // Create blocks with values if they dont exist yet
                 // console.log(`\nCreated instance of project_blocks_${i}`)
                 $(".edit_projects").append(newBlock)
+
             }
+
+            // console.log("UOIWGOILASBDFK" + updateBlockArray.indexOf(optionTitle.toUpperCase()));
+
+            elOptions.eq(i).parents(".block_box").find(".dropbtn_container").show()
+            elOptions.eq(i).parents(".block_box").find(".question_field").show()
+            // elOptions.eq(i).parents(".block_box").find(".video_title").text('')
+            // elOptions.eq(i).parents(".block_box").find(".dropbtn").attr("data-videoid", '')
+            // elOptions.eq(i).parents(".block_box").find(".thumbnail").attr("src", '')
+            // elOptions.eq(i).parents(".block_box").find(".video_cards_container").attr("onclick", '')
+
+
+            updateBlockArray.push(optionTitle.toUpperCase())
         } else {
             // Remove block if no data selected
             $(`.project_blocks_${i}`).remove()
-        }
 
+            // Auto set identical option names to first instance block data
+            if ((optionTitle || optionVideoid) && updateBlockArray.includes(optionTitle.toUpperCase())) {
+                let blockIndex = updateBlockArray.indexOf(optionTitle.toUpperCase())
+                let blockVideoID = $(`.project_blocks`).eq(blockIndex).find(".block_video").find(".dropbtn").attr("data-videoid")
+                // console.log(blockVideoID)
+
+                videoData = await getVidInfo(blockVideoID)
+                videoDataTitle = JSON.parse(videoData).title
+
+                // console.log(videoDataTitle)
+                // elOptions.eq(i).parents(".block_box").css("border", `2px solid red`)
+
+                elOptions.eq(i).parents(".block_box").find(".dropbtn_container").hide()
+                elOptions.eq(i).parents(".block_box").find(".question_field").hide()
+
+                elOptions.eq(i).parents(".block_box").find(".video_title").text(videoDataTitle)
+                elOptions.eq(i).parents(".block_box").find(".dropbtn").attr("data-videoid", blockVideoID)
+                elOptions.eq(i).parents(".block_box").find(".thumbnail").attr("src", `https://i.ytimg.com/vi/${blockVideoID}/hqdefault.jpg`)
+                elOptions.eq(i).parents(".block_box").find(".video_cards_container").attr("onclick", `window.location.hash = ''; window.location.hash = '#${blockIndex -1}'`)
+
+
+                // console.log(elOptions.eq(i).val());
+            }
+        }
+        // If this option is starter block automatically set this option to starter block video
+        // console.log(optionTitle)
+        let decodedBlockUID = decodeURI(thisBlock.parents(".project_blocks").attr("data-blockuid")).replace("TN-", "")
+        // console.log(optionTitle.toUpperCase(), decodedBlockUID)
+        // console.log(decodedBlockUID)
+        // console.log([optionTitle.toUpperCase(),updateBlockArray,updateBlockArray.indexOf(optionTitle.toUpperCase())])
+
+        // console.log(optionTitle.toUpperCase())
+        // console.log(allBlocksArray.indexOf(optionTitle.toUpperCase()))
+        // console.log(updateBlockArray)
     }
+    // console.log(updateBlockArray)
     updateListMenu(vidBin)
     // Show publish form again if blocks updated
     if ($(".publish_form").has("success_form")) {
@@ -1300,6 +1362,11 @@ async function updateBlocks() {
     }
 }
 
+$(window).on('hashchange', function (e) {
+    if (window.location.href.indexOf("edit?id=") > -1) {
+        window.scrollBy(0, -100)
+    }
+});
 
 function arrangeBlocks() {
     // console.log("Arranging Blocks")
@@ -1456,10 +1523,11 @@ async function populateProjectData(projectData) {
                 let thisVideo = thisBlockData.videoID
                 videoData = await getVidInfo(thisVideo)
                 videoDataTitle = JSON.parse(videoData).title
+                let blockUniqueId = "TN-" + encodeURI(thisBlockID.toUpperCase())
 
                 // ===== CREATE NEW BLOCK =====
                 let newBlock = /* HTML */ `
-                        <div class="project_blocks project_blocks_${i-1}" id="${i-1}">
+                        <div class="project_blocks project_blocks_${i-1}" id="${i-1}" data-blockuid="${blockUniqueId}">
                             <span class="parent_indicator">
                                 <div class="pi_dot ">
                                     <p>${thisBlockID}</p>

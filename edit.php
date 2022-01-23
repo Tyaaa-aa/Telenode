@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <!-- HEAD CONTENT -->
-<?php include "head.php" ?>
-<?php include "verifyuser.php"; ?>
+<?php
+include "head.php";
+include "verifyuser.php";
 
-<body>
+if ($isNewUser == 'true') {
+    // Show onboarding sequence
+    include "onboarding.php";
+    $newUser = "newuser";
+} else {
+    $newUser = "";
+}
+?>
+
+<body id="<?= $newUser ?>">
     <!-- HEADER CONTENT -->
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
@@ -116,13 +126,13 @@
                     </div>
 
                     <div class="edit_projects">
-                        <div class="project_blocks project_blocks_starter">
+                        <div class="project_blocks project_blocks_starter" data-blockuid="TN-STARTING%20BLOCK">
                             <span class="parent_indicator">
                                 <div class="pi_dot starter_dot">
                                     <span class="material-icons">
                                         play_arrow
                                     </span>
-                                    <p>Starting question</p>
+                                    <p>Starting Block</p>
                                 </div>
                             </span>
 

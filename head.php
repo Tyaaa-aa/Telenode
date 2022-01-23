@@ -22,6 +22,8 @@ if (isset($_SESSION["userID"])) {
             $getProfileImg = $row['profileImg'];
             $getUserTheme = $row['theme'];
             $userFontSize = $row['fontsize'];
+            $isNewUser = $row['newuser'];
+
             if ($row['fontsize'] == 'smaller') {
                 $getUserFontsize = '0.6';
             } else if ($row['fontsize'] == 'small') {
@@ -32,12 +34,7 @@ if (isset($_SESSION["userID"])) {
                 $getUserFontsize = '1.2';
             } else if ($row['fontsize'] == 'bigger') {
                 $getUserFontsize = '1.4';
-            } else {
-                $getUserFontsize = '1';
-            }
-?>
-
-<?php
+            } 
         }
     }
 } else {
@@ -45,8 +42,9 @@ if (isset($_SESSION["userID"])) {
     $getUserEmail = false;
     $getUserName = false;
     $getProfileImg = false;
-    $getUserFontsize = false;
-    $getUserTheme = false;
+    $getUserFontsize = '1';
+    $getUserTheme = "light";
+    $isNewUser = false;
 }
 
 ?>
