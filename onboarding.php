@@ -146,7 +146,7 @@
                 animationIteration++
                 $(".sidebar_help").css("color", "#598DC5")
                 setTimeout(() => {
-                    $(".sidebar_help").css("color", "var(--secondaryColor)")
+                    $(".sidebar_help").attr("style", "")
                 }, 500)
                 if (animationIteration > 2) {
                     clearInterval(animinterval)
