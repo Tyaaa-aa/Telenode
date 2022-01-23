@@ -455,31 +455,50 @@ $(".submit_btn").hide()
 
 async function validVideoId(id) {
     try {
-        const url = "http://img.youtube.com/vi/" + extractVidId(id) + "/mqdefault.jpg"
-        const {
-            status
-        } = await fetch(url)
-        // console.log(status)
-        if (status === 404) return false
-        return true
+        let img = new Image();
+        img.src = "http://img.youtube.com/vi/" + extractVidId(id) + "/mqdefault.jpg";
+
+
+        let test = await $(img).on("load", async function () {
+
+        })[0].width
+
+        console.log(test);
+        return test
+
     } catch (error) {
         return false
     }
+
 }
+
+const loadImage = src =>
+    new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
 
 // CHECK IF THERE ALREADY EXISTS THE SAME VIDEO ID 
 $(document).on("input", ".upload_input_field", async function () {
-    console.log("____________________________")
+    // console.log("____________________________")
     let thisParent = $(this).parents(".field_text")
     $(this).css("border-color", "red")
     $(".submit_btn").hide()
     thisParent.find(".thumbnailPreview").attr("src", `img/empty_thumbnail.png`)
-    let isVideoValid = await validVideoId($(this).val())
-    console.log(isVideoValid)
+    // let isVideoValid = await validVideoId($(this).val())
+
+    let isVideoValid = await loadImage(`https://img.youtube.com/vi/${extractVidId($(this).val())}/mqdefault.jpg`)
+
+    // console.log(isVideoValid.width)
+
+
     if (!$(this).hasClass("first_upload_input_field") && $(this).val() == '') {
         $(".submit_btn").show()
     }
-    if (!isVideoValid) return
+    if (isVideoValid.width == 120) return
+    // if (!isVideoValid) return
     $(this).css("border-color", "green")
     $(".submit_btn").show()
     thisParent.find(".thumbnailPreview").attr("src", `https://i.ytimg.com/vi/${extractVidId($(this).val())}/mqdefault.jpg`)
@@ -1320,7 +1339,7 @@ async function updateBlocks() {
             $(`.project_blocks_${i}`).remove()
 
             // Auto set identical option names to first instance block data
-            if ((optionTitle || optionVideoid) && updateBlockArray.includes(optionTitle.toUpperCase())) {
+            if ((optionTitle) && updateBlockArray.includes(optionTitle.toUpperCase())) {
                 let blockIndex = updateBlockArray.indexOf(optionTitle.toUpperCase())
                 let blockVideoID = $(`.project_blocks`).eq(blockIndex).find(".block_video").find(".dropbtn").attr("data-videoid")
                 // console.log(blockVideoID)

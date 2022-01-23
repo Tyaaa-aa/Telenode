@@ -51,6 +51,9 @@
         background-color: #FF8F44;
         margin: 0;
         margin-top: 20px;
+        position: absolute;
+        right: 20px;
+        top: 70%;
     }
 
     .skip_onboarding:hover {
@@ -123,7 +126,7 @@
     })
 
     $(document).ready(function() {
-        $(".onboarding_video_container").css("transition", "all 1s ease-in-out")
+        $(".onboarding_video_container").css("transition", "all 1s")
     })
 
     $(".skip_onboarding").click(function() {
@@ -136,7 +139,7 @@
         })
         setTimeout(() => {
             $(".onboarding_video_container").css("opacity", "0")
-        }, 200)
+        }, 100)
 
         setTimeout(() => {
             $(".sidebar_help").css("color", "#598DC5")
@@ -152,8 +155,8 @@
                     clearInterval(animinterval)
                 }
             }, 1000)
-            $(".onboarding_content").fadeOut()
-        }, 500)
+            $(".onboarding_content").fadeOut(1000)
+        }, 100)
 
         // return
         $.ajax({
