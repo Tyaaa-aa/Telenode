@@ -3070,4 +3070,9 @@ input[type=file] {
     .modal .input_field {
         width: 100%;
     }
+
+    .help_container {
+        width: 95%;
+        margin: 20px auto;
+    }
 }
