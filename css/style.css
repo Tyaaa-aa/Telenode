@@ -2480,7 +2480,7 @@ input[type=file] {
 
 #watch_body #dashboard-container {
     width: 20%;
-    grid-template-columns: none;
+    /* grid-template-columns: none; */
 }
 
 .video_container .author_image {
