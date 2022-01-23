@@ -1065,6 +1065,7 @@ input[type=range].slider:focus::-ms-fill-upper {
     max-width: max-content;
     margin-top: -50px;
     transition: all 0.3s;
+    overflow: hidden;
 }
 
 .video_info_container * {
@@ -2479,7 +2480,7 @@ input[type=file] {
 
 #watch_body #dashboard-container {
     width: 20%;
-    /* grid-template-columns: none; */
+    grid-template-columns: none;
 }
 
 .video_container .author_image {
