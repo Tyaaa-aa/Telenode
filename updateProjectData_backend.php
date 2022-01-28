@@ -1,7 +1,9 @@
 <?php
 $rawProjectData = $_POST['projectData'];
 $projectID = $_POST['projectID'];
-$projectData = strval($rawProjectData);
+$projectData = $rawProjectData;
+// $projectData = json_encode($projectData, JSON_HEX_QUOT);
+$projectData = strval($projectData);
 session_start();
 $userid = $_SESSION["userID"];
 

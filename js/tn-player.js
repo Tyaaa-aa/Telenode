@@ -181,13 +181,23 @@ function playBlock(block) {
     // console.log(currentVideoid);
     let currentVideoOptions = block.options
     let currentVideoTitle = block.questionTitle
+
+    // Prevent code injection
+    currentVideoTitle = currentVideoTitle.replace('<', ' ⟨ ')
+    currentVideoTitle = currentVideoTitle.replace('>', ' ⟩ ')
     optionsBlocks = $("<div class='modal'></div>")
     let counter = 0
     let lastBlock = false
     for (let i = 0; i < currentVideoOptions.length; i++) {
         // console.log(currentVideoOptions[i].title);
         let thisTitle = currentVideoOptions[i].title
+        // Prevent code injection
+        thisTitle = thisTitle.replace('<', ' ⟨ ')
+        thisTitle = thisTitle.replace('>', ' ⟩ ')
         let thisVideoID = currentVideoOptions[i].videoID
+        // Prevent code injection
+        thisVideoID = thisVideoID.replace('<', ' ⟨ ')
+        thisVideoID = thisVideoID.replace('>', ' ⟩ ')
         let optionVideoBlock = thisTitle
         if (thisTitle != "" && thisTitle != undefined && thisVideoID != "" && thisVideoID != undefined) {
             optionsBlocks.append(`

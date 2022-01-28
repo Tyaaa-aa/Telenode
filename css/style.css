@@ -931,6 +931,7 @@ input[type=range].slider:focus::-ms-fill-upper {
     -moz-box-shadow: 2px 5px 15px -5px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     /* max-height: 260px; */
+    line-height: 1em;
     transition: all 0.3s;
 }
 

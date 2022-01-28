@@ -72,22 +72,22 @@ function showpassword() {
 }
 
 // Check if password is at least 8 Characters and matches confirm password field
-$('#password_msg').html('Enter a Password').css('color', 'transparent')
+$('#password_msg').text('Enter a Password').css('color', 'transparent')
 $('#userPassword_reg, #userPasswordCnfm_reg').on('keyup', regPasswordVerify)
 
 function regPasswordVerify() {
     if ($('#userPassword_reg').val().length >= 8) {
         if ($('#userPassword_reg').val() == $('#userPasswordCnfm_reg').val()) {
-            $('#password_msg').html('Passwords Match').css('color', 'green')
+            $('#password_msg').text('Passwords Match').css('color', 'green')
             $("#register_btn").css("pointer-events", "auto")
             $("#register_btn").css("cursor", "pointer")
         } else {
-            $('#password_msg').html('Passwords do not match!').css('color', 'red')
+            $('#password_msg').text('Passwords do not match!').css('color', 'red')
             $("#register_btn").css("pointer-events", "none")
             $("#register_btn").css("cursor", "not-allowed")
         }
     } else {
-        $('#password_msg').html('Passwords must be at least 8 characters!').css('color', 'red')
+        $('#password_msg').text('Passwords must be at least 8 characters!').css('color', 'red')
         $("#register_btn").css("pointer-events", "none")
         $("#register_btn").css("cursor", "not-allowed")
     }
@@ -1189,6 +1189,13 @@ async function updateBlocks() {
         let thisBlock = $(".project_blocks .block_questions").eq(i)
         let optionTitle = thisBlock.find(".options_field").val()
 
+        // ====== Prevent code injection ======
+        // Test code injection with something like this:
+        // <img src="img/logo.png" onload="alert('CODE INJECTED')">
+        optionTitle = optionTitle.replace('<', ' ⟨ ')
+        optionTitle = optionTitle.replace('>', ' ⟩ ')
+        // optionTitle = optionTitle.replace('<', '&lt; ')
+
         // console.log(updateBlockArray.includes(optionTitle));
         let optionVideoid = thisBlock.find(".dropbtn").attr("data-videoid")
         // Update option placeholder numbering
@@ -1212,7 +1219,7 @@ async function updateBlocks() {
             <div class="project_blocks project_blocks_${i}" id="${i}" data-blockuid="${blockUniqueId}">
                 <span class="parent_indicator">
                     <div class="pi_dot ">
-                        <p>${optionTitle}</p>
+                        <p>${optionTitle.toString()}</p>
                     </div>
                 </span>
     
@@ -1413,6 +1420,8 @@ function saveProjectData(download) {
 
     let projectID = $('.projects_box').attr("data-getVid_UID")
     let processedData = JSON.stringify(projectDataArray)
+    processedData = processedData.replace(/[']+/g, '&#39;')
+    // processedData = processedData.replace(/["]+/g, '&#34;')
     $.ajax({
         type: "POST",
         data: {
@@ -1497,6 +1506,7 @@ async function populateProjectData(projectData) {
     // Update starter block
     let starterBlockData = projectData[0]
     let starterTitle = starterBlockData.questionTitle
+
     let starterVideo = starterBlockData.videoID
 
     if (starterVideo && starterVideo.length !== 0) {
@@ -1537,9 +1547,22 @@ async function populateProjectData(projectData) {
             try {
                 // console.log(projectData[i])
                 let thisBlockData = projectData[i]
+
                 let thisTitle = thisBlockData.questionTitle
+                // Prevent code injection
+                thisTitle = thisTitle.replace('<', ' ⟨ ')
+                thisTitle = thisTitle.replace('>', ' ⟩ ')
+
                 let thisBlockID = thisBlockData.blockID
+                // Prevent code injection
+                thisBlockID = thisBlockID.replace('<', ' ⟨ ')
+                thisBlockID = thisBlockID.replace('>', ' ⟩ ')
+
                 let thisVideo = thisBlockData.videoID
+                // Prevent code injection
+                thisVideo = thisVideo.replace('<', ' ⟨ ')
+                thisVideo = thisVideo.replace('>', ' ⟩ ')
+
                 videoData = await getVidInfo(thisVideo)
                 videoDataTitle = JSON.parse(videoData).title
                 let blockUniqueId = "TN-" + encodeURI(thisBlockID.toUpperCase())

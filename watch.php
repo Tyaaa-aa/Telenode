@@ -56,7 +56,7 @@ if ($result->num_rows > 0) {
             });
         </script>
     <?php
-    } else if (($getVid_Status == "unpublished") && ($getVid_userID != $_SESSION["userID"])){
+    } else if (($getVid_Status == "unpublished") && ($getVid_userID != $_SESSION["userID"])) {
         // Redirect if user is not author
         $URL = "home.php#projects";
         echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
