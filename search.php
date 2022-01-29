@@ -48,7 +48,7 @@
             <div id="dashboard-container">
                 <?php
                 $query = $_GET['q'];
-                $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' and v.vid_status = 'published' and ((`vid_name` LIKE '%" . $query . "%') OR (`vid_description` LIKE '%" . $query . "%')) ORDER BY RAND ()";
+                $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' and v.vid_status = 'published' and ((`vid_name` LIKE '%" . $query . "%') OR (`vid_description` LIKE '%" . $query . "%') OR (`userName` LIKE '%" . $query . "%')) ORDER BY RAND ()";
                 include "populate_list.php";
                 ?>
             </div>

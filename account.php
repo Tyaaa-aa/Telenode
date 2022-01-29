@@ -63,7 +63,7 @@ if (!isset($_SESSION["userID"])) {
                 </form>
                 <form class="account_form" action="update_account_backend.php" method="POST">
                     <label for="username">Username</label>
-                    <input type="text" placeholder="Username" class="input_field readonly_field" name="username" id="username" value="<?= $getUserName ?>" minlength="3" required readonly>
+                    <input type="text" placeholder="Username" class="input_field readonly_field" name="username" id="username" value="<?= $getUserName ?>" minlength="3" required readonly pattern="[a-zA-Z0-9 ]+" oninvalid="setCustomValidity('Only Alphanumeric characters are allowed!')">
 
                     <label for="email">E-Mail</label>
                     <input type="email" placeholder="E-Mail" class="input_field readonly_field" name="email" id="email" value="<?= $getUserEmail ?>" required readonly>

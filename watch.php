@@ -16,10 +16,19 @@ if ($result->num_rows > 0) {
         $getVid_id = $row['vid_id'];
         $getVid_UID = $row['vid_UID'];
         $getVid_userID = $row['vid_userID'];
+
         $getVid_URLS = $row['vid_URLS'];
+        $getVid_URLS = htmlspecialchars($getVid_URLS, ENT_QUOTES);
+
         $getVid_ProjectData = $row['vid_projectData'];
+        $getVid_ProjectData = htmlspecialchars($getVid_ProjectData, ENT_QUOTES);
+
         $getVid_Name = $row['vid_name'];
+        $getVid_Name = htmlspecialchars($getVid_Name, ENT_QUOTES);
+
         $getVid_Description = $row['vid_description'];
+        $getVid_Description = htmlspecialchars($getVid_Description, ENT_QUOTES);
+
         $getVid_Thumbnail = $row['vid_thumbnail'];
         $getVid_Status = $row['vid_status'];
         $getVid_UploadTime = $row['vid_uploadTime'];

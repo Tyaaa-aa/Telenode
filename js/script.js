@@ -1431,9 +1431,9 @@ function saveProjectData(download) {
         url: "updateProjectData_backend.php",
         cache: false,
         success: function (response) {
-            // console.log("Data Saved! ✅")
-            // console.log("Returned DATA:")
-            // console.log(JSON.parse(response))
+            console.log("Data Saved! ✅")
+            console.log("Returned DATA:")
+            console.log(JSON.parse(response))
             dataSaved()
             if (download == true) {
                 let downloadData = new Object()

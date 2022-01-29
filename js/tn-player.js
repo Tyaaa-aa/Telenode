@@ -192,12 +192,16 @@ function playBlock(block) {
         // console.log(currentVideoOptions[i].title);
         let thisTitle = currentVideoOptions[i].title
         // Prevent code injection
-        thisTitle = thisTitle.replace('<', ' ⟨ ')
-        thisTitle = thisTitle.replace('>', ' ⟩ ')
+        if (thisTitle) {
+            thisTitle = thisTitle.replace('<', ' ⟨ ')
+            thisTitle = thisTitle.replace('>', ' ⟩ ')
+        }
         let thisVideoID = currentVideoOptions[i].videoID
         // Prevent code injection
-        thisVideoID = thisVideoID.replace('<', ' ⟨ ')
-        thisVideoID = thisVideoID.replace('>', ' ⟩ ')
+        if (thisVideoID) {
+            thisVideoID = thisVideoID.replace('<', ' ⟨ ')
+            thisVideoID = thisVideoID.replace('>', ' ⟩ ')
+        }
         let optionVideoBlock = thisTitle
         if (thisTitle != "" && thisTitle != undefined && thisVideoID != "" && thisVideoID != undefined) {
             optionsBlocks.append(`

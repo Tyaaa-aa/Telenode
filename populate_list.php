@@ -20,8 +20,14 @@ if ($result->num_rows > 0) {
         $getVid_UID = $row['vid_UID'];
         $getVid_userID = $row['vid_userID'];
         $getVid_URLS = $row['vid_URLS'];
+        $getVid_URLS = htmlspecialchars($getVid_URLS, ENT_QUOTES);
+
         $getVid_ProjectData = $row['vid_projectData'];
+        $getVid_ProjectData = htmlspecialchars($getVid_ProjectData, ENT_QUOTES);
+
         $getVid_Name = $row['vid_name'];
+        $getVid_Name = htmlspecialchars($getVid_Name, ENT_QUOTES);
+
         $getVid_Thumbnail = $row['vid_thumbnail'];
         $getVid_UploadTime = $row['vid_uploadTime'];
         $getVid_Views = $row['vid_views'];
@@ -275,7 +281,15 @@ if ($result->num_rows > 0) {
     if (isset($_GET['q'])) {
     ?>
         <div class="no_projects_container">
-            <h3>No results for "<?= $_GET['q'] ?>"</h3>
+            <h3>No results for "<?= htmlspecialchars($_GET['q'], ENT_QUOTES) ?>"</h3>
+            <p>Try searching for something else or creating your own project</p>
+            <a href="create.php" class="signup_btn btn">Create</a>
+        </div>
+    <?php
+    } else if (isset($_GET['id'])) {
+    ?>
+        <div class="no_projects_container">
+            <h3><?= htmlspecialchars($_GET['id'], ENT_QUOTES) ?> has no available projects yet.</h3>
             <p>Try searching for something else or creating your own project</p>
             <a href="create.php" class="signup_btn btn">Create</a>
         </div>
