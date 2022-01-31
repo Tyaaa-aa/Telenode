@@ -35,7 +35,7 @@
                     <p>
                         To get started you can watch the <a href="https://youtu.be/hIw6KRN-tss">guide</a> on how to use TeleNode before starting your own project.
                         <br><br>
-                        <strong>Step 1:</strong> Upload your videos onto <a href="http://youtube.com/" target="_blank">YouTube</a>
+                        <strong>Step 1:</strong> Upload your videos onto <a href="https://youtube.com/upload" target="_blank">YouTube</a>
                         <br>
                         <!-- <strong>Step 2:</strong> Name the videos accordingly (The video names from YouTube will be used as the title)
                         <br> -->
