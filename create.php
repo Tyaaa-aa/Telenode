@@ -33,7 +33,7 @@
                 <div class="upload_splash_box">
                     <img src="img/create_splash.png" alt="Upload a video to start a new project!">
                     <p>
-                        To get started you can watch the <a href="https://youtu.be/hIw6KRN-tss">guide</a> on how to use TeleNode before starting your own project.
+                        To get started you can watch the <a href="https://youtu.be/hIw6KRN-tss" target="_blank">guide</a> on how to use TeleNode before starting your own project.
                         <br><br>
                         <strong>Step 1:</strong> Upload your videos onto <a href="https://youtube.com/upload" target="_blank">YouTube</a>
                         <br>
