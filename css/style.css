@@ -175,7 +175,9 @@ a:hover {
 .login_splash_img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    filter: saturate(0);
+    opacity: 75%;
 }
 
 .login-form {
@@ -195,6 +197,7 @@ a:hover {
     border-radius: var(--globalRadius);
     color: var(--mainColor);
     width: 60%;
+    text-align: center;
     /* transition: all 0.3s; */
 }
 
