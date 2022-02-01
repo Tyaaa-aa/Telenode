@@ -16,9 +16,9 @@ if (isset($_POST["userEmail_reg"]) && isset($_POST["userName_reg"]) && isset($_P
 ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        window.location = 'login.php';
+        window.location = '../login.php';
     </script>
-    <a href="login.php">Click here if you are not redirected automatically within 3 seconds</a>
+    <a href="../login.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
 }
 
@@ -32,7 +32,7 @@ $stmt->execute();
 $stmt->close();
 $conn->close();
 ?>
-<a href="login.php">Click here if you are not automatically redirected to the forums page</a>
+<a href="../login.php">Click here if you are not automatically redirected to the forums page</a>
 
 
 <?php
@@ -52,9 +52,9 @@ if ($row == 0) {
 ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        window.location = 'home.php';
+        window.location = '../home.php';
     </script>
-    <a href="home.php">Click here if you are not redirected automatically within 3 seconds</a>
+    <a href="../home.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
 } else {
     session_start();
@@ -62,7 +62,7 @@ if ($row == 0) {
     $_SESSION["userName"] = $s_userName;
     $_SESSION["userEmail"] = $userEmail;
     // echo "Login Successful.<br> $id <br> $s_userName <br> $userEmail";
-    header("Location: home.php");
+    header("Location: ../home.php");
 }
 
 ?>

@@ -19,7 +19,7 @@ if (isset($_SESSION["userID"])) {
             <img src="img/login_splash.png" alt="Login splash image" class="login_splash_img">
         </div>
         <div class="login-box">
-            <form class="login-form" method="POST" action="login_backend.php">
+            <form class="login-form" method="POST" action="backend/login_backend.php">
                 <div class="field-box">
                     <h1>Login to TeleNode</h1>
                     <input type="text" placeholder="Username" name="username" id="userName" class="inputForm" required>
@@ -43,7 +43,7 @@ if (isset($_SESSION["userID"])) {
         </div>
 
         <div class="register-box">
-            <form class="login-form" method="POST" enctype="multipart/form-data" action="register_backend.php" id="register_form">
+            <form class="login-form" method="POST" enctype="multipart/form-data" action="backend/register_backend.php" id="register_form">
                 <div class="field-box">
                     <h1>Create an account</h1>
                     <input type="text" placeholder="Username" name="userName_reg" id="userName_reg" class="inputForm" required>

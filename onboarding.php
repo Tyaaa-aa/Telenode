@@ -161,7 +161,7 @@
         // return
         $.ajax({
             type: "POST",
-            url: "update_newuser_backend.php",
+            url: "backend/update_newuser_backend.php",
             data: {},
             success: function(response) {
                 let result = JSON.parse(response).newuserstatus

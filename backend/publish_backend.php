@@ -48,7 +48,7 @@ if (isset($file)) {
                 $uuid = substr(base64_encode(md5(mt_rand())), 0, 6);
                 $fileNameNew = 'IMG_' . time() . "$uuid" . "." . $fileActualExt;
                 $fileDestination = $uploadFolder . $fileNameNew;
-                move_uploaded_file($fileTmpName, $fileDestination);
+                move_uploaded_file($fileTmpName, "../" . $fileDestination);
                 include "db_connect.php";
                 $stmt = $conn->prepare("UPDATE tb_videos SET vid_thumbnail=? WHERE vid_id=$vid_id");
                 $stmt->bind_param("s", $fileDestination);

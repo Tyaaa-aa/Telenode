@@ -7,13 +7,13 @@
         $sql = "SELECT * from tb_videos where vid_userID = $userid AND vid_status = 'unpublished' order by vid_id DESC";
 
 
-        include "db_connect.php";
+        include "backend/db_connect.php";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
     ?>
             <h3>Unpublished Projects</h3>
             <div class="published_projects_container unpublished_projects_container">
-                <?php include "populate_list.php"; ?>
+                <?php include "backend/populate_list.php"; ?>
 
             </div>
         <?php
@@ -26,18 +26,18 @@
     if (isset($userid)) {
         $sql = "SELECT * from tb_videos where vid_userID = $userid AND vid_status = 'published' order by vid_id DESC";
 
-        include "db_connect.php";
+        include "backend/db_connect.php";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
     ?>
             <h3>Published Projects</h3>
             <div class="published_projects_container">
-                <?php include "populate_list.php"; ?>
+                <?php include "backend/populate_list.php"; ?>
             </div>
 
         <?php
         }else{
-            include "populate_list.php";
+            include "backend/populate_list.php";
 
         }
 

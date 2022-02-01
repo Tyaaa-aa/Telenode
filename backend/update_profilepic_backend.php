@@ -30,7 +30,7 @@ if (in_array($fileActualExt, $allowed)) {
             $uuid = substr(base64_encode(md5(mt_rand())), 0, 6);
             $fileNameNew = 'IMG_' . time() . "$uuid" . "." . $fileActualExt;
             $fileDestination = $uploadFolder . $fileNameNew;
-            move_uploaded_file($fileTmpName, $fileDestination);
+            move_uploaded_file($fileTmpName, "../" . $fileDestination);
             include "db_connect.php";
             $result = $conn->query("SELECT * FROM tb_users WHERE userID=$userid");
 
@@ -55,7 +55,7 @@ if (in_array($fileActualExt, $allowed)) {
             $conn->close();
 ?>
             <script>
-                window.location = "account.php";
+                window.location = "../account.php";
             </script>
         <?php
         } else {
@@ -64,7 +64,7 @@ if (in_array($fileActualExt, $allowed)) {
             The file is too big
             <script type='text/javascript'>
                 alert('The file is too big. Maximum file size is 10 MB');
-                window.location = 'account.php';
+                window.location = '../account.php';
             </script>
         <?php
         }
@@ -73,7 +73,7 @@ if (in_array($fileActualExt, $allowed)) {
         There was an error uploading this file
         <script type='text/javascript'>
             alert('There was an error uploading this file');
-            window.location = 'account.php';
+            window.location = '../account.php';
         </script>
     <?php
     }
@@ -82,9 +82,9 @@ if (in_array($fileActualExt, $allowed)) {
     You cannot upload file of this type
     <script type='text/javascript'>
         alert('You cannot upload file of this type');
-        window.location = 'account.php';
+        window.location = '../account.php';
     </script>
 <?php
 }
 ?>
-<a href="account.php">Click here if you are not automatically redirected to the account page</a>
+<a href="../account.php">Click here if you are not automatically redirected to the account page</a>

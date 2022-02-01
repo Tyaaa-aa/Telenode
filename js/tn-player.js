@@ -426,7 +426,7 @@ function viewCount() {
                     data: {
                         'projectUID': projectUID
                     },
-                    url: "update_viewcount.php",
+                    url: "backend/update_viewcount_backend.php",
                     cache: false,
                     success: function (response) {
                         if (response == 1) $(".video_info .view_count").text(response + " View")

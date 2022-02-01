@@ -3,7 +3,7 @@
 <!-- HEAD CONTENT -->
 <?php
 include "head.php";
-include "verifyuser.php";
+include "backend/verifyuser.php";
 
 if ($isNewUser == 'true') {
     // Show onboarding sequence
@@ -234,7 +234,7 @@ if ($isNewUser == 'true') {
                 <!-- <img src="img/create_placeholder.png" alt="Placeholder" style=" position: absolute;top: 15%;left: 30%;width: 50%;"> -->
             </div>
 
-            <form class="publish_form" action="publish_backend.php" method="POST" enctype="multipart/form-data">
+            <form class="publish_form" action="backend/publish_backend.php" method="POST" enctype="multipart/form-data">
                 <div class="publish_form_row">
                     <div class="input_fields_container">
                         <label for="project_name">Project Name</label>

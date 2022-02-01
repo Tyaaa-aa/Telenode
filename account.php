@@ -54,14 +54,14 @@ if (!isset($_SESSION["userID"])) {
 
         <section class="main_body">
             <div class="main_content">
-                <form class="account_pic" action="update_profilepic.php" method="POST" enctype="multipart/form-data">
+                <form class="account_pic" action="backend/update_profilepic_backend.php" method="POST" enctype="multipart/form-data">
                     <input type="file" class="upload_prompt" id="upload-img" name="fileUpload" required accept="image/png, image/jpeg" title="Edit Profile Picture">
                     <i class="material-icons">
                         photo_camera
                     </i>
 
                 </form>
-                <form class="account_form" action="update_account_backend.php" method="POST">
+                <form class="account_form" action="backend/update_account_backend.php" method="POST">
                     <label for="username">Username</label>
                     <input type="text" placeholder="Username" class="input_field readonly_field" name="username" id="username" value="<?= $getUserName ?>" minlength="3" required readonly pattern="[a-zA-Z0-9 ]+" oninvalid="setCustomValidity('Only Alphanumeric characters are allowed!')">
 
@@ -117,7 +117,7 @@ if (!isset($_SESSION["userID"])) {
         $.ajax({
             type: "POST",
             data: $('.account_form').serialize(),
-            url: "update_account_backend.php",
+            url: "backend/update_account_backend.php",
             // cache: false,
             success: function(response) {
                 let result = JSON.parse(response)
@@ -171,7 +171,7 @@ if (!isset($_SESSION["userID"])) {
         $.ajax({
             type: "POST",
             data: 'theme=' + theme,
-            url: "updateTheme_backend.php",
+            url: "backend/updateTheme_backend.php",
             cache: false,
             success: function(response) {
                 let theme = JSON.parse(response).theme

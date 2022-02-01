@@ -7,7 +7,7 @@
     <!-- HEADER CONTENT -->
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
-    <?php include "verifyanyuser.php"; ?>
+    <?php include "backend/verifyanyuser.php"; ?>
     <section class="main_body">
         <div class="main_content">
             <div class="steps_bar">
@@ -45,7 +45,7 @@
                         <strong>Step 3:</strong> Paste the links and click next to start creating your project
                     </p>
                 </div>
-                <form class="upload_field_box" action="start_create_backend.php" method="POST">
+                <form class="upload_field_box" action="backend/start_create_backend.php" method="POST">
                     <h4>Add videos to create your own interactive video</h4>
                     <input type="hidden" value="0" id="videoLength" name="videoLength">
                     <input type="hidden" value="img/placeholder_thumbnail.png" id="videoThumbnail" name="videoThumbnail">

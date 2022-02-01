@@ -48,10 +48,10 @@
                             <span>Account</span>
                             <!-- <a href="account.php">Account</a> -->
                         </a>
-                        <a href="logout.php" class="profile_link">
+                        <a href="backend/logout_backend.php" class="profile_link">
                             <i class='material-icons'>logout</i>
                             <span>Logout</span>
-                            <!-- <a href="logout.php">Logout</a> -->
+                            <!-- <a href="backend/logout_backend.php">Logout</a> -->
                         </a>
                     </div>
                     <div class="profile_box">

@@ -1,3 +1,19 @@
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('js/service-worker.js?v=1').then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register("service-worker.js");
+// }
+
 // https://yt2htmlcors.herokuapp.com/video_info.php?url=https://www.youtube.com/watch?v=LXb3EKWsInQ
 window.addEventListener('load', function () {
     // Everything has loaded!
@@ -157,7 +173,7 @@ $(".font_slider").on("input", function () {
     $.ajax({
         type: "POST",
         data: 'fontsize=' + fontSize,
-        url: "update_fontsize_backend.php",
+        url: "backend/update_fontsize_backend.php",
         success: function (response) {
             let fontsize = JSON.parse(response).fontsize
             // console.log(fontsize)
@@ -285,7 +301,7 @@ $(document).on("click", ".projectoptions_delete", function (e) {
         if (window.confirm("Are you sure you want to permanently delete this project? \nThis action cannot be undone!")) {
             $.ajax({
                 type: "POST",
-                url: "deleteProject_backend.php",
+                url: "backend/deleteProject_backend.php",
                 data: {
                     "projectID": vidid,
                     "userID": userid
@@ -658,7 +674,7 @@ async function listVideos(vidURLS) {
                 'videos': resetvidBin,
                 'projectID': projectID
             },
-            url: "updateProjectVideos_backend.php",
+            url: "backend/updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
                 console.log("Auto Corrupted Video Reset!")
@@ -944,7 +960,7 @@ $(".projects_box").on("click", ".delete_vid, .replace_vid", function () {
                 'videos': vidBin,
                 'projectID': projectID
             },
-            url: "updateProjectVideos_backend.php",
+            url: "backend/updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
                 // console.log("Video Deleted! ✅")
@@ -1024,7 +1040,7 @@ $(".add_btn_submit").click(async function () {
                 'videos': vidBin,
                 'projectID': projectID
             },
-            url: "updateProjectVideos_backend.php",
+            url: "backend/updateProjectVideos_backend.php",
             cache: false,
             success: function (response) {
                 // console.log("Video Added! ✅")
@@ -1428,7 +1444,7 @@ function saveProjectData(download) {
             'projectData': processedData,
             'projectID': projectID
         },
-        url: "updateProjectData_backend.php",
+        url: "backend/updateProjectData_backend.php",
         cache: false,
         success: function (response) {
             console.log("Data Saved! ✅")
@@ -1772,7 +1788,7 @@ function activatePublishBtn() {
                         'videos': JSON.stringify(videoURLS),
                         'projectID': projectID
                     },
-                    url: "updateProjectVideos_backend.php",
+                    url: "backend/updateProjectVideos_backend.php",
                     cache: false,
                     success: function (response) {
                         // console.log("Video Added! ✅")
@@ -1797,7 +1813,7 @@ function activatePublishBtn() {
             let userID = $('.projects_box').attr("data-getVid_userID")
             $.ajax({
                 type: "POST",
-                url: "deleteProject_backend.php",
+                url: "backend/deleteProject_backend.php",
                 data: {
                     "projectID": projectID,
                     "userID": userID
@@ -1826,7 +1842,7 @@ $(".publish_form").submit(function (e) {
     saveProjectData() // Save data before publishing project
     var form = $(this)
     var formData = new FormData(form[0])
-    var url = form.attr('action')
+    var url = "backend/publish_backend.php"
     // console.log(url)
     $.ajax({
         type: "POST",

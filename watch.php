@@ -4,7 +4,7 @@
 <?php include "head.php" ?>
 
 <?php
-include "db_connect.php";
+include "backend/db_connect.php";
 $uuid = $_GET["id"];
 
 $result = $conn->query("SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_UID = '$uuid'");
@@ -211,7 +211,7 @@ if ($result->num_rows > 0) {
 
                 $sql = "SELECT v.*, u.userName,u.profileImg from tb_videos v inner join tb_users u on v.vid_userID=u.userID where v.vid_visibility = 'public' AND v.vid_UID != '$uuid' AND v.vid_status = 'published' ORDER BY RAND ()";
 
-                include "populate_list.php";
+                include "backend/populate_list.php";
                 ?>
 
             </div>

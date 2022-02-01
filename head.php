@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-include "db_connect.php";
+include "backend/db_connect.php";
 session_start();
 
 if (isset($_SESSION["userID"])) {
@@ -54,6 +54,7 @@ if (isset($_SESSION["userID"])) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="theme-color" content="#598DC5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">

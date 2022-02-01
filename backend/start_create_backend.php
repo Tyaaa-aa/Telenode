@@ -1,6 +1,6 @@
 <?php
 ini_set('error_reporting', E_ALL);
-include "head.php";
+include "../head.php";
 // $conn = new mysqli("localhost", "root", "", "thebigtest");
 
 // if ($conn->connect_error) {
@@ -39,6 +39,6 @@ $conn->close();
 
 
 
-header("Location: edit.php?id=$uuid");
+header("Location: ../edit.php?id=$uuid");
 ?>
-<a href="edit.php?id=<?= $uuid ?>">Click here if you are not automatically</a>
+<a href="../edit.php?id=<?= $uuid ?>">Click here if you are not automatically</a>

@@ -35,7 +35,7 @@ if (isset($_POST["username"]) && isset($_POST["userPassword"])) {
 ?>
             <script type='text/javascript'>
                 alert('Login Failed, Please Try Again or Register an Account First');
-                window.location = 'home.php';
+                window.location = '../home.php';
             </script>
             <a href="register.php">Click here if you are not redirected automatically within 3 seconds</a>
         <?php
@@ -46,7 +46,7 @@ if (isset($_POST["username"]) && isset($_POST["userPassword"])) {
             $_SESSION["username"] = $username;
             echo "Login Successful.<br><br> $userName<br>$username";
 
-            header("Location: home.php");
+            header("Location: ../home.php");
         ?>
         <?php
         }
@@ -54,18 +54,18 @@ if (isset($_POST["username"]) && isset($_POST["userPassword"])) {
         ?>
         <script type='text/javascript'>
             alert('Login failed, Password or E-Mail entered incorrectly please try again');
-            window.location = 'login.php';
+            window.location = '../login.php';
         </script>
-        <a href="login.php">Click here if you are not redirected automatically within 3 seconds</a>
+        <a href="../login.php">Click here if you are not redirected automatically within 3 seconds</a>
     <?php
     }
 } else {
     ?>
     <script type='text/javascript'>
         alert('Something went wrong, please try again');
-        window.location = 'login.php';
+        window.location = '../login.php';
     </script>
-    <a href="login.php">Click here if you are not redirected automatically within 3 seconds</a>
+    <a href="../login.php">Click here if you are not redirected automatically within 3 seconds</a>
 <?php
 }
 
