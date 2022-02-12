@@ -1,18 +1,42 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-        navigator.serviceWorker.register('js/service-worker.js?v=1').then(function (registration) {
-            // Registration was successful
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-        });
+        navigator.serviceWorker.register('js/service-worker.js?v=1')
+        // .then(function (registration) {
+        //     // Registration was successful
+        //     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        // }, function (err) {
+        //     // registration failed :(
+        //     console.log('ServiceWorker registration failed: ', err);
+        // });
     });
 }
 
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register("service-worker.js");
+
+// random pokemon generator
+// function randomPokemon() {
+//     var random = Math.floor(Math.random() * 151) + 1;
+//     var url = "https://pokeapi.co/api/v2/pokemon/" + random;
+//     var request = new XMLHttpRequest();
+//     request.open('GET', url, true);
+//     request.onload = function () {
+//         if (request.status >= 200 && request.status < 400) {
+//             // Success!}
+//             var data = JSON.parse(request.responseText);
+//             // document.getElementById("pokemon").innerHTML = data;
+//             alert(data.name)
+//         } else {
+//             // We reached our target server, but it returned an error
+//             console.log("Error: " + request.statusText);
+//         }
+//     };
+//     request.onerror = function () {
+//         // There was a connection error of some sort
+//         console.log("Error: " + request.statusText);
+//     };
+//     request.send();
 // }
+// randomPokemon()
+
 
 // https://yt2htmlcors.herokuapp.com/video_info.php?url=https://www.youtube.com/watch?v=LXb3EKWsInQ
 window.addEventListener('load', function () {
