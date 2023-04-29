@@ -1,7 +1,14 @@
+<title>TeleNode</title>
 <img src="img/loader.png" id="preloader" alt="preloader">
 <header>
     <nav>
         <?php
+        if (isset($_GET["q"])) {
+            $searchValue = $_GET["q"];
+        } else {
+            $searchValue = "";
+        }
+
         if (isset($_SESSION["userID"])) {
             // ================= If Logged In ==================
             $userid = $_SESSION["userID"];
@@ -22,37 +29,37 @@
         ?>
             <!-- IF USER IS LOGGED IN -->
             <form action="search.php" method="GET" id="search-form">
-                <input type="text" placeholder="Search" name="q" class="search_input input_field">
+                <input type="text" placeholder="Search" name="q" class="search_input input_field" value="<?= $searchValue ?>">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
                     <i class='material-icons'>search</i>
                 </button>
             </form>
 
             <div style="display:flex;">
-            <a href="create.php" class="create_btn btn">
-                <i class='material-icons'>video_call</i>
-                Create
-            </a>
+                <a href="create.php" class="create_btn btn">
+                    <i class='material-icons'>video_call</i>
+                    Create
+                </a>
 
-            <div class="profile_container">
-                <div class="profile_popup profile_popup_hidden">
-                    <a href="account.php" class="profile_link">
-                        <i class='material-icons'>person</i>
-                        <span>Account</span>
-                        <!-- <a href="account.php">Account</a> -->
-                    </a>
-                    <a href="logout.php" class="profile_link">
-                        <i class='material-icons'>logout</i>
-                        <span>Logout</span>
-                        <!-- <a href="logout.php">Logout</a> -->
-                    </a>
+                <div class="profile_container">
+                    <div class="profile_popup profile_popup_hidden">
+                        <a href="account.php" class="profile_link">
+                            <i class='material-icons'>person</i>
+                            <span>Account</span>
+                            <!-- <a href="account.php">Account</a> -->
+                        </a>
+                        <a href="backend/logout_backend.php" class="profile_link">
+                            <i class='material-icons'>logout</i>
+                            <span>Logout</span>
+                            <!-- <a href="backend/logout_backend.php">Logout</a> -->
+                        </a>
+                    </div>
+                    <div class="profile_box">
+                        <img class="profile_pic" width="50px" src="<?= $getProfileImg ?>" alt="<?= $getUserName ?>'s Profile Picture">
+                        <h3 class="profile_name"><?= $getUserName ?></h3>
+                        <i class='material-icons down_arrow'>keyboard_arrow_down</i>
+                    </div>
                 </div>
-                <div class="profile_box">
-                    <img class="profile_pic" width="50px" src="<?= $getProfileImg ?>" alt="<?= $getUserName ?>'s Profile Picture">
-                    <h3 class="profile_name"><?= $getUserName ?></h3>
-                    <i class='material-icons down_arrow'>keyboard_arrow_down</i>
-                </div>
-            </div>
             </div>
 
             <section id="sidebar">
@@ -69,11 +76,11 @@
                         <i class='material-icons sidebar_icons'>ondemand_video</i>
                         <span>My Projects</span>
                     </a>
-                    <a href="home.php#community" class="sidebar_items" rel="no-refresh">
+                    <!-- <a href="home.php#community" class="sidebar_items" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>people</i>
                         <span>Community</span>
-                    </a>
-                    <a href="home.php#help" class="sidebar_items" rel="no-refresh">
+                    </a> -->
+                    <a href="home.php#help" class="sidebar_items sidebar_help" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
                     </a>
@@ -88,11 +95,11 @@
             $hasVid = false;
         ?>
             <!-- IF USER IS NOT LOGGED IN -->
-            <a href="home.php" class="header_logo">
+            <!-- <a href="home.php" class="header_logo">
                 <img src="img/logo.png" alt="Header Logo">
-            </a>
+            </a> -->
             <form action="search.php" method="GET" id="search-form">
-                <input type="text" placeholder="Search" name="q" class="search_input input_field">
+                <input type="text" placeholder="Search" name="q" class="search_input input_field" value="<?= $searchValue ?>">
                 <button type="submit" form="search-form" value="Submit" class="search_btn">
                     <i class='material-icons'>search</i>
                 </button>
@@ -113,15 +120,15 @@
                         <i class='material-icons sidebar_icons'>dashboard</i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="home.php#community" class="sidebar_items" rel="no-refresh">
+                    <!-- <a href="home.php#community" class="sidebar_items" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>people</i>
                         <span>Community</span>
-                    </a>
-                    <a href="home.php#help" class="sidebar_items" rel="no-refresh">
+                    </a> -->
+                    <a href="home.php#help" class="sidebar_items sidebar_help" rel="no-refresh">
                         <i class='material-icons sidebar_icons'>help</i>
                         <span>Help</span>
                     </a>
-                    <div class="login_box">
+                    <div class="login_box create_prompt">
                         <a href="login.php#signup" class="signup_btn btn">Start Creating</a>
                     </div>
                 </ul>

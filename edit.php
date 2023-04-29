@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <!-- HEAD CONTENT -->
-<?php include "head.php" ?>
-<?php include "verifyuser.php"; ?>
+<?php
+include "head.php";
+include "backend/verifyuser.php";
 
-<body>
+if ($isNewUser == 'true') {
+    // Show onboarding sequence
+    include "onboarding.php";
+    $newUser = "newuser";
+} else {
+    $newUser = "";
+}
+?>
+
+<body id="<?= $newUser ?>">
     <!-- HEADER CONTENT -->
     <?php include "header.php" ?>
     <!-- BODY CONTENT BELOW -->
@@ -35,6 +45,12 @@
                 </button>
 
                 <div class="more_options_container">
+                    <a href="watch.php?id=<?= $getVid_UID ?>" class="more_options options_watch" target="_blank">
+                        <span class="material-icons">
+                            play_circle_outline
+                        </span>
+                        Watch Video
+                    </a>
                     <span class="more_options options_download">
                         <span class="material-icons">
                             save_alt
@@ -46,7 +62,7 @@
                             import_export
                         </span>
                         Import
-                        <!--  Project --> (undone)
+                        <input id="importJSON" type="file" accept="application/json" title="" />
                     </span>
                     <span class="more_options options_delete">
                         <span class="material-icons">
@@ -74,7 +90,11 @@
             <div class="create_container">
                 <div class="edit_container">
                     <div class="projects_box list_style" data-getVid_id='<?= $getVid_id ?>' data-getVid_UID='<?= $getVid_UID ?>' data-getVid_userID='<?= $getVid_userID ?>' data-getVid_URLS='<?= $getVid_URLS ?>' data-getVid_ProjectData='<?= $getVid_ProjectData ?>' data-getVid_Name='<?= $getVid_Name ?>' data-getVid_Description='<?= $getVid_Description ?>' data-getVid_Thumbnail='<?= $getVid_Thumbnail ?>' data-getVid_Visibility='<?= $getVid_Visibility ?>' data-getVid_Status='<?= $getVid_Status ?>' data-getVid_UploadTime='<?= $getVid_UploadTime ?>'>
-                        <h3 id="projects_box_title"><?= $getVid_Name ?><span class="vid_counter"></span></h3>
+                        <h3 id="projects_box_title">
+                            <?= $getVid_Name ?>
+                            <br>
+                            <span class="vid_counter"></span>
+                        </h3>
                         <div class="projects_box_toolbar">
                             <div class="toolbar_btns_container">
                                 <span class="material-icons list_view_btn toolbar_btns toolbar_btns_active" title="List View">
@@ -92,7 +112,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <span class="material-icons edit_videos_btn toolbar_btns" title="Edit Videos">
+                                <span class="material-icons edit_repo_btn toolbar_btns" title="Edit Videos">
                                     edit
                                 </span>
                             </div>
@@ -106,19 +126,19 @@
                     </div>
 
                     <div class="edit_projects">
-                        <div class="project_blocks project_blocks_starter">
+                        <div class="project_blocks project_blocks_starter" data-blockuid="TN-STARTING%20BLOCK">
                             <span class="parent_indicator">
                                 <div class="pi_dot starter_dot">
                                     <span class="material-icons">
                                         play_arrow
                                     </span>
-                                    <p>Starting question</p>
+                                    <p>Starting Block</p>
                                 </div>
                             </span>
 
                             <div class="block_video block_box">
                                 <div class="video_cards_container">
-                                    <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                    <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                     <div class="video_cards">
                                         <div class="thumbnail-box">
                                             <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -129,7 +149,7 @@
                                 <div class="input_container">
                                     <input type="text" placeholder="Question/Prompt" class="input_field question_title">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="">
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly data-videoid="" tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -144,7 +164,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -154,7 +174,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -166,7 +186,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -176,7 +196,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -188,7 +208,7 @@
                                 <div class="block_questions block_box">
                                     <input type="text" placeholder="Option 1" class="input_field options_field">
                                     <div class="dropbtn_container">
-                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly>
+                                        <input type="text" class="input_field dropbtn" placeholder="Choose a video" onkeypress="return false;" readonly tabindex="-1">
                                         <span class="material-icons">
                                             expand_more
                                         </span>
@@ -198,7 +218,7 @@
                                     </div>
 
                                     <div class="video_cards_container">
-                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field">
+                                        <input type="text" placeholder="Choose a video (drag and drop)" class="input_field question_field" tabindex="-1">
                                         <div class="video_cards">
                                             <div class="thumbnail-box">
                                                 <img class="thumbnail" src="img/empty_thumbnail.png" alt="Thumbnail">
@@ -214,7 +234,7 @@
                 <!-- <img src="img/create_placeholder.png" alt="Placeholder" style=" position: absolute;top: 15%;left: 30%;width: 50%;"> -->
             </div>
 
-            <form class="publish_form" action="publish_backend.php" method="POST" enctype="multipart/form-data">
+            <form class="publish_form" action="backend/publish_backend.php" method="POST" enctype="multipart/form-data">
                 <div class="publish_form_row">
                     <div class="input_fields_container">
                         <label for="project_name">Project Name</label>
@@ -328,8 +348,8 @@
     <script>
         collapseSidebar()
 
-        listYTVideos($(".projects_box"), true)
-        populateProjectData($(".projects_box"))
+        listVideos($(".projects_box").data("getvid_urls"), true)
+        populateProjectData($(".projects_box").attr("data-getVid_ProjectData"))
 
         // $(".publish_btn").click()
     </script>

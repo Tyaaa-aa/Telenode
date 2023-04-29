@@ -1,3 +1,65 @@
+// 🟩 SHOW AUTHOR ON VIDEO CARDS
+// 🟩 NEED TO IMPLEMENT END OF VIDEO CATCHING
+// 🟩 UPGRADE API TO GRAB HD VERSION OF VIDEOS
+// 🟩 ADD VIEW COUNT
+// 🟩 SEPARATE PUBLISHED AND UNPUBLISHED PROJECTS IN MY PROJECTS TAB
+// 🟩 NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
+// 🟩 NEED TO IMPLEMENT BACK BUTTON
+// 🟩 IMPLEMENT TAGS FOR VIDEO VISIBILITY STATUS
+// 🟩 PROVIDE VIEW BUTTON IN EDIT PAGE (EITHER POP UP IFRAME OR JUST SIMPLE REDIRECT)
+// 🟩 WHEN ON BLOCK TAB KEY SHOULD GO TO NEXT FIELD (TABINDEX = "-1" MAYBE)
+// 🟩 NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER
+// 🟩 ADD ANIMATIONS FOR MODALS (INTERACTIVE CARDS)
+// 🟩 ADD ABILITY TO IMPORT PROJECTS
+// 🟩 NEED TO IMPLEMENT LOCAL STORAGE SAVE AUDIO LEVEL
+// 🟩 IMPLEMENT META TAGS FOR SOCIAL SHARING
+// 🟩 HOME UI LOOK LIKE DOG NOW (SIDEBAR AND PROJECTS)
+// 🟩 PADDING ON THE TIMELINE/SEEKER
+// 🟩 FIX CREATE PAGE BUTTON
+// 🟩 HYPERLINK TO YOUTUBE ON CREATE PAGE
+// 🟩 CHANGE UPLOAD THUMBNAIL ICON COLOR (MAKE IT MORE OBVIOUS THAT IT CAN BE CHANGED)
+// 🟩 UNPUBLISHED SHOULD BE VIEWABLE BY CREATOR
+// 🟩 CHANGE EDIT BUTTON TO 3 DOTS WITH MENU FOR DELETE/EDIT/SHARE/DOWNLOAD
+// 🟩 CHANGE WATCH GUIDE WHEN COMPLETE
+// 🟩 EDIT PAGE FIX SCROLL ANIMATION
+// 🟩 ADD SHARE BUTTON BELOW VIDEO
+// 🟩 MOVE PLAY BUTTON TO THE LEFT
+// 🟩 UNPUBLISHED CLICK TO GO TO EDIT PAGE
+// 🟩 IMPLEMENT SEARCH PAGE **
+// 🟩 FIX MENU LISTING OF VIDEOS (".dropbtn")
+// 🟩 ABILITY TO REPLACE VIDEO LINKS EASILY *****
+// 🟩 CREATE PROJECT ALL VIDEOS ARE UNIQUE VALIDATED
+// 🟩 CREATE SHOWCASE PROJECT ********
+// 🟩 NEED TO IMPLEMENT USER SCALE PREFERENCE **
+// 🟩 EDIT ACCOUNT IMPLEMENT CONFIRM PASSWORD
+// 🟩 Hide community and help page for now
+// 🟩 NEED TO IMPLEMENT FIRST TIMER USER ONBOARDING *******
+// 🟩 NEED TO FIX POPULATE PROJECTS (SHOWS NO PROJECTS YET EVEN WHEN THERE ARE PROJECTS BUT JUST UNPUBLISHED)
+// 🟩 MAYBE DONT SHOW DUPLICATE BLOCKS FOR UNIQUE BLOCK NAME IDENTIFICATION SYSTEM?! **
+// 🟩 IDENTICAL BLOCKS WILL AUTO SET DATA TO FIRST INSTANCE BLOCK DATA
+// 🟩 IDENTICAL BLOCKS WILL HYPER LINK TO FIRST INSTANCE BLOCK DATA FOR EASE OF NAVIGATION
+// 🟩 FIX HTTPS CREATE PROJECT BUG
+// 🟥 ADD OPTION TO DOWNLOAD EITHER JUST VIDEOS OR ALL PROJECT DATA
+// 🟥 NEED TO IMPLEMENT IDENTIFICATION COLOURED DOTS *****
+// 🟥 IMPLEMENT 360 VIDEOS (MAKE HYBRID SWITCH BETWEEN 360 VIDEOS AND 2D VIDEOS)
+// IMPLEMENT USER ROLES (STUDENTS CANNOT CREATE, USER GROUPS ONLY ACCESS TO CERTAIN CREATORS/GROUP CONTENT)
+// ADD LIKES AND COMMENTS
+// 🟨 (OBSCURE VIDEOS BUG) API APPEARS TO NOT WORK FOR SOME VIDEOS MARKED FOR KIDS AND UNLISTED VIDEOS. NEEDS     FURTHER TESTING!!!!!! **** /* BROKEN YOUTUBE LINKS: https://youtu.be/xkBzOuawCws, https://www.youtube.com/watch?v=oZoUoF1Vg7g */
+
+
+// ===== VIDEO PLAYER SETTINGS =====
+
+// Store user adjusted volume into localstorage and use that next time
+// Default volume of player (Value range from: 0 - 1)
+let defaultVolume = 0.5
+// Load video on page load. Leave on by default. Mostly used for development
+let vidOnLoad = true
+// Autoplay video
+let autoPlay = true
+// If watched at least 30 seconds or 15% of the video add to view count
+let minWatchTimeSec = 30 // Minimum time in seconds
+let minWatchTimePercent = 15 // Minimum time as a percentage
+
 // Initialize video player
 const myPlayer = videojs('my-video', {
     // aspectRatio: '16:9',
@@ -9,70 +71,147 @@ const myPlayer = videojs('my-video', {
     }
 })
 
-// $(".video_debug_btn").click(function () {
-//     // playThisVid(firstVid[0].videoID)
-//     // $('#my-video').attr('src', "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4")
-//     changeVid(firstVid[0].videoID)
-// })
+myPlayer.on('volumechange', () => { // Store volume to save user preference
+    let currentVolume = parseFloat(myPlayer.volume().toFixed(2))
+    localStorage.setItem('userVolume', currentVolume)
+})
 
-// NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
-// NEED TO IMPLEMENT END OF VIDEO CATCHING
-// NEED TO IMPLEMENT BACK BUTTON
-// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER
+// Set volume to previous user selected volume on load
+const userVolume = localStorage.getItem('userVolume')
+if (userVolume == null || userVolume == undefined || userVolume == "") {
+    myPlayer.volume(defaultVolume) // Set volume to predefined default volume
+} else {
+    myPlayer.volume(userVolume) // Set volume to user last set volume
+}
 
+// Attach hotkeys to video player
+videojs('my-video').ready(function () {
+    this.hotkeys({
+        volumeStep: 0.05,
+        seekStep: 5,
+        enableModifiersForNumbers: false
+    })
+})
+
+$(".share_btn").click(function () {
+    if ($(".share_social_container").hasClass("share_social_container_expanded")) {
+        $(".share_social_container").removeClass("share_social_container_expanded")
+    } else {
+        setTimeout(() => {
+            $(".share_social_container").addClass("share_social_container_expanded")
+        }, 10);
+    }
+})
+
+$(document).click(function () {
+    $(".share_social_container").removeClass("share_social_container_expanded")
+})
+
+
+
+
+
+
+
+
+
+// ====== LOGIC FOR PLAYING PROJECT DATA ======
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
-projectData = JSON.parse(projectData)
+if (typeof projectData === 'string') {
+    if (!(projectData == "")) {
+        projectData = JSON.parse(projectData)
+    }
+}
 let projectName = $(".project_data").attr("data-getVid_Name")
 let maxOptionCount = 3; // Maximum amount of options
 // console.log();
 let firstVid = Object.values(projectData)
+let optionsBlocks // Global to be accessible and set anywhere
+let firstBlock = projectData[0] // First block of the project (Starting Block)
+let hash = document.location.hash // Current hash in url (can start project from any point)
 
-
-let optionsBlocks
-
-let firstBlock = projectData[0]
-
-let currentBlock = firstBlock
-
-// console.log(currentBlock)
-if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined)) {
-    setTimeout(() => {
-        playBlock(currentBlock)
-
-    }, 10);
-} else {
-    alert("Project is unpublished or undone")
+// Catch undone projects (If question title or video is not set)
+try {
+    if (!(firstBlock.questionTitle == "") && !(firstBlock.questionTitle == undefined) && !(firstBlock.videoID == "") && !(firstBlock.videoID == undefined)) {
+        setTimeout(() => {
+            if (vidOnLoad) {
+                playCurrentBlock()
+                viewCount()
+            }
+        }, 10);
+    } else {
+        alert("Project is undone! Make sure to include at least one video and title first!")
+        history.back()
+        window.location.replace('home.php#dashboard')
+    }
+} catch (err) {
+    alert("Project is undone! Make sure to include at least one video and title first!")
+    history.back()
+    window.location.replace('home.php#dashboard')
 }
 
-myPlayer.on("error", function () {
-    playBlock(currentBlock)
+function playCurrentBlock() {
+    if (hash != "") {
+        playFromHash()
+    } else {
+        playBlock(firstBlock)
+    }
+}
 
+$(window).on('hashchange', function (e) {
+    resetFallback()
+    playFromHash()
+    // console.log(hashBlock)
 })
 
-function playBlock(block) {
-    // console.log(projectData)
+function playFromHash() {
+    hash = document.location.hash.replace("#", "")
+    hash = decodeURI(hash)
+    // console.log(hash)
+    modal.close()
+    let hashBlock = filter(projectData, hash, 'blockID')[0]
+    playBlock(hashBlock)
+}
 
+function playBlock(block) {
+    // console.log(hash)
+    // console.log(block)
     let currentVideoid = extractVidId(block.videoID)
+    // console.log(currentVideoid);
     let currentVideoOptions = block.options
     let currentVideoTitle = block.questionTitle
+
+    // Prevent code injection
+    currentVideoTitle = currentVideoTitle.replace('<', ' ⟨ ')
+    currentVideoTitle = currentVideoTitle.replace('>', ' ⟩ ')
     optionsBlocks = $("<div class='modal'></div>")
     let counter = 0
     let lastBlock = false
     for (let i = 0; i < currentVideoOptions.length; i++) {
         // console.log(currentVideoOptions[i].title);
         let thisTitle = currentVideoOptions[i].title
+        // Prevent code injection
+        if (thisTitle) {
+            thisTitle = thisTitle.replace('<', ' ⟨ ')
+            thisTitle = thisTitle.replace('>', ' ⟩ ')
+        }
+        let thisVideoID = currentVideoOptions[i].videoID
+        // Prevent code injection
+        if (thisVideoID) {
+            thisVideoID = thisVideoID.replace('<', ' ⟨ ')
+            thisVideoID = thisVideoID.replace('>', ' ⟩ ')
+        }
         let optionVideoBlock = thisTitle
-        if (!thisTitle == "" || !thisTitle == undefined) {
+        if (thisTitle != "" && thisTitle != undefined && thisVideoID != "" && thisVideoID != undefined) {
             optionsBlocks.append(`
-                    <div class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
-                        ${thisTitle}
-                    </div>`)
+                <a href="#${encodeURI(optionVideoBlock)}" class="video_options" data-blockid="${optionVideoBlock}" data-title="${thisTitle}">
+                    ${thisTitle}
+                </a>`)
         } else {
             counter++
             // console.log("COUNTER: " + counter);
-            if (counter == maxOptionCount) {
-                // No options left
+            if (counter == maxOptionCount) { // No options left
                 lastBlock = true
             }
         }
@@ -87,7 +226,8 @@ function playBlock(block) {
                 </div>
             </div>
         </div>`
-    } else {
+    } else { // Show end of video card
+
         optionsBlocks = /* HTML */ `
         <div class='modal'>
             <div class="video_end">
@@ -120,73 +260,137 @@ function playBlock(block) {
             </div>
             </div>
         </div>`
-
-
     }
     // console.log(currentVideoOptions.length)
-    // Play first video (Add true 2nd parameter to disable autoplay)
-    changeVid(currentVideoid)
+    // Play first video (Add false 2nd parameter to disable autoplay)
+    // DISABLED FOR DEVELOPMENT PURPOSES
+    changeVid(currentVideoid, autoPlay)
 }
 
 
+// ========= API FUNCTIONS =========
+function ajaxVidData(scriptUrl) {
+    showPreloader()
 
-// Main video playing function Add true 2nd parameter to disable autoplay
-function changeVid(videoid, noautoplay) {
-    let videoLinks = extractVidId(videoid)
-    let vidUrl = getVidData(videoLinks)
-    // await async function
-    vidUrl.then(function (result) {
-        let vidLink = JSON.parse(result).links
-        myPlayer.src({
-            type: 'video/mp4',
-            src: vidLink[0]
-        })
-        if (noautoplay) return
-        myPlayer.ready(function () {
-            myPlayer.play()
-        })
+}
+
+// Default API grabs 720p quality video
+let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
+
+function getVidData(videoID) {
+    // Convert any valid youtube url to its video id
+    videoID = extractVidId(videoID)
+    // Get the video URL
+    return $.ajax({
+        url: scriptUrl + videoID,
+        type: 'get',
+        dataType: 'JSON',
+        success: function (data) {
+            // videoData = {
+            //     "video": data.links
+            // }
+        }
     })
 }
 
-// myPlayer.on("ended", function() {
-//     // Do this when video ends
-//     console.log("Video Ended");
+// If error (might be bad get video link) just retry current block to grab a new link
+let errorCounter = 0
+let fallback = false
+myPlayer.on("error", function () {
+    // console.log(myPlayer.error().code)
+    if (myPlayer.error().code > 0) {
+        // USE FALLBACK API (LIMITED TO 480p)
+        console.log("Using Fallback API");
+        fallback = true
+        // Fallback API grabs 480p quality video
+        scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url="
+        playCurrentBlock()
+    }
+    // else {
+    errorCounter++
+    if (errorCounter >= 3) { // Redirect user to home if error more than 3 times 
+        alert("Something went wrong! Please check that your video does not use any copyrighted music!")
+        window.location = 'home.php#dashboard' // DISABLED FOR DEVELOPMENT PURPOSES
+    }
+    // }
+})
+// myPlayer.on('play', () => {
+//     console.log("Playing Successful")
+//     errorCounter = 0
 // })
 
+// Main video playing function Add true 2nd parameter to disable autoplay
+async function changeVid(videoid, disableautoplay) {
+    let vidUrl = await getVidData(videoid)
+    // console.log(videoid)
+    let vidLink
+    if (!fallback) {
+        vidLink = vidUrl.links
+    } else {
+        vidLink = vidUrl.links[0]
+    }
 
+    // console.log(vidLink)
+    myPlayer.src({
+        type: 'video/mp4',
+        src: vidLink
+    })
+
+    if (!disableautoplay) return
+    myPlayer.ready(function () {
+        myPlayer.play()
+    })
+}
+
+// Initialize end of video modal pop ups
 var ModalDialog = videojs.getComponent('ModalDialog');
-
 var modal = new ModalDialog(myPlayer, {
-    //  content:'test content',
     temporary: false
-    //closeable:true
-});
-
+})
+// Attach modal to video player
 myPlayer.addChild(modal);
-
+// Show modal when video ends
 myPlayer.on('ended', function () {
-    console.log("Video Ended");
-    modal.open();
-});
+    // console.log("Video Ended")
+    resetFallback()
+    modal.open()
+})
 
+function resetFallback() {
+    if (fallback) { // Reset fallback after video end if fallback was used
+        console.log("Resetting fallback");
+        errorCounter = 0
+        // Default API grabs 720p quality video
+        scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
+        fallback = false
+    }
+}
+// Set content of modal to show available options or end of video card
 modal.on('modalopen', function () {
-    console.log('modalopen')
-    modal.contentEl().innerHTML = optionsBlocks
-});
+    // console.log('modalopen')
+    // modal.contentEl().style.opacity = 0
+    modal.contentEl().style.transition = "none"
+    modal.contentEl().style.transform = "scale(0) "
+    modal.contentEl().style.overflow = "hidden "
+    modal.contentEl().innerHTML = optionsBlocks // Set content of modal
+    setTimeout(() => {
+        modal.contentEl().style.transition = "all 0.5s"
+        modal.contentEl().style.transform = "scale(1) "
+    }, 10);
+})
 
 // Click on options
 $("#watch_body").on("click", ".video_options", function () {
     let selectedOptionTitle = $(this).data("title")
     let selectedOptionBlockID = $(this).data("blockid")
-    console.log(selectedOptionTitle, selectedOptionBlockID);
+    // console.log(selectedOptionTitle, selectedOptionBlockID);
 
     let nextBlock = filter(projectData, selectedOptionBlockID, 'blockID')[0]
-    console.log(nextBlock)
-    modal.close();
-    currentBlock = nextBlock
-    playBlock(currentBlock)
+    // console.log(nextBlock)
+    modal.close()
+    playBlock(nextBlock)
 })
-
+// Find block id
 const filter = (array, value, key) => {
     return array.filter(
         key ?
@@ -196,4 +400,43 @@ const filter = (array, value, key) => {
             a[k].toLowerCase().includes(value.toLowerCase())
         )
     )
+}
+
+// ===== VIEW COUNTER =====
+// Add timeout before view count is updated. Maybe 10% || 30 seconds of first video
+function viewCount() {
+    let projectViews = $(".project_data").attr("data-getVid_Views")
+    let projectUID = $(".project_data").attr("data-getVid_UID")
+    // console.log(projectViews)
+    let viewcounter = 0
+    let viewTimer = setInterval(() => {
+        viewcounter++
+        // console.log("Iteration: " + viewcounter)
+        let currentTime = Math.floor(myPlayer.currentTime())
+        let durationTime = Math.floor(myPlayer.duration())
+        if (durationTime != undefined && !isNaN(durationTime)) {
+            // console.log(currentTime + "/" + durationTime)
+            let vidPercent = ((currentTime / durationTime) * 100).toFixed(2)
+            // console.log(vidPercent + `% / ${minWatchTimePercent}%`)
+            if (currentTime >= minWatchTimeSec || vidPercent >= minWatchTimePercent) {
+                // console.log(`Adding View Count to ${projectUID}!`);
+                clearInterval(viewTimer)
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        'projectUID': projectUID
+                    },
+                    url: "backend/update_viewcount_backend.php",
+                    cache: false,
+                    success: function (response) {
+                        if (response == 1) $(".video_info .view_count").text(response + " View")
+                        else $(".video_info .view_count").text(response + " Views")
+
+                        // console.log("Added View! 🟩")
+                        // console.log("New view count: "+response)
+                    }
+                })
+            }
+        }
+    }, 1000);
 }

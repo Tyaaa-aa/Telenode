@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-include "db_connect.php";
+include "backend/db_connect.php";
 session_start();
 
 if (isset($_SESSION["userID"])) {
@@ -21,9 +21,20 @@ if (isset($_SESSION["userID"])) {
             $getUserName = $row['userName'];
             $getProfileImg = $row['profileImg'];
             $getUserTheme = $row['theme'];
-?>
+            $userFontSize = $row['fontsize'];
+            $isNewUser = $row['newuser'];
 
-<?php
+            if ($row['fontsize'] == 'smaller') {
+                $getUserFontsize = '0.6';
+            } else if ($row['fontsize'] == 'small') {
+                $getUserFontsize = '0.8';
+            } else if ($row['fontsize'] == 'normal') {
+                $getUserFontsize = '1';
+            } else if ($row['fontsize'] == 'big') {
+                $getUserFontsize = '1.2';
+            } else if ($row['fontsize'] == 'bigger') {
+                $getUserFontsize = '1.4';
+            } 
         }
     }
 } else {
@@ -31,18 +42,33 @@ if (isset($_SESSION["userID"])) {
     $getUserEmail = false;
     $getUserName = false;
     $getProfileImg = false;
-    $getUserTheme = false;
+    $getUserFontsize = '1';
+    $getUserTheme = "light";
+    $isNewUser = false;
 }
 
 ?>
 
 <head>
-    <title>TeleNode</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="theme-color" content="#598DC5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="css/style.css?v=<?= time() ?>">
+    <style id="fontsize">
+        html {
+            font-size: <?= $getUserFontsize ?>em !important;
+        }
+
+        .modal {
+            font-size: <?= $getUserFontsize ?>em !important;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
