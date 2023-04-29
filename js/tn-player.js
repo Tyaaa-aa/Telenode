@@ -275,7 +275,7 @@ function ajaxVidData(scriptUrl) {
 }
 
 // Default API grabs 720p quality video
-let scriptUrl = "https://telenode-yt-api.herokuapp.com/api?url="
+let scriptUrl = "https://telenode.api.tya.design/api?url="
 
 function getVidData(videoID) {
     // Convert any valid youtube url to its video id
