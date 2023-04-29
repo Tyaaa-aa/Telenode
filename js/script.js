@@ -321,7 +321,7 @@ async function getVidData(videoID) {
     // Convert any valid youtube url to its video id
     videoID = extractVidId(videoID)
     // Get the video URL
-    let scriptUrl = "https://ytdirectvidapi.herokuapp.com/api/?url=" + videoID;
+    let scriptUrl = "https://telenode.api.tya.design/api/?url=" + videoID;
     let result = await ajaxVidData(scriptUrl)
     // console.log(x)
     hidePreloader()

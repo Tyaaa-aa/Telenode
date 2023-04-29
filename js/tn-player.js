@@ -18,6 +18,7 @@ const myPlayer = videojs('my-video', {
 // NEED TO IMPLEMENT ERROR CATCHING FOR BLANK PROJECTS
 // NEED TO IMPLEMENT END OF VIDEO CATCHING
 // NEED TO IMPLEMENT BACK BUTTON
+// NEED TO IMPLEMENT KEYBOARD SHORTCUTS FOR VIDEO PLAYER
 
 // Get project data
 let projectData = $(".project_data").attr("data-getVid_ProjectData")
